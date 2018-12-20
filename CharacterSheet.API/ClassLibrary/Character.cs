@@ -16,7 +16,7 @@ namespace ClassLibrary
         public Dictionary<string, int> Attributes { get; set; }
         public Dictionary<string, int> SkillList { get; set; }
         public Dictionary<string, int> FeatList { get; set; }
-        public Dictionary<string, int> Invantory { get; set; }
+        public Dictionary<string, int> Inventory { get; set; }
         public Dictionary<string, int[]> SpellSlots { get; set; }
         public List<Spell> SpellsKnown { get; set; }
 
