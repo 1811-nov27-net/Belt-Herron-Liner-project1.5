@@ -8,6 +8,6 @@ namespace ClassLibrary
     {
         public int SpellId { get; set; }
         public string Name { get; set; }
-        public Dictionary<string, int> ClassAndLevel { get; set; }
+        public Dictionary<string, int> ClassAndLevel { get; set; }      // Class name, spell level for that class.
     }
 }
