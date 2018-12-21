@@ -116,3 +116,22 @@ create table d20.SpellSlots
 	Level9Slots int default 0
 
 );
+
+alter table d20.SpellSlots
+	add constraint FK_Slots_Character foreign key (CharacterId) references d20.Characters (CharacterId)
+
+
+alter table d20.GMJunction
+	add constraint PK_GM primary key (CampaignId, GMId);
+alter table d20.SpellJunction
+	add constraint PK_SJ primary key (CharacterId, SpellId);
+alter table d20.Skills
+	add constraint PK_Skills primary key (SkillName, CharacterId);
+alter table d20.Feats
+	add constraint PK_Feats primary key (FeatName, CharacterId);
+alter table d20.Classes
+	add constraint PK_Classes primary key (ClassName, CharacterId);
+alter table d20.Inventory
+	add constraint PK_Inventory primary key (ItemName, CharacterId);
+alter table d20.SpellSlots
+	add constraint PK_SpellSlots primary key (CharacterId, ClassName);
