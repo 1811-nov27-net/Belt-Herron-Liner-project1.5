@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ClassLibrary
 {
-    class Spell
+    public class Spell
     {
         public int SpellId { get; set; }
         public string Name { get; set; }
