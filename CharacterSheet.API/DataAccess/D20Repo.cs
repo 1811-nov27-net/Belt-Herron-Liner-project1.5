@@ -20,6 +20,11 @@ namespace DataAccess
             _db = db ?? throw new ArgumentNullException(nameof(db));
         }
 
+        public void AddGM(int CampID, int UserID)
+        {
+            throw new NotImplementedException();
+        }
+
         public Campaign CampDetails(int CampID)
         {
             throw new NotImplementedException();
