@@ -100,3 +100,19 @@ create table d20.Inventory
 	constraint FK_Inventory_Character Foreign key (CharacterId) references d20.Characters (CharacterId)
 );
 
+create table d20.SpellSlots
+(
+	CharacterId int not null,
+	ClassName nvarchar(100) not null,
+	Level0Slots int default 0,
+	Level1Slots int default 0,
+	Level2Slots int default 0,
+	Level3Slots int default 0,
+	Level4Slots int default 0,
+	Level5Slots int default 0,
+	Level6Slots int default 0,
+	Level7Slots int default 0,
+	Level8Slots int default 0,
+	Level9Slots int default 0
+
+);
