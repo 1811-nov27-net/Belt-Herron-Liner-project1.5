@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ClassLibrary
 {
-    class Campaign
+    public class Campaign
     {
         public int CampID { get; set; }                 //campaign ID
 
