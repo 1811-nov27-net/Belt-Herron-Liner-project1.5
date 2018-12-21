@@ -13,17 +13,14 @@ using System.Net;
 
 namespace CharacterSheet.MVC.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : AServiceController
     {
-        private static readonly string CookieName = "UserApiAuthorization";
-        private static readonly Uri ServiceUri = new Uri("https://localhost:44309");
-        private HttpClient Client;
-
-        public HomeController(HttpClient client)
+        
+        public HomeController(HttpClient client) : base(client)
         {
-            Client = client;
-        }
 
+        }
+        
         public IActionResult Index()
         {
             return View();
@@ -77,24 +74,7 @@ namespace CharacterSheet.MVC.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public HttpRequestMessage CreateServiceRequest(HttpMethod method, string uri, object body)
-        {
-            var apiRequest = new HttpRequestMessage(method, new Uri(ServiceUri, uri));
-
-            if(body != null)
-            {
-                var jsonString = JsonConvert.SerializeObject(body);
-                apiRequest.Content = new StringContent(jsonString, Encoding.UTF8, "application/json");
-            }
-
-            var cookieValue = Request.Cookies[CookieName];
-
-            if(cookieValue != null)
-            {
-                apiRequest.Headers.Add("Cookie", new CookieHeaderValue(CookieName, cookieValue).ToString());
-            }
-            return apiRequest;
-        }
+        
 
         private bool PassCookiesToClient(HttpResponseMessage apiResponse)
         {
