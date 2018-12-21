@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClassLibrary;
+using System;
 using System.Collections.Generic;
 
 namespace DataAccess
@@ -43,5 +44,17 @@ namespace DataAccess
         public virtual ICollection<Skills> Skills { get; set; }
         public virtual ICollection<SpellJunction> SpellJunction { get; set; }
         public virtual ICollection<SpellSlots> SpellSlots { get; set; }
+
+        public static implicit operator Characters(Character character)
+        {
+            throw new NotImplementedException();
+
+        }
+
+        public static implicit operator Character(Characters character)
+        {
+            throw new NotImplementedException();
+
+        }
     }
 }
