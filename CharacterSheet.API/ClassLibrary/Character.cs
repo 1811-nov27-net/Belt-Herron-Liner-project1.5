@@ -10,8 +10,16 @@ namespace ClassLibrary
         public int UserID { get; set; }                     //ID of user the character belongs to
         public int CampID { get; set; }                     //ID of campaign the character belongs to
         public int MaxHitPoints { get; set; }
+        public string Race { get; set; }
+        public string Sex { get; set; }
+        public int BaseAttackBonus { get; set; }
+        public int[] AC { get; set; }
+        public string Alignment { get; set; }
 
-        public Dictionary<string, int> SavingThrows { get; set; }       // Saving Throw Type, Saving Throw Bonus
+
+        public Dictionary<string, int> EffectiveSavingThrows { get; set; }       // Saving Throw Type, Saving Throw Bonus
+
+        public Dictionary<string, int> BaseSavingThrows { get; set; }       // Saving Throw Type, Saving Throw Bonus
         public Dictionary<string, int> ClassLevels { get; set; }        // Class name, number of levels in class
         public Dictionary<string, int> Attributes { get; set; }         // Attribute name, level in attribute
         public Dictionary<string, int> SkillList { get; set; }          // Skill name, points in skill
