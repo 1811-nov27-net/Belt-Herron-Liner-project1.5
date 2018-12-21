@@ -39,10 +39,11 @@ namespace DataAccess
 
         //user functions
         void JoinCamp(int CampID, int CharID);                                    //join a campaign
+        
 
         //GM functions
         void RemoveCharFromCamp(int CampID, int CharID);                          //removes a character from a campaign
-
+        void AddGM(int CampID, int UserID);
 
     }
 }
