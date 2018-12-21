@@ -9,39 +9,39 @@ namespace DataAccess
     interface IRepo
     {
         //for creating new instances in the database
-        void CreateCharacter(/*args*/);                             //create a new character
-        void CreateCampaign(/*args*/);                              //create a new campaign
-        void CreateUser(/*args*/);                                  //create a new user
+        void CreateCharacter(Character character);                             //create a new character
+        void CreateCampaign(Campaign campaign);                              //create a new campaign
+        void CreateUser(User user);                                  //create a new user
 
         //for reading individual entries
-        Character CharDetails(/*args*/);                            //view character details
-        Campaign CampDetails(/*args*/);                             //view campaign details
-        User UserDetails(/*args*/);                                 //view user details
+        Character CharDetails(int CharID);                            //view character details
+        Campaign CampDetails(int CampID);                             //view campaign details
+        User UserDetails(int UserID);                                 //view user details
 
         //for updating entries
-        void UpdateCharacter(/*args*/);                             //update a character
-        void UpdateCamp(/*args*/);                                  //update a campaign
-        void UpdateUser(/*args*/);                                  //update a user
+        void UpdateCharacter(Character character);                             //update a character
+        void UpdateCamp(Campaign campaign);                                  //update a campaign
+        void UpdateUser(User user);                                  //update a user
 
         //for deleting entries
-        void DeleteChar(/*args*/);                                  //delete a character
-        void DeleteCamp(/*args*/);                                  //delete a campaign
-        void DeleteUser(/*args*/);                                  //delete a user
+        void DeleteChar(int CharID);                                  //delete a character
+        void DeleteCamp(int CampID);                                  //delete a campaign
+        void DeleteUser(int UserID);                                  //delete a user
 
         //for retrieving basic lists
-        IEnumerable CharacterList<Character>(/*args*/);             //grab the character list
-        IEnumerable CampList<Campaign>(/*args*/);                   //grab the campaign list
-        IEnumerable UserList<User>(/*args*/);                       //grab the user list
+        IEnumerable CharacterList<Character>();             //grab the character list
+        IEnumerable CampList<Campaign>();                   //grab the campaign list
+        IEnumerable UserList<User>();                       //grab the user list
 
         //for retrieving specified lists
-        IEnumerable CharacterListByUser<Character>(/*args*/);       //list of characters for a certain user
-        IEnumerable CharacterListByCamp<Character>(/*args*/);       //list of characters for a certain campaign
+        IEnumerable CharacterListByUser<Character>(int UserID);       //list of characters for a certain user
+        IEnumerable CharacterListByCamp<Character>(int CampID);       //list of characters for a certain campaign
 
         //user functions
-        void JoinCamp(/*args*/);                                    //join a campaign
+        void JoinCamp(int CampID, int CharID);                                    //join a campaign
 
         //GM functions
-        void RemoveCharFromCamp(/*args*/);                          //removes a character from a campaign
+        void RemoveCharFromCamp(int CampID, int CharID);                          //removes a character from a campaign
 
 
     }
