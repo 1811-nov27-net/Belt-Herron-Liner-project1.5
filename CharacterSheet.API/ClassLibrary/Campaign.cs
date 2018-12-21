@@ -8,5 +8,8 @@ namespace ClassLibrary
     {
         public int CampID { get; set; }                 //campaign ID
 
+        public List<Character> Characters = new List<Character>();
+        public List<User> GMs = new List<User>();
+
     }
 }
