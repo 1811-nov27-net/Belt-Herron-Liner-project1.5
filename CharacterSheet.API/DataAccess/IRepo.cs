@@ -6,7 +6,7 @@ using ClassLibrary;
 
 namespace DataAccess
 {
-    interface IRepo
+    public interface IRepo
     {
         //for creating new instances in the database
         void CreateCharacter(Character character);                             //create a new character
