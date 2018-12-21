@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace CharacterSheet.MVC.Models
 {
     public class User
     {
+        [Required]
         public string username { get; set; }                //username
+        [Required]
+        [DataType(DataType.Password)]
         public string password { get; set; }                //password
         public int userID { get; set; }                     //user ID
 
