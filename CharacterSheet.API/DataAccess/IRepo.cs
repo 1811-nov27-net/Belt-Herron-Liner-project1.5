@@ -6,7 +6,7 @@ using ClassLibrary;
 
 namespace DataAccess
 {
-    interface IRepo
+    public interface IRepo
     {
         //for creating new instances in the database
         void CreateCharacter(Character character);                             //create a new character
@@ -29,20 +29,21 @@ namespace DataAccess
         void DeleteUser(int UserID);                                  //delete a user
 
         //for retrieving basic lists
-        IEnumerable CharacterList<Character>();             //grab the character list
-        IEnumerable CampList<Campaign>();                   //grab the campaign list
-        IEnumerable UserList<User>();                       //grab the user list
+        IEnumerable<Character> CharacterList();             //grab the character list
+        IEnumerable<Campaign> CampList();                   //grab the campaign list
+        IEnumerable<User> UserList();                       //grab the user list
 
         //for retrieving specified lists
-        IEnumerable CharacterListByUser<Character>(int UserID);       //list of characters for a certain user
-        IEnumerable CharacterListByCamp<Character>(int CampID);       //list of characters for a certain campaign
+        IEnumerable<Character> CharacterListByUser(int UserID);       //list of characters for a certain user
+        IEnumerable<Character> CharacterListByCamp(int CampID);       //list of characters for a certain campaign
 
         //user functions
         void JoinCamp(int CampID, int CharID);                                    //join a campaign
+        
 
         //GM functions
         void RemoveCharFromCamp(int CampID, int CharID);                          //removes a character from a campaign
-
+        void AddGM(int CampID, int UserID);
 
     }
 }
