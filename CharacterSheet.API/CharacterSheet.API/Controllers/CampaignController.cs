@@ -5,13 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ClassLibrary;
-using DataAccess;
+using Data = DataAccess;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Primitives;
 using System.Net.Http;
 using System.Text;
-using Microsoft.AspNetCore.Authorization;
-using DataAccess;
 
 
 namespace CharacterSheet.API.Controllers
@@ -23,11 +21,11 @@ namespace CharacterSheet.API.Controllers
     {
 
         //Display list of Campaigns
-        [HttpGet]
-        public ActionResult<IEnumerable<Campaign>> Get()
-        {
-            return CampList();
-        }
+        //[HttpGet]
+        //public ActionResult<IEnumerable<Campaign>> Get()
+        //{
+        //    return Repo.CampList();
+        //}
 
         // GET: Campaign
         public ActionResult Index()
@@ -35,9 +33,9 @@ namespace CharacterSheet.API.Controllers
             return View();
         }
 
-        public IRepo Repo { get; set; }
+        public Data.IRepo Repo { get; set; }
 
-        public CampaignController(IRepo repo)
+        public CampaignController(Data.IRepo repo)
         {
             Repo = repo;
         }

@@ -2,26 +2,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
-using ClassLibrary;
+using Lib = ClassLibrary;
 
 namespace DataAccess
 {
     public interface IRepo
     {
         //for creating new instances in the database
-        void CreateCharacter(Character character);                             //create a new character
-        void CreateCampaign(Campaign campaign);                              //create a new campaign
-        void CreateUser(User user);                                  //create a new user
+        void CreateCharacter(Lib.Character character);                             //create a new character
+        void CreateCampaign(Lib.Campaign campaign);                              //create a new campaign
+        void CreateUser(Lib.User user);                                  //create a new user
 
         //for reading individual entries
-        Character CharDetails(int CharID);                            //view character details
-        Campaign CampDetails(int CampID);                             //view campaign details
-        User UserDetails(int UserID);                                 //view user details
+        Lib.Character CharDetails(int CharID);                            //view character details
+        Lib.Campaign CampDetails(int CampID);                             //view campaign details
+        Lib.User UserDetails(int UserID);                                 //view user details
 
         //for updating entries
-        void UpdateCharacter(Character character);                             //update a character
-        void UpdateCamp(Campaign campaign);                                  //update a campaign
-        void UpdateUser(User user);                                  //update a user
+        void UpdateCharacter(Lib.Character character);                             //update a character
+        void UpdateCamp(Lib.Campaign campaign);                                  //update a campaign
+        void UpdateUser(Lib.User user);                                  //update a user
 
         //for deleting entries
         void DeleteChar(int CharID);                                  //delete a character
@@ -29,13 +29,13 @@ namespace DataAccess
         void DeleteUser(int UserID);                                  //delete a user
 
         //for retrieving basic lists
-        IEnumerable<Character> CharacterList();             //grab the character list
-        IEnumerable<Campaign> CampList();                   //grab the campaign list
-        IEnumerable<User> UserList();                       //grab the user list
+        IEnumerable<Lib.Character> CharacterList();             //grab the character list
+        IEnumerable<Lib.Campaign> CampList();                   //grab the campaign list
+        IEnumerable<Lib.User> UserList();                       //grab the user list
 
         //for retrieving specified lists
-        IEnumerable<Character> CharacterListByUser(int UserID);       //list of characters for a certain user
-        IEnumerable<Character> CharacterListByCamp(int CampID);       //list of characters for a certain campaign
+        IEnumerable<Lib.Character> CharacterListByUser(int UserID);       //list of characters for a certain user
+        IEnumerable<Lib.Character> CharacterListByCamp(int CampID);       //list of characters for a certain campaign
 
         //user functions
         void JoinCamp(int CampID, int CharID);                                    //join a campaign

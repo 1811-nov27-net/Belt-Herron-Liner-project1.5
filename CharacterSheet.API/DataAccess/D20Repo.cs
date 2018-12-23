@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using ClassLibrary;
+using Lib = ClassLibrary;
 
 namespace DataAccess
 {
@@ -25,47 +25,47 @@ namespace DataAccess
             throw new NotImplementedException();
         }
 
-        public Campaign CampDetails(int CampID)
+        public Lib.Campaign CampDetails(int CampID)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Campaign> CampList()
+        public IEnumerable<Lib.Campaign> CampList()
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Character> CharacterList()
+        public IEnumerable<Lib.Character> CharacterList()
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Character> CharacterListByCamp(int CampID)
+        public IEnumerable<Lib.Character> CharacterListByCamp(int CampID)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Character> CharacterListByUser(int UserID)
+        public IEnumerable<Lib.Character> CharacterListByUser(int UserID)
         {
             throw new NotImplementedException();
         }
 
-        public Character CharDetails(int CharID)
+        public Lib.Character CharDetails(int CharID)
         {
             throw new NotImplementedException();
         }
 
-        public void CreateCampaign(Campaign campaign)
+        public void CreateCampaign(Lib.Campaign campaign)
         {
             throw new NotImplementedException();
         }
 
-        public void CreateCharacter(Character character)
+        public void CreateCharacter(Lib.Character character)
         {
             throw new NotImplementedException();
         }
 
-        public void CreateUser(User user)
+        public void CreateUser(Lib.User user)
         {
             throw new NotImplementedException();
         }
@@ -95,27 +95,27 @@ namespace DataAccess
             throw new NotImplementedException();
         }
 
-        public void UpdateCamp(Campaign campaign)
+        public void UpdateCamp(Lib.Campaign campaign)
         {
             throw new NotImplementedException();
         }
 
-        public void UpdateCharacter(Character character)
+        public void UpdateCharacter(Lib.Character character)
         {
             throw new NotImplementedException();
         }
 
-        public void UpdateUser(User user)
+        public void UpdateUser(Lib.User user)
         {
             throw new NotImplementedException();
         }
 
-        public User UserDetails(int UserID)
+        public Lib.User UserDetails(int UserID)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<User> UserList()
+        public IEnumerable<Lib.User> UserList()
         {
             throw new NotImplementedException();
         }
