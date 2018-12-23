@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Primitives;
 using System.Net.Http;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
+using DataAccess;
 
 
 namespace CharacterSheet.API.Controllers
@@ -17,8 +19,21 @@ namespace CharacterSheet.API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class CampaignController : ControllerBase
+    public class CampaignController : Controller
     {
+
+        //Display list of Campaigns
+        [HttpGet]
+        public ActionResult<IEnumerable<Campaign>> Get()
+        {
+            return CampList();
+        }
+
+        // GET: Campaign
+        public ActionResult Index()
+        {
+            return View();
+        }
 
         public IRepo Repo { get; set; }
 
