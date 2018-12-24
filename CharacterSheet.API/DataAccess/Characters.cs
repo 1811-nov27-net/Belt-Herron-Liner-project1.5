@@ -22,6 +22,7 @@ namespace DataAccess
         public string Race { get; set; }
         public string Sex { get; set; }
         public string Alignment { get; set; }
+        public int MaxHP { get; set; }  //  TODO add to database, make sure Context recognizes this trait
         public int Bab { get; set; }
         public int Ac { get; set; }
         public int TouchAc { get; set; }
@@ -45,13 +46,20 @@ namespace DataAccess
         public virtual ICollection<SpellJunction> SpellJunction { get; set; }
         public virtual ICollection<SpellSlots> SpellSlots { get; set; }
 
-        public static implicit operator Characters(Character character)
+        public static implicit operator Characters(Character character)  // implicit conversion, takes in library, returns data access
         {
-            throw new NotImplementedException();
+            Characters ret = new Characters();
+            ret.CharacterId = character.CharID;
+            ret.GamerId = character.UserID;
+            ret.CampaignId = character.CampID;
+
+
+
+            return ret;
 
         }
 
-        public static implicit operator Character(Characters character)
+        public static implicit operator Character(Characters character)  // implicit conversion, takes in data access, returns library
         {
             throw new NotImplementedException();
 

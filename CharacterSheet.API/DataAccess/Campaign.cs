@@ -21,13 +21,47 @@ namespace DataAccess
 
         public static implicit operator Campaign(ClassLibrary.Campaign campaign)
         {
-            throw new NotImplementedException();
+            Campaign ret = new Campaign();
+            ret.CampaignId = campaign.CampID;
+            ret.CampaignName = campaign.Name;
+
+            foreach (var kar in campaign.Characters)
+            {
+                ret.Characters.Add(kar);
+            }
+
+            foreach (var GM in campaign.GMs)
+            {
+                ret.Gmjunction.Add(new Gmjunction()
+                {
+                    Gmid = GM.UserID,
+                    CampaignId = campaign.CampID,
+                    Campaign = ret,
+                    Gm = GM
+                });
+            }
+
+            return ret;
 
         }
 
         public static implicit operator ClassLibrary.Campaign(Campaign campaign)
         {
-            throw new NotImplementedException();
+            ClassLibrary.Campaign ret = new ClassLibrary.Campaign;
+            ret.CampID = campaign.CampaignId;
+            ret.Name = campaign.CampaignName;
+
+            foreach (var kar in campaign.Characters)
+            {
+                ret.Characters.Add(kar);
+            }
+
+            foreach (var GM in campaign.Gmjunction)
+            {
+                ret.GMs.Add(GM.Gm);
+            }
+
+            return ret;
 
         }
     }
