@@ -232,9 +232,43 @@ namespace DataAccess
             }
             foreach (var feat in character.Feats)
             {
+                ret.FeatList.Add(feat.FeatName, feat.Copies);
+            }
+            foreach (var item in character.Inventory)
+            {
+                ret.Inventory.Add(item.ItemName, item.Quantity);
+            }
+            foreach (var spellKnown in character.SpellJunction)
+            {
+                Spell tempSpell = new Spell()
+                {
+                    SpellId = spellKnown.SpellId,
+                    Name = spellKnown.Spell.SpellName,
+                    Class = spellKnown.Spell.Class,
+                    SpellLevel = spellKnown.Spell.SpellLevel
+                };
 
+                ret.SpellsKnown.Add(tempSpell);
+                
+            }
+            foreach (var SSlotsDB in character.SpellSlots)
+            {
+                int[] intArray = new int[10];
+                intArray[9] = SSlotsDB.Level9Slots ?? 0;
+                intArray[8] = SSlotsDB.Level8Slots ?? 0;
+                intArray[7] = SSlotsDB.Level7Slots ?? 0;
+                intArray[6] = SSlotsDB.Level6Slots ?? 0;
+                intArray[5] = SSlotsDB.Level5Slots ?? 0;
+                intArray[4] = SSlotsDB.Level4Slots ?? 0;
+                intArray[3] = SSlotsDB.Level3Slots ?? 0;
+                intArray[2] = SSlotsDB.Level2Slots ?? 0;
+                intArray[1] = SSlotsDB.Level1Slots ?? 0;
+                intArray[0] = SSlotsDB.Level0Slots ?? 0;
+
+                ret.SpellSlots.Add(SSlotsDB.ClassName, intArray);
             }
 
+            ret.CalculateBonusesAndSaves();
 
             return ret;
         }
