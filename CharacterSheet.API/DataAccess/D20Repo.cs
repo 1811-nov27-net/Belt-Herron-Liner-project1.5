@@ -112,32 +112,36 @@ namespace DataAccess
 
         public void RemoveCharFromCamp(int CampID, int CharID)
         {
-            throw new NotImplementedException();
+            _db.Characters.First(c => c.CharacterId == CharID).CampaignId = 0; // 0 = no campagin
+            _db.SaveChanges();
         }
 
         public void UpdateCamp(Campaign campaign)
         {
-            throw new NotImplementedException();
+            _db.Campaign.Update(campaign);
+            _db.SaveChanges();
         }
 
         public void UpdateCharacter(Character character)
         {
-            throw new NotImplementedException();
+            _db.Characters.Update(character);
+            _db.SaveChanges();
         }
 
         public void UpdateUser(User user)
         {
-            throw new NotImplementedException();
+            _db.Gamer.Update(user);
+            _db.SaveChanges();
         }
 
         public User UserDetails(int UserID)
         {
-            throw new NotImplementedException();
+            return _db.Gamer.Find(UserID);
         }
 
         public IEnumerable<User> UserList()
         {
-            throw new NotImplementedException();
+            return (IEnumerable<User>) _db.Gamer.AsEnumerable();
         }
     }
 }
