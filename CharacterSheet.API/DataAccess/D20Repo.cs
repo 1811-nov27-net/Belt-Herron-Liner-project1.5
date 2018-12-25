@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using ClassLibrary;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess
 {
@@ -22,72 +24,90 @@ namespace DataAccess
 
         public void AddGM(int CampID, int UserID)
         {
-            throw new NotImplementedException();
+            _db.Gmjunction.Add(new Gmjunction()
+            {
+                CampaignId = CampID,
+                Gmid = UserID
+            });
         }
 
         public Campaign CampDetails(int CampID)
         {
-            throw new NotImplementedException();
+            return _db.Campaign.Find(CampID);
         }
 
         public IEnumerable<Campaign> CampList()
         {
-            throw new NotImplementedException();
+            return _db.Campaign.Include(c => c.Characters).Include(c => c.Gmjunction);
         }
 
         public IEnumerable<Character> CharacterList()
         {
-            throw new NotImplementedException();
+            List<Character> ret = (List<Character>) _db.Characters.Include(c => c.Classes).Include(c => c.Feats).Include(c => c.Inventory).Include(c => c.Skills).Include(c => c.SpellJunction).Include(c => c.SpellSlots).GetEnumerator();
+            
+            return ret;
         }
 
         public IEnumerable<Character> CharacterListByCamp(int CampID)
         {
-            throw new NotImplementedException();
+            List<Character> ret = (List<Character>)_db.Characters.Include(c => c.Classes).Include(c => c.Feats).Include(c => c.Inventory).Include(c => c.Skills).Include(c => c.SpellJunction).Include(c => c.SpellSlots).Where(c => c.CampaignId == CampID);
+
+            return ret;
         }
 
         public IEnumerable<Character> CharacterListByUser(int UserID)
         {
-            throw new NotImplementedException();
+            List<Character> ret = (List<Character>)_db.Characters.Include(c => c.Classes).Include(c => c.Feats).Include(c => c.Inventory).Include(c => c.Skills).Include(c => c.SpellJunction).Include(c => c.SpellSlots).Where(c => c.GamerId == UserID);
+
+            return ret;
         }
 
         public Character CharDetails(int CharID)
         {
-            throw new NotImplementedException();
+            return _db.Characters.Include(c => c.Classes).Include(c => c.Feats).Include(c => c.Inventory).Include(c => c.Skills).Include(c => c.SpellJunction).Include(c => c.SpellSlots).First(c => c.CharacterId == CharID);
         }
 
         public void CreateCampaign(Campaign campaign)
         {
-            throw new NotImplementedException();
+            _db.Campaign.Add(campaign);
+            _db.SaveChanges();
         }
 
         public void CreateCharacter(Character character)
         {
-            throw new NotImplementedException();
+            _db.Characters.Add(character);
+            _db.SaveChanges();
         }
 
         public void CreateUser(User user)
         {
-            throw new NotImplementedException();
+            _db.Gamer.Add(user);
+            _db.SaveChanges();
         }
 
         public void DeleteCamp(int CampID)
         {
-            throw new NotImplementedException();
+            _db.Campaign.Remove(_db.Campaign.First(c => c.CampaignId == CampID));
+            _db.SaveChanges();
+
         }
 
         public void DeleteChar(int CharID)
         {
-            throw new NotImplementedException();
+            _db.Characters.Remove(_db.Characters.First(c => c.CharacterId == CharID));
+            _db.SaveChanges();
         }
 
         public void DeleteUser(int UserID)
         {
-            throw new NotImplementedException();
+            _db.Gamer.Remove(_db.Gamer.First(c => c.GamerId == UserID));
+            _db.SaveChanges();
         }
 
         public void JoinCamp(int CampID, int CharID)
         {
-            throw new NotImplementedException();
+            _db.Characters.First(c => c.CharacterId == CharID).CampaignId = CampID;
+            _db.SaveChanges();
         }
 
         public void RemoveCharFromCamp(int CampID, int CharID)
