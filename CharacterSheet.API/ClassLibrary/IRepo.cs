@@ -8,6 +8,14 @@ namespace DataAccess
 {
     public interface IRepo
     {
+        /// <summary>
+        /// Interfaces with D20 character database, extracting Library classes from SQL.
+        /// All methods that make changes to the database (saving, updating, deleting)
+        /// also save those changes. 
+        /// </summary>
+        /// <param name="character"></param>
+
+
         //for creating new instances in the database
         void CreateCharacter(Character character);                             //create a new character
         void CreateCampaign(Campaign campaign);                              //create a new campaign

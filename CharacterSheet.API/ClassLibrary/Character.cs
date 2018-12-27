@@ -54,10 +54,10 @@ namespace ClassLibrary
 
         public void CalculateBonusesAndSaves()
         {
-            foreach (var AttKVP in Attributes)
+            foreach (var attKVP in Attributes)
             {
-                int Bonus = (AttKVP.Value - 10) / 2;
-                AttributeBonuses.Add(AttKVP.Key, Bonus);
+                int Bonus = (attKVP.Value - 10) / 2;
+                AttributeBonuses.Add(attKVP.Key, Bonus);
             }
             foreach (var SaveKVP in SaveBonusAssociation)
             {

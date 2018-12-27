@@ -21,9 +21,11 @@ namespace DataAccess
 
         public static implicit operator Campaign(ClassLibrary.Campaign campaign)
         {
-            Campaign ret = new Campaign();
-            ret.CampaignId = campaign.CampID;
-            ret.CampaignName = campaign.Name;
+            Campaign ret = new Campaign
+            {
+                CampaignId = campaign.CampID,
+                CampaignName = campaign.Name
+            };
 
             foreach (var kar in campaign.Characters)
             {
@@ -47,9 +49,11 @@ namespace DataAccess
 
         public static implicit operator ClassLibrary.Campaign(Campaign campaign)
         {
-            ClassLibrary.Campaign ret = new ClassLibrary.Campaign;
-            ret.CampID = campaign.CampaignId;
-            ret.Name = campaign.CampaignName;
+            ClassLibrary.Campaign ret = new ClassLibrary.Campaign
+            {
+                CampID = campaign.CampaignId,
+                Name = campaign.CampaignName
+            };
 
             foreach (var kar in campaign.Characters)
             {

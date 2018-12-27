@@ -29,16 +29,17 @@ namespace DataAccess
                 CampaignId = CampID,
                 Gmid = UserID
             });
+            _db.SaveChangesAsync();
         }
 
-        public Campaign CampDetails(int CampID)
+        public ClassLibrary.Campaign CampDetails(int CampID)
         {
             return _db.Campaign.Find(CampID);
         }
 
-        public IEnumerable<Campaign> CampList()
+        public IEnumerable<ClassLibrary.Campaign> CampList()
         {
-            return _db.Campaign.Include(c => c.Characters).Include(c => c.Gmjunction);
+            return (IEnumerable<ClassLibrary.Campaign>) _db.Campaign.Include(c => c.Characters).Include(c => c.Gmjunction);
         }
 
         public IEnumerable<Character> CharacterList()
@@ -67,71 +68,71 @@ namespace DataAccess
             return _db.Characters.Include(c => c.Classes).Include(c => c.Feats).Include(c => c.Inventory).Include(c => c.Skills).Include(c => c.SpellJunction).Include(c => c.SpellSlots).First(c => c.CharacterId == CharID);
         }
 
-        public void CreateCampaign(Campaign campaign)
+        public void CreateCampaign(ClassLibrary.Campaign campaign)
         {
             _db.Campaign.Add(campaign);
-            _db.SaveChanges();
+            _db.SaveChangesAsync();
         }
 
         public void CreateCharacter(Character character)
         {
             _db.Characters.Add(character);
-            _db.SaveChanges();
+            _db.SaveChangesAsync();
         }
 
         public void CreateUser(User user)
         {
             _db.Gamer.Add(user);
-            _db.SaveChanges();
+            _db.SaveChangesAsync();
         }
 
         public void DeleteCamp(int CampID)
         {
             _db.Campaign.Remove(_db.Campaign.First(c => c.CampaignId == CampID));
-            _db.SaveChanges();
+            _db.SaveChangesAsync();
 
         }
 
         public void DeleteChar(int CharID)
         {
             _db.Characters.Remove(_db.Characters.First(c => c.CharacterId == CharID));
-            _db.SaveChanges();
+            _db.SaveChangesAsync();
         }
 
         public void DeleteUser(int UserID)
         {
             _db.Gamer.Remove(_db.Gamer.First(c => c.GamerId == UserID));
-            _db.SaveChanges();
+            _db.SaveChangesAsync();
         }
 
         public void JoinCamp(int CampID, int CharID)
         {
             _db.Characters.First(c => c.CharacterId == CharID).CampaignId = CampID;
-            _db.SaveChanges();
+            _db.SaveChangesAsync();
         }
 
         public void RemoveCharFromCamp(int CampID, int CharID)
         {
             _db.Characters.First(c => c.CharacterId == CharID).CampaignId = 0; // 0 = no campagin
-            _db.SaveChanges();
+            _db.SaveChangesAsync();
         }
 
-        public void UpdateCamp(Campaign campaign)
+        public void UpdateCamp(ClassLibrary.Campaign campaign)
         {
             _db.Campaign.Update(campaign);
-            _db.SaveChanges();
+            _db.SaveChangesAsync();
         }
 
         public void UpdateCharacter(Character character)
         {
             _db.Characters.Update(character);
-            _db.SaveChanges();
+            _db.SaveChangesAsync();
         }
 
         public void UpdateUser(User user)
         {
             _db.Gamer.Update(user);
-            _db.SaveChanges();
+            _db.SaveChangesAsync();
         }
 
         public User UserDetails(int UserID)
