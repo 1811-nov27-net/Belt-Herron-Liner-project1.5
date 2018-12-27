@@ -42,28 +42,28 @@ namespace DataAccess
             return (IEnumerable<ClassLibrary.Campaign>) _db.Campaign.Include(c => c.Characters).Include(c => c.Gmjunction);
         }
 
-        public IEnumerable<Lib.Character> CharacterList()
+        public IEnumerable<ClassLibrary.Character> CharacterList()
         {
             List<Character> ret = (List<Character>) _db.Characters.Include(c => c.Classes).Include(c => c.Feats).Include(c => c.Inventory).Include(c => c.Skills).Include(c => c.SpellJunction).Include(c => c.SpellSlots).GetEnumerator();
             
             return ret;
         }
 
-        public IEnumerable<Lib.Character> CharacterListByCamp(int CampID)
+        public IEnumerable<ClassLibrary.Character> CharacterListByCamp(int CampID)
         {
             List<Character> ret = (List<Character>)_db.Characters.Include(c => c.Classes).Include(c => c.Feats).Include(c => c.Inventory).Include(c => c.Skills).Include(c => c.SpellJunction).Include(c => c.SpellSlots).Where(c => c.CampaignId == CampID);
 
             return ret;
         }
 
-        public IEnumerable<Lib.Character> CharacterListByUser(int UserID)
+        public IEnumerable<ClassLibrary.Character> CharacterListByUser(int UserID)
         {
             List<Character> ret = (List<Character>)_db.Characters.Include(c => c.Classes).Include(c => c.Feats).Include(c => c.Inventory).Include(c => c.Skills).Include(c => c.SpellJunction).Include(c => c.SpellSlots).Where(c => c.GamerId == UserID);
 
             return ret;
         }
 
-        public Lib.Character CharDetails(int CharID)
+        public ClassLibrary.Character CharDetails(int CharID)
         {
             return _db.Characters.Include(c => c.Classes).Include(c => c.Feats).Include(c => c.Inventory).Include(c => c.Skills).Include(c => c.SpellJunction).Include(c => c.SpellSlots).First(c => c.CharacterId == CharID);
         }
@@ -74,13 +74,13 @@ namespace DataAccess
             _db.SaveChangesAsync();
         }
 
-        public void CreateCharacter(Lib.Character character)
+        public void CreateCharacter(ClassLibrary.Character character)
         {
             _db.Characters.Add(character);
             _db.SaveChangesAsync();
         }
 
-        public void CreateUser(Lib.User user)
+        public void CreateUser(ClassLibrary.User user)
         {
             _db.Gamer.Add(user);
             _db.SaveChangesAsync();
@@ -123,24 +123,24 @@ namespace DataAccess
             _db.SaveChangesAsync();
         }
 
-        public void UpdateCharacter(Lib.Character character)
+        public void UpdateCharacter(ClassLibrary.Character character)
         {
             _db.Characters.Update(character);
             _db.SaveChangesAsync();
         }
 
-        public void UpdateUser(Lib.User user)
+        public void UpdateUser(ClassLibrary.User user)
         {
             _db.Gamer.Update(user);
             _db.SaveChangesAsync();
         }
 
-        public Lib.User UserDetails(int UserID)
+        public ClassLibrary.User UserDetails(int UserID)
         {
             return _db.Gamer.Find(UserID);
         }
 
-        public IEnumerable<Lib.User> UserList()
+        public IEnumerable<ClassLibrary.User> UserList()
         {
             return (IEnumerable<User>) _db.Gamer.AsEnumerable();
         }
