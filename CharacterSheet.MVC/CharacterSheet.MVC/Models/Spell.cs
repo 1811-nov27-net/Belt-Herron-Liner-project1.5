@@ -8,6 +8,7 @@ namespace CharacterSheet.MVC.Models
     {
         public int SpellId { get; set; }
         public string Name { get; set; }
-        public Dictionary<string, int> ClassAndLevel { get; set; }      // Class name, spell level for that class.
+        public int SpellLevel { get; set; }
+        public string Class { get; set; }      
     }
 }
