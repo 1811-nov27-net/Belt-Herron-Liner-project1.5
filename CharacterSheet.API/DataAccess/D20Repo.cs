@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using ClassLibrary;
 using Microsoft.EntityFrameworkCore;
 
@@ -74,20 +75,26 @@ namespace DataAccess
             _db.SaveChangesAsync();
         }
 
-        public void CreateCharacter(Character character)
+        public async void CreateCharacter(Character character)
         {
+            character.CharID = await _db.Characters.MaxAsync(c => c.CharacterId) + 1;
             _db.Characters.Add(character);
             _db.SaveChangesAsync();
         }
 
-        public void CreateUser(User user)
+        public async void CreateUser(User user)
         {
+            user.UserID = await _db.Gamer.MaxAsync(g => g.GamerId) + 1;
             _db.Gamer.Add(user);
             _db.SaveChangesAsync();
         }
 
         public void DeleteCamp(int CampID)
         {
+            foreach (var item in _db.Campaign.First(c => c.CampaignId == CampID).Characters)
+            {
+                item.CampaignId = 1;
+            }
             _db.Campaign.Remove(_db.Campaign.First(c => c.CampaignId == CampID));
             _db.SaveChangesAsync();
 
@@ -113,7 +120,7 @@ namespace DataAccess
 
         public void RemoveCharFromCamp(int CampID, int CharID)
         {
-            _db.Characters.First(c => c.CharacterId == CharID).CampaignId = 0; // 0 = no campagin
+            _db.Characters.First(c => c.CharacterId == CharID).CampaignId = 1; // 1 = no campagin
             _db.SaveChangesAsync();
         }
 

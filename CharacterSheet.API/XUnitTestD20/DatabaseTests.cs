@@ -35,31 +35,31 @@ namespace XUnitTestD20
                 Assert.True(actual);
             }
         }
-        //[Theory]
-        //[InlineData(1, "Test Character")]
-        //[InlineData(2, "Test Character")]
-        //[InlineData(0, "Test Character")]
-        //[InlineData(3, "")]
-        //[InlineData(4, null)]
-        //public async void CreateCharacterWorks(int charId, string name)
-        //{
-        //    var options = new DbContextOptionsBuilder<Data.D20CharacterDatabaseContext>()
-        //        .UseInMemoryDatabase("create_character_test").Options;
-        //    using (var db = new Data.D20CharacterDatabaseContext(options))
-        //    {
-        //        Data.IRepo sut = new Data.D20Repo(db);
-        //        Lib.Character testChar = new Lib.Character();
-        //        testChar.CharID = charId;
-        //        testChar.Name = name;
-        //        testChar.CampID = 1;
-        //        testChar.UserID = 1;
-        //        sut.CreateCharacter(testChar);
-        //        Data.Characters test = await db.Characters.FirstOrDefaultAsync(c => c.CharacterId == charId);
-        //        bool actual = (test != null && test.CampaignId == 1);
+        [Theory]
+        [InlineData(1, "Test Character")]
+        [InlineData(2, "Test Character")]
+        [InlineData(0, "Test Character")]
+        [InlineData(3, "")]
+        [InlineData(4, null)]
+        public async void CreateCharacterWorks(int charId, string name)
+        {
+            var options = new DbContextOptionsBuilder<Data.D20CharacterDatabaseContext>()
+                .UseInMemoryDatabase("create_character_test").Options;
+            using (var db = new Data.D20CharacterDatabaseContext(options))
+            {
+                Data.IRepo sut = new Data.D20Repo(db);
+                Lib.Character testChar = new Lib.Character();
+                testChar.CharID = charId;
+                testChar.Name = name;
+                testChar.CampID = 1;
+                testChar.UserID = 1;
+                sut.CreateCharacter(testChar);
+                Data.Characters test = await db.Characters.FirstOrDefaultAsync(c => c.CharacterId == charId);
+                bool actual = (test != null && test.CampaignId == 1);
 
-        //        Assert.True(actual);
-        //    }
-        //}
+                Assert.True(actual);
+            }
+        }
         [Theory]
         [InlineData(1, "Test User")]
         [InlineData(2, "Test User")]

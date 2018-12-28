@@ -63,18 +63,45 @@ namespace DataAccess
                 Ac = character.AC[0],
                 TouchAc = character.AC[1],
                 Ffac = character.AC[2],
-                Strength = character.Attributes["Strength"],
-                Dexterity = character.Attributes["Dexterity"],
-                Stamina = character.Attributes["Stamina"],
-                Intelligence = character.Attributes["Intelligence"],
-                Charisma = character.Attributes["Charisma"],
-                Wisdom = character.Attributes["Wisdom"],
-                BaseFortSave = character.BaseSavingThrows["Fort"],
-                BaseReflexSave = character.BaseSavingThrows["Reflex"],
-                BaseWillSave = character.BaseSavingThrows["Will"],
                 
 
             };
+
+            if(character.Attributes.Count > 0)
+            {
+                ret.Strength = character.Attributes["Strength"];
+                ret.Dexterity = character.Attributes["Dexterity"];
+                ret.Stamina = character.Attributes["Stamina"];
+                ret.Intelligence = character.Attributes["Intelligence"];
+                ret.Charisma = character.Attributes["Charisma"];
+                ret.Wisdom = character.Attributes["Wisdom"];
+
+            }
+            else
+            {
+                ret.Strength = 10;
+                ret.Dexterity = 10;
+                ret.Stamina = 10;
+                ret.Intelligence = 10;
+                ret.Charisma = 10;
+                ret.Wisdom = 10;
+
+            }
+
+            if(character.BaseSavingThrows.Count > 0)
+            {
+                ret.BaseFortSave = character.BaseSavingThrows["Fort"];
+                ret.BaseReflexSave = character.BaseSavingThrows["Reflex"];
+                ret.BaseWillSave = character.BaseSavingThrows["Will"];
+
+            }
+            else
+            {
+                ret.BaseFortSave = 0;
+                ret.BaseReflexSave = 0;
+                ret.BaseWillSave = 0;
+
+            }
 
             if (character.ClassLevels.Count > 0)
             {
