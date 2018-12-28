@@ -5,103 +5,52 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ClassLibrary;
-using Microsoft.AspNetCore.Authorization;
 using DataAccess;
 
 namespace CharacterSheet.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
-    public class CampaignController : Controller
+    public class CampaignController : ControllerBase
     {
 
-        //Display list of Campaigns
+        public IRepo Repo { get; set; }
+        
+        public CampaignController(IRepo repo)
+        {
+            Repo = repo;
+        }
+
+        // GET: api/Campaign
         [HttpGet]
-        public ActionResult<IEnumerable<Campaign>> Get()
+        public IEnumerable<Campaign> Get()
         {
-            return CampList();
+            return Repo.CampList();
         }
 
-        // GET: Campaign
-        public ActionResult Index()
+        // GET: api/Campaign/5
+        [HttpGet("{id}", Name = "Get")]
+        public string Get(int id)
         {
-            return View();
+            return "value";
         }
 
-        // GET: Campaign/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: Campaign/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Campaign/Create
+        // POST: api/Campaign
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public void Post([FromBody] string value)
         {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
         }
 
-        // GET: Campaign/Edit/5
-        public ActionResult Edit(int id)
+        // PUT: api/Campaign/5
+        [HttpPut("{id}")]
+        public void Put(int id, [FromBody] string value)
         {
-            return View();
         }
 
-        // POST: Campaign/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        // DELETE: api/ApiWithActions/5
+        [HttpDelete("{id}")]
+        public void Delete(int id)
         {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Campaign/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Campaign/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
         }
     }
 }

@@ -11,37 +11,37 @@ namespace CharacterSheet.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class CharacterController : ControllerBase
     {
 
         public IRepo Repo { get; set; }
 
-        public UserController(IRepo repo)
+        public CharacterController(IRepo repo)
         {
             Repo = repo;
         }
 
-        // GET: api/User
+        // GET: api/Character
         [HttpGet]
-        public IEnumerable<User> Get()
+        public IEnumerable<Character> Get()
         {
-            return Repo.UserList();
+            return Repo.CharacterList();
         }
 
-        // GET: api/User/5
+        // GET: api/Character/5
         [HttpGet("{id}", Name = "Get")]
         public string Get(int id)
         {
             return "value";
         }
 
-        // POST: api/User
+        // POST: api/Character
         [HttpPost]
         public void Post([FromBody] string value)
         {
         }
 
-        // PUT: api/User/5
+        // PUT: api/Character/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
