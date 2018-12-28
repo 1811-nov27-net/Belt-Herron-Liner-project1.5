@@ -21,7 +21,7 @@ namespace ClassLibrary
             SpellsKnown = new List<Spell>();
         }
 
-
+        public string Name { get; set; }
         public int CharID { get; set; }                     //character ID
         public int UserID { get; set; }                     //ID of user the character belongs to
         public int CampID { get; set; }                     //ID of campaign the character belongs to

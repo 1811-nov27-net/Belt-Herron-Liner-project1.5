@@ -28,7 +28,7 @@ namespace CharacterSheet.API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Campaign>> Get()
+        public ActionResult<IEnumerable<ClassLibrary.Campaign>> Get()
         {
             var data = Repo.CampList().ToList();
             return data;

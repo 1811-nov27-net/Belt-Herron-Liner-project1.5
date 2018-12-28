@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess
 {
-    class D20Repo : IRepo
+    public class D20Repo : IRepo
     {
 
         private readonly D20CharacterDatabaseContext _db;
