@@ -30,15 +30,16 @@ namespace CharacterSheet.API.Controllers
 
         // GET: api/Campaign/5
         [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        public Campaign Get(int id)
         {
-            return "value";
+            return Repo.CampDetails(id);
         }
 
         // POST: api/Campaign
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] Campaign campaign)
         {
+            Repo.CreateCampaign(campaign);
         }
 
         // PUT: api/Campaign/5
@@ -51,6 +52,7 @@ namespace CharacterSheet.API.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            Repo.DeleteCamp(id);
         }
     }
 }

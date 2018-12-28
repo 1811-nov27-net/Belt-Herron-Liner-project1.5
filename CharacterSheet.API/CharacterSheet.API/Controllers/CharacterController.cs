@@ -30,15 +30,16 @@ namespace CharacterSheet.API.Controllers
 
         // GET: api/Character/5
         [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        public Character Get(int id)
         {
-            return "value";
+            return Repo.CharDetails(id);
         }
 
         // POST: api/Character
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] Character character)
         {
+            Repo.CreateCharacter(character);
         }
 
         // PUT: api/Character/5
@@ -51,6 +52,7 @@ namespace CharacterSheet.API.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            Repo.DeleteChar(id);
         }
     }
 }
