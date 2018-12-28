@@ -11,11 +11,10 @@ namespace XUnitTestD20
     public class DatabaseTests
     {
         [Theory]
-        [InlineData(1, "Test Campaign")]
-        [InlineData(2, "Test Campaign")]
-        //[InlineData(0, "Test Campaign")]
-        [InlineData(3, "")]
-        [InlineData(4, null)]
+        [InlineData(0, "Test Campaign")]
+        [InlineData(2, "Test Campaign2")]
+        [InlineData(0, "")]
+        [InlineData(0, null)]
         public async void CreateCampaignWorks(int id, string name)
         {
             var options = new DbContextOptionsBuilder<Data.D20CharacterDatabaseContext>()
@@ -29,43 +28,51 @@ namespace XUnitTestD20
                 camp.Characters = new List<Lib.Character>();
                 camp.GMs = new List<Lib.User>();
                 sut.CreateCampaign(camp);
-                Data.Campaign testCamp = await db.Campaign.FirstOrDefaultAsync(c => c.CampaignId == id);
-                bool actual = (testCamp != null && testCamp.CampaignName == name);
+                Data.Campaign testCamp = await db.Campaign.FirstOrDefaultAsync(c => c.CampaignName == name);
+                
 
-                Assert.True(actual);
+                if (id == 0)
+                {
+                    bool actual = (testCamp != null && testCamp.CampaignName == name);
+                    Assert.True(actual);
+                }
+                else
+                {
+                    bool actual = (testCamp != null && testCamp.CampaignId == id);
+                    Assert.False(actual);
+                }
             }
         }
-        [Theory]
-        [InlineData(1, "Test Character")]
-        [InlineData(2, "Test Character")]
-        [InlineData(0, "Test Character")]
-        [InlineData(3, "")]
-        [InlineData(4, null)]
-        public async void CreateCharacterWorks(int charId, string name)
-        {
-            var options = new DbContextOptionsBuilder<Data.D20CharacterDatabaseContext>()
-                .UseInMemoryDatabase("create_character_test").Options;
-            using (var db = new Data.D20CharacterDatabaseContext(options))
-            {
-                Data.IRepo sut = new Data.D20Repo(db);
-                Lib.Character testChar = new Lib.Character();
-                testChar.CharID = charId;
-                testChar.Name = name;
-                testChar.CampID = 1;
-                testChar.UserID = 1;
-                sut.CreateCharacter(testChar);
-                Data.Characters test = await db.Characters.FirstOrDefaultAsync(c => c.CharacterId == charId);
-                bool actual = (test != null && test.CampaignId == 1);
+        //[Theory]
+        //[InlineData(1, "Test Character")]
+        //[InlineData(2, "Test Character")]
+        ////[InlineData(0, "Test Character")]
+        //[InlineData(3, "")]
+        //[InlineData(4, null)]
+        //public async void CreateCharacterWorks(int charId, string name)
+        //{
+        //    var options = new DbContextOptionsBuilder<Data.D20CharacterDatabaseContext>()
+        //        .UseInMemoryDatabase("create_character_test").Options;
+        //    using (var db = new Data.D20CharacterDatabaseContext(options))
+        //    {
+        //        Data.IRepo sut = new Data.D20Repo(db);
+        //        Lib.Character testChar = new Lib.Character();
+        //        testChar.CharID = charId;
+        //        testChar.Name = name;
+        //        testChar.CampID = 1;
+        //        testChar.UserID = 1;
+        //        sut.CreateCharacter(testChar);
+        //        Data.Characters test = await db.Characters.FirstOrDefaultAsync(c => c.CharacterId == charId);
+        //        bool actual = (test != null && test.CampaignId == 1);
 
-                Assert.True(actual);
-            }
-        }
+        //        Assert.True(actual);
+        //    }
+        //}
         [Theory]
-        [InlineData(1, "Test User")]
-        [InlineData(2, "Test User")]
-        //[InlineData(0, "Test User")]
-        [InlineData(3, "")]
-        [InlineData(4, null)]
+        [InlineData(0, "Test User")]
+        [InlineData(1, "Test User2")]
+        [InlineData(0, "")]
+        [InlineData(0, null)]
         public async void CreateUserWorks(int id, string name)
         {
             var options = new DbContextOptionsBuilder<Data.D20CharacterDatabaseContext>()
@@ -73,6 +80,9 @@ namespace XUnitTestD20
             using (var db = new Data.D20CharacterDatabaseContext(options))
             {
                 Data.IRepo sut = new Data.D20Repo(db);
+                //Data.Gamer initialGamer = new Data.Gamer() { GamerId = 0, UserName = "Initial User" };
+                //db.Gamer.Add(initialGamer);
+                //db.SaveChanges();
                 Lib.User user = new Lib.User();
                 user.UserID = id;
                 user.Username = name;
@@ -80,18 +90,24 @@ namespace XUnitTestD20
                 user.MyCampaigns = new List<Lib.Campaign>();
                 sut.CreateUser(user);
 
-                Data.Gamer testUser = await db.Gamer.FirstOrDefaultAsync(u => u.GamerId == id);
-                bool actual = (testUser != null && testUser.UserName == name);
+                Data.Gamer testUser = await db.Gamer.FirstOrDefaultAsync(u => u.UserName == name);
 
-                Assert.True(actual);
+                if (id == 0)
+                {
+                    bool actual = (testUser != null && testUser.UserName == name);
+                    Assert.True(actual);
+                }
+                else
+                {
+                    bool actual = (testUser != null && testUser.GamerId == id);
+                    Assert.False(actual);
+                }
             }
         }
         [Theory]
-        [InlineData(1, "Test Campaign")]
-        [InlineData(2, "Test Campaign2")]
-        [InlineData(0, "Test Campaign3")]
-        [InlineData(3, "")]
-        [InlineData(4, null)]
+        [InlineData(0, "Test Campaign")]
+        [InlineData(0, "")]
+        [InlineData(0, null)]
         public async void DeleteCampaignWorks(int id, string name)
         {
             var options = new DbContextOptionsBuilder<Data.D20CharacterDatabaseContext>()
@@ -105,23 +121,21 @@ namespace XUnitTestD20
                 camp.Characters = new List<Lib.Character>();
                 camp.GMs = new List<Lib.User>();
                 sut.CreateCampaign(camp);
-                Data.Campaign testCamp = await db.Campaign.FirstOrDefaultAsync(c => c.CampaignId == id);
+                Data.Campaign testCamp = await db.Campaign.FirstOrDefaultAsync(c => c.CampaignName == name);
                 bool actual = (testCamp != null && testCamp.CampaignName == name);
 
                 Assert.True(actual);
 
-                sut.DeleteCamp(camp.CampID);
-                testCamp = await db.Campaign.FirstOrDefaultAsync(c => c.CampaignId == id);
+                sut.DeleteCamp(testCamp.CampaignId);
+                testCamp = await db.Campaign.FirstOrDefaultAsync(c => c.CampaignName == name);
                 actual = testCamp == null;
                 Assert.True(actual);
             }
         }
         [Theory]
         [InlineData(0, "Test User")]
-        [InlineData(1, "Test User2")]
-        [InlineData(2, "Test User3")]
-        [InlineData(3, "")]
-        [InlineData(4, null)]
+        [InlineData(0, "")]
+        [InlineData(0, null)]
         public async void DeleteUserWorks(int id, string name)
         {
             var options = new DbContextOptionsBuilder<Data.D20CharacterDatabaseContext>()
@@ -136,23 +150,21 @@ namespace XUnitTestD20
                 user.MyCampaigns = new List<Lib.Campaign>();
                 sut.CreateUser(user);
 
-                Data.Gamer testUser = await db.Gamer.FirstOrDefaultAsync(u => u.GamerId == id);
-                bool actual = (testUser != null && testUser.UserName == name);
+                Data.Gamer testUser = await db.Gamer.FirstOrDefaultAsync(u => u.UserName == name);
+                bool actual = (testUser != null && testUser.GamerId != 0);
 
                 Assert.True(actual);
 
-                sut.DeleteUser(user.UserID);
-                testUser = await db.Gamer.FirstOrDefaultAsync(u => u.GamerId == id);
+                sut.DeleteUser(testUser.GamerId);
+                testUser = await db.Gamer.FirstOrDefaultAsync(u => u.UserName == name);
                 actual = testUser == null;
                 Assert.True(actual);
             }
         }
         [Theory]
-        [InlineData(1, "Test Campaign")]
-        [InlineData(2, "Test Campaign")]
         [InlineData(0, "Test Campaign")]
-        [InlineData(3, "")]
-        [InlineData(4, null)]
+        [InlineData(0, "")]
+        [InlineData(0, null)]
         public async void UpdateCampaignWorks(int id, string name)
         {
             var options = new DbContextOptionsBuilder<Data.D20CharacterDatabaseContext>()
@@ -179,11 +191,9 @@ namespace XUnitTestD20
             }
         }
         [Theory]
-        [InlineData(1, "Test User")]
-        [InlineData(2, "Test User")]
         [InlineData(0, "Test User")]
-        [InlineData(3, "")]
-        [InlineData(4, null)]
+        [InlineData(0, "")]
+        [InlineData(0, null)]
         public async void UpdateUserWorks(int id, string name)
         {
             var options = new DbContextOptionsBuilder<Data.D20CharacterDatabaseContext>()

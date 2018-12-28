@@ -71,6 +71,7 @@ namespace DataAccess
 
         public void CreateCampaign(ClassLibrary.Campaign campaign)
         {
+            campaign.CampID = 0;
             _db.Campaign.Add(campaign);
             _db.SaveChangesAsync();
         }
@@ -79,14 +80,15 @@ namespace DataAccess
         {
             character.CharID = await _db.Characters.MaxAsync(c => c.CharacterId) + 1;
             _db.Characters.Add(character);
-            _db.SaveChangesAsync();
+            await _db.SaveChangesAsync();
         }
 
         public async void CreateUser(User user)
         {
-            user.UserID = await _db.Gamer.MaxAsync(g => g.GamerId) + 1;
+            //user.UserID = await _db.Gamer.MaxAsync(g => g.GamerId) + 1;
+            user.UserID = 0;
             _db.Gamer.Add(user);
-            _db.SaveChangesAsync();
+            await _db.SaveChangesAsync();
         }
 
         public void DeleteCamp(int CampID)
