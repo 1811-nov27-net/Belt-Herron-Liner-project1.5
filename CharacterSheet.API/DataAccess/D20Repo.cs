@@ -144,10 +144,40 @@ namespace DataAccess
             await _db.SaveChangesAsync();
         }
 
-        public void UpdateCharacter(Character character)
+        public async void UpdateCharacter(Character character)
         {
-            _db.Characters.Update(character);
-            _db.SaveChangesAsync();
+            DataAccess.Characters tempChar = character;
+            var trackedCharacter = await _db.Characters.FindAsync(tempChar.CharacterId);
+            trackedCharacter.Ac = tempChar.Ac;
+            trackedCharacter.Alignment = tempChar.Alignment;
+            trackedCharacter.Bab = tempChar.Bab;
+            trackedCharacter.BaseFortSave = tempChar.BaseFortSave;
+            trackedCharacter.BaseReflexSave = tempChar.BaseReflexSave;
+            trackedCharacter.BaseWillSave = tempChar.BaseWillSave;
+            trackedCharacter.Campaign = tempChar.Campaign;
+            trackedCharacter.CampaignId = tempChar.CampaignId;
+            trackedCharacter.CharacterName = tempChar.CharacterName;
+            trackedCharacter.Charisma = tempChar.Charisma;
+            trackedCharacter.Classes = tempChar.Classes;
+            trackedCharacter.Dexterity = tempChar.Dexterity;
+            trackedCharacter.Feats = tempChar.Feats;
+            trackedCharacter.Ffac = tempChar.Ffac;
+            trackedCharacter.Gamer = tempChar.Gamer;
+            trackedCharacter.GamerId = tempChar.GamerId;
+            trackedCharacter.Intelligence = tempChar.Intelligence;
+            trackedCharacter.Inventory = tempChar.Inventory;
+            trackedCharacter.MaxHP = tempChar.MaxHP;
+            trackedCharacter.Race = tempChar.Race;
+            trackedCharacter.Sex = tempChar.Sex;
+            trackedCharacter.Skills = tempChar.Skills;
+            trackedCharacter.SpellJunction = tempChar.SpellJunction;
+            trackedCharacter.SpellSlots = tempChar.SpellSlots;
+            trackedCharacter.Stamina = tempChar.Stamina;
+            trackedCharacter.Strength = tempChar.Strength;
+            trackedCharacter.TouchAc = tempChar.TouchAc;
+            trackedCharacter.Wisdom = tempChar.Wisdom;
+            _db.Characters.Update(trackedCharacter);
+            await _db.SaveChangesAsync();
         }
 
         public async void UpdateUser(User user)
