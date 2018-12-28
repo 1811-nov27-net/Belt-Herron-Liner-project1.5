@@ -47,10 +47,10 @@ namespace CharacterSheet.API.Controllers
         }
 
         [HttpPost]
-        public ActionResult PostCampaign(Campaign campaign)
+       /* public ActionResult PostCampaign(Campaign campaign)
         {
             Repo.CreateCampaign(campaign);
-        }
+        }*/
 
     }
 }
