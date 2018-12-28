@@ -35,6 +35,7 @@ namespace DataAccess
 
         public ClassLibrary.Campaign CampDetails(int CampID)
         {
+
             return _db.Campaign.Find(CampID);
         }
 
@@ -94,6 +95,7 @@ namespace DataAccess
             foreach (var item in _db.Campaign.First(c => c.CampaignId == CampID).Characters)
             {
                 item.CampaignId = 1;
+                _db.Characters.Update(item);
             }
             _db.Campaign.Remove(_db.Campaign.First(c => c.CampaignId == CampID));
             _db.SaveChangesAsync();
@@ -108,6 +110,11 @@ namespace DataAccess
 
         public void DeleteUser(int UserID)
         {
+            foreach (var item in _db.Gamer.First(g => g.GamerId == UserID).Characters)
+            {
+                item.GamerId = 1;
+                _db.Characters.Update(item);
+            }
             _db.Gamer.Remove(_db.Gamer.First(c => c.GamerId == UserID));
             _db.SaveChangesAsync();
         }

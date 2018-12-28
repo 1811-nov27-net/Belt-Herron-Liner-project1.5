@@ -18,7 +18,7 @@ namespace DataAccess
 
         public int CharacterId { get; set; }
         public int GamerId { get; set; }
-        public string Name { get; set; }
+        public string CharacterName { get; set; }
         public int? CampaignId { get; set; }
         public string Race { get; set; }
         public string Sex { get; set; }
@@ -54,7 +54,7 @@ namespace DataAccess
                 CharacterId = character.CharID,
                 GamerId = character.UserID,
                 CampaignId = character.CampID,
-                Name = character.Name,
+                CharacterName = character.Name,
                 Race = character.Race,
                 Sex = character.Sex,
                 Alignment = character.Alignment,
@@ -248,7 +248,7 @@ namespace DataAccess
             {
                 CharID = character.CharacterId,
                 UserID = character.GamerId,
-                Name = character.Name,
+                Name = character.CharacterName,
                 CampID = character.CampaignId ?? 0,
                 Race = character.Race,
                 Sex = character.Sex,

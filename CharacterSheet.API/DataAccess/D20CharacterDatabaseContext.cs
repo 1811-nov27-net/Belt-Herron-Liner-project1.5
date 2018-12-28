@@ -62,6 +62,10 @@ namespace DataAccess
                     .HasColumnName("AC")
                     .HasDefaultValueSql("((10))");
 
+                entity.Property(e => e.CharacterName)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
                 entity.Property(e => e.Alignment)
                     .IsRequired()
                     .HasMaxLength(100);
