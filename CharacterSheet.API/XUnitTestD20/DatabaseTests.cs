@@ -178,14 +178,15 @@ namespace XUnitTestD20
                 camp.Characters = new List<Lib.Character>();
                 camp.GMs = new List<Lib.User>();
                 sut.CreateCampaign(camp);
-                Data.Campaign testCamp = await db.Campaign.FirstOrDefaultAsync(c => c.CampaignId == id);
-                bool actual = (testCamp != null && testCamp.CampaignName == name);
+                Data.Campaign testCamp = await db.Campaign.FirstOrDefaultAsync(c => c.CampaignName == name);
+                bool actual = (testCamp != null && testCamp.CampaignId != 0);
 
                 Assert.True(actual);
 
                 camp.Name = "Update Test";
+                camp.CampID = testCamp.CampaignId;
                 sut.UpdateCamp(camp);
-                testCamp = await db.Campaign.FirstOrDefaultAsync(c => c.CampaignId == id);
+                testCamp = await db.Campaign.FirstOrDefaultAsync(c => c.CampaignId == testCamp.CampaignId);
                 actual = testCamp.CampaignName == "Update Test";
                 Assert.True(actual);
             }
@@ -208,14 +209,14 @@ namespace XUnitTestD20
                 user.MyCampaigns = new List<Lib.Campaign>();
                 sut.CreateUser(user);
 
-                Data.Gamer testUser = await db.Gamer.FirstOrDefaultAsync(u => u.GamerId == id);
-                bool actual = (testUser != null && testUser.UserName == name);
+                Data.Gamer testUser = await db.Gamer.FirstOrDefaultAsync(u => u.UserName == name);
+                bool actual = (testUser != null && testUser.GamerId != 0);
 
                 Assert.True(actual);
-
+                user = testUser;
                 user.Username = "Update Test";
                 sut.UpdateUser(user);
-                testUser = await db.Gamer.FirstOrDefaultAsync(u => u.GamerId == id);
+                testUser = await db.Gamer.FirstOrDefaultAsync(u => u.GamerId == user.UserID);
                 actual = testUser.UserName == "Update Test";
             }
         }
