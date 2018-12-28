@@ -72,6 +72,7 @@ namespace DataAccess
 
         public void CreateCampaign(ClassLibrary.Campaign campaign)
         {
+            campaign.CampID = 0;
             _db.Campaign.Add(campaign);
             _db.SaveChangesAsync();
         }
@@ -80,14 +81,15 @@ namespace DataAccess
         {
             character.CharID = await _db.Characters.MaxAsync(c => c.CharacterId) + 1;
             _db.Characters.Add(character);
-            _db.SaveChangesAsync();
+            await _db.SaveChangesAsync();
         }
 
         public async void CreateUser(User user)
         {
-            user.UserID = await _db.Gamer.MaxAsync(g => g.GamerId) + 1;
+            //user.UserID = await _db.Gamer.MaxAsync(g => g.GamerId) + 1;
+            user.UserID = 0;
             _db.Gamer.Add(user);
-            _db.SaveChangesAsync();
+            await _db.SaveChangesAsync();
         }
 
         public void DeleteCamp(int CampID)
@@ -131,10 +133,15 @@ namespace DataAccess
             _db.SaveChangesAsync();
         }
 
-        public void UpdateCamp(ClassLibrary.Campaign campaign)
+        public async void UpdateCamp(ClassLibrary.Campaign campaign)
         {
-            _db.Campaign.Update(campaign);
-            _db.SaveChangesAsync();
+            DataAccess.Campaign camp = campaign;
+            var trackedCampaign = await _db.Campaign.FindAsync(campaign.CampID);
+            trackedCampaign.CampaignName = camp.CampaignName;
+            trackedCampaign.Characters = camp.Characters;
+            trackedCampaign.Gmjunction = camp.Gmjunction;
+            _db.Campaign.Update(trackedCampaign);
+            await _db.SaveChangesAsync();
         }
 
         public void UpdateCharacter(Character character)
@@ -143,10 +150,15 @@ namespace DataAccess
             _db.SaveChangesAsync();
         }
 
-        public void UpdateUser(User user)
+        public async void UpdateUser(User user)
         {
-            _db.Gamer.Update(user);
-            _db.SaveChangesAsync();
+            DataAccess.Gamer gamer = user;
+            var trackedUser = await _db.Gamer.FindAsync(gamer.GamerId);
+            trackedUser.UserName = gamer.UserName;
+            trackedUser.Characters = gamer.Characters;
+            trackedUser.Gmjunction = gamer.Gmjunction;
+            _db.Gamer.Update(trackedUser);
+            await _db.SaveChangesAsync();
         }
 
         public User UserDetails(int UserID)
