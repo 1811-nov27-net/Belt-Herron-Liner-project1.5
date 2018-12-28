@@ -16,6 +16,8 @@ namespace CharacterSheet.API.Controllers
     public class CampaignController : Controller
     {
 
+
+
         //Display list of Campaigns
         [HttpGet]
         public ActionResult<IEnumerable<Campaign>> Get()
