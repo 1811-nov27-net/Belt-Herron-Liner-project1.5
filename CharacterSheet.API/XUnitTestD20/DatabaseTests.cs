@@ -43,31 +43,31 @@ namespace XUnitTestD20
                 }
             }
         }
-        //[Theory]
-        //[InlineData(1, "Test Character")]
-        //[InlineData(2, "Test Character")]
-        ////[InlineData(0, "Test Character")]
-        //[InlineData(3, "")]
-        //[InlineData(4, null)]
-        //public async void CreateCharacterWorks(int charId, string name)
-        //{
-        //    var options = new DbContextOptionsBuilder<Data.D20CharacterDatabaseContext>()
-        //        .UseInMemoryDatabase("create_character_test").Options;
-        //    using (var db = new Data.D20CharacterDatabaseContext(options))
-        //    {
-        //        Data.IRepo sut = new Data.D20Repo(db);
-        //        Lib.Character testChar = new Lib.Character();
-        //        testChar.CharID = charId;
-        //        testChar.Name = name;
-        //        testChar.CampID = 1;
-        //        testChar.UserID = 1;
-        //        sut.CreateCharacter(testChar);
-        //        Data.Characters test = await db.Characters.FirstOrDefaultAsync(c => c.CharacterId == charId);
-        //        bool actual = (test != null && test.CampaignId == 1);
+        [Theory]
+        [InlineData(1, "Test Character")]
+        [InlineData(2, "Test Character2")]
+        [InlineData(0, "Test Character3")]
+        [InlineData(3, "")]
+        [InlineData(4, null)]
+        public async void CreateCharacterWorks(int charId, string name)
+        {
+            var options = new DbContextOptionsBuilder<Data.D20CharacterDatabaseContext>()
+                .UseInMemoryDatabase("create_character_test").Options;
+            using (var db = new Data.D20CharacterDatabaseContext(options))
+            {
+                Data.IRepo sut = new Data.D20Repo(db);
+                Lib.Character testChar = new Lib.Character();
+                testChar.CharID = charId;
+                testChar.Name = name;
+                testChar.CampID = 1;
+                testChar.UserID = 1;
+                sut.CreateCharacter(testChar);
+                Data.Characters test = await db.Characters.FirstOrDefaultAsync(c => c.CharacterName == name);
+                bool actual = (test != null && test.CampaignId == 1);
 
-        //        Assert.True(actual);
-        //    }
-        //}
+                Assert.True(actual);
+            }
+        }
         [Theory]
         [InlineData(0, "Test User")]
         [InlineData(1, "Test User2")]
@@ -80,9 +80,6 @@ namespace XUnitTestD20
             using (var db = new Data.D20CharacterDatabaseContext(options))
             {
                 Data.IRepo sut = new Data.D20Repo(db);
-                //Data.Gamer initialGamer = new Data.Gamer() { GamerId = 0, UserName = "Initial User" };
-                //db.Gamer.Add(initialGamer);
-                //db.SaveChanges();
                 Lib.User user = new Lib.User();
                 user.UserID = id;
                 user.Username = name;

@@ -79,7 +79,7 @@ namespace DataAccess
 
         public async void CreateCharacter(Character character)
         {
-            character.CharID = await _db.Characters.MaxAsync(c => c.CharacterId) + 1;
+            character.CharID = 0;
             _db.Characters.Add(character);
             await _db.SaveChangesAsync();
         }
