@@ -54,16 +54,21 @@ namespace ClassLibrary
 
         public void CalculateBonusesAndSaves()
         {
-            foreach (var attKVP in Attributes)
+            if (Attributes.Count > 0)
             {
-                int Bonus = (attKVP.Value - 10) / 2;
-                AttributeBonuses.Add(attKVP.Key, Bonus);
+                foreach (var attKVP in Attributes)
+                {
+                    int Bonus = (attKVP.Value - 10) / 2;
+                    AttributeBonuses.Add(attKVP.Key, Bonus);
+                }
             }
-            foreach (var SaveKVP in SaveBonusAssociation)
+            if (SaveBonusAssociation.Count > 0)
             {
-                EffectiveSavingThrows[SaveKVP.Key] = BaseSavingThrows[SaveKVP.Key] + AttributeBonuses[SaveKVP.Value];
+                foreach (var SaveKVP in SaveBonusAssociation)
+                {
+                    EffectiveSavingThrows[SaveKVP.Key] = BaseSavingThrows[SaveKVP.Key] + AttributeBonuses[SaveKVP.Value];
+                }
             }
-
 
         }
 

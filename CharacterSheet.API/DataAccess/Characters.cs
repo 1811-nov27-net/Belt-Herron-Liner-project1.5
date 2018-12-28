@@ -18,6 +18,7 @@ namespace DataAccess
 
         public int CharacterId { get; set; }
         public int GamerId { get; set; }
+        public string Name { get; set; }
         public int? CampaignId { get; set; }
         public string Race { get; set; }
         public string Sex { get; set; }
@@ -53,6 +54,7 @@ namespace DataAccess
                 CharacterId = character.CharID,
                 GamerId = character.UserID,
                 CampaignId = character.CampID,
+                Name = character.Name,
                 Race = character.Race,
                 Sex = character.Sex,
                 Alignment = character.Alignment,
@@ -74,123 +76,140 @@ namespace DataAccess
 
             };
 
-            foreach (var ClassKVP in character.ClassLevels)
+            if (character.ClassLevels.Count > 0)
             {
-                ret.Classes.Add(new Classes()
+                foreach (var ClassKVP in character.ClassLevels)
                 {
-                    ClassName = ClassKVP.Key,
-                    Levels = ClassKVP.Value,
-                    CharacterId = ret.CharacterId,
-                    Character = ret
-                });
-            }
-
-            foreach (var FeatKVP in character.FeatList)
-            {
-                ret.Feats.Add(new Feats()
-                {
-                    FeatName = FeatKVP.Key,
-                    Copies = FeatKVP.Value,
-                    CharacterId = ret.CharacterId,
-                    Character = ret
-                });
-            }
-
-            foreach (var SkillKVP in character.SkillList)
-            {
-                ret.Skills.Add(new Skills()
-                {
-                    SkillName = SkillKVP.Key,
-                    Levels = SkillKVP.Value,
-                    CharacterId = ret.CharacterId,
-                    Character = ret
-                });
-
-            }
-
-            foreach (var InvKVP in character.SkillList)
-            {
-                ret.Inventory.Add(new Inventory()
-                {
-                    ItemName = InvKVP.Key,
-                    Quantity = InvKVP.Value,
-                    CharacterId = ret.CharacterId,
-                    Character = ret
-                });
-
-            }
-
-            foreach (var SSKVP in character.SpellSlots)
-            {
-                SpellSlots sstemp = new SpellSlots()
-                {
-                    CharacterId = ret.CharacterId,
-                    Character = ret,
-                    ClassName = SSKVP.Key,
-
-                };
-
-                switch (SSKVP.Value.Length)
-                {
-                    case 10:
-                        sstemp.Level9Slots = SSKVP.Value[9];
-                        goto case 9;
-                    case 9:
-                        sstemp.Level8Slots = SSKVP.Value[8];
-                        goto case 8;
-                    case 8:
-                        sstemp.Level7Slots = SSKVP.Value[7];
-                        goto case 7;
-                    case 7:
-                        sstemp.Level6Slots = SSKVP.Value[6];
-                        goto case 6;
-                    case 6:
-                        sstemp.Level5Slots = SSKVP.Value[5];
-                        goto case 5;
-                    case 5:
-                        sstemp.Level4Slots = SSKVP.Value[4];
-                        goto case 4;
-                    case 4:
-                        sstemp.Level3Slots = SSKVP.Value[3];
-                        goto case 3;
-                    case 3:
-                        sstemp.Level2Slots = SSKVP.Value[2];
-                        goto case 2;
-                    case 2:
-                        sstemp.Level1Slots = SSKVP.Value[1];
-                        goto case 1;
-                    case 1:
-                        sstemp.Level0Slots = SSKVP.Value[0];
-                        break;
-
-                    default:
-                        break;
-                }
-
-                foreach (var SpK in character.SpellsKnown)
-                {
-                    Spells tempSpell = new Spells()
+                    ret.Classes.Add(new Classes()
                     {
-                        SpellId = SpK.SpellId,
-                        SpellName = SpK.Name,
-                        Class = SpK.Class,
-                        SpellLevel = SpK.SpellLevel
-                    };
-
-
-                    ret.SpellJunction.Add(new SpellJunction()
-                    {
+                        ClassName = ClassKVP.Key,
+                        Levels = ClassKVP.Value,
                         CharacterId = ret.CharacterId,
-                        SpellId = SpK.SpellId,
-                        Character = ret,
-                        Spell = tempSpell
+                        Character = ret
+                    });
+                }
+            }
+
+            if (character.FeatList.Count > 0)
+            {
+                foreach (var FeatKVP in character.FeatList)
+                {
+                    ret.Feats.Add(new Feats()
+                    {
+                        FeatName = FeatKVP.Key,
+                        Copies = FeatKVP.Value,
+                        CharacterId = ret.CharacterId,
+                        Character = ret
+                    });
+                }
+            }
+
+            if (character.SkillList.Count > 0)
+            {
+                foreach (var SkillKVP in character.SkillList)
+                {
+                    ret.Skills.Add(new Skills()
+                    {
+                        SkillName = SkillKVP.Key,
+                        Levels = SkillKVP.Value,
+                        CharacterId = ret.CharacterId,
+                        Character = ret
                     });
 
                 }
-
-
-                ret.SpellSlots.Add(sstemp);
             }
+
+            if (character.Inventory.Count > 0)
+            {
+                foreach (var InvKVP in character.Inventory)
+                {
+                    ret.Inventory.Add(new Inventory()
+                    {
+                        ItemName = InvKVP.Key,
+                        Quantity = InvKVP.Value,
+                        CharacterId = ret.CharacterId,
+                        Character = ret
+                    });
+
+                }
+            }
+
+            if(character.SpellSlots.Count > 0) {
+                foreach (var SSKVP in character.SpellSlots)
+                {
+                    SpellSlots sstemp = new SpellSlots()
+                    {
+                        CharacterId = ret.CharacterId,
+                        Character = ret,
+                        ClassName = SSKVP.Key,
+
+                    };
+
+                    switch (SSKVP.Value.Length)
+                    {
+                        case 10:
+                            sstemp.Level9Slots = SSKVP.Value[9];
+                            goto case 9;
+                        case 9:
+                            sstemp.Level8Slots = SSKVP.Value[8];
+                            goto case 8;
+                        case 8:
+                            sstemp.Level7Slots = SSKVP.Value[7];
+                            goto case 7;
+                        case 7:
+                            sstemp.Level6Slots = SSKVP.Value[6];
+                            goto case 6;
+                        case 6:
+                            sstemp.Level5Slots = SSKVP.Value[5];
+                            goto case 5;
+                        case 5:
+                            sstemp.Level4Slots = SSKVP.Value[4];
+                            goto case 4;
+                        case 4:
+                            sstemp.Level3Slots = SSKVP.Value[3];
+                            goto case 3;
+                        case 3:
+                            sstemp.Level2Slots = SSKVP.Value[2];
+                            goto case 2;
+                        case 2:
+                            sstemp.Level1Slots = SSKVP.Value[1];
+                            goto case 1;
+                        case 1:
+                            sstemp.Level0Slots = SSKVP.Value[0];
+                            break;
+
+                        default:
+                            break;
+                    }
+
+
+                    ret.SpellSlots.Add(sstemp);
+                }
+
+                if (character.SpellsKnown.Count > 0)
+                {
+                    foreach (var SpK in character.SpellsKnown)
+                    {
+                        Spells tempSpell = new Spells()
+                        {
+                            SpellId = SpK.SpellId,
+                            SpellName = SpK.Name,
+                            Class = SpK.Class,
+                            SpellLevel = SpK.SpellLevel
+                        };
+
+
+                        ret.SpellJunction.Add(new SpellJunction()
+                        {
+                            CharacterId = ret.CharacterId,
+                            SpellId = SpK.SpellId,
+                            Character = ret,
+                            Spell = tempSpell
+                        });
+
+                    }
+                }
+}
 
             return ret;
 
@@ -202,6 +221,7 @@ namespace DataAccess
             {
                 CharID = character.CharacterId,
                 UserID = character.GamerId,
+                Name = character.Name,
                 CampID = character.CampaignId ?? 0,
                 Race = character.Race,
                 Sex = character.Sex,
@@ -221,53 +241,73 @@ namespace DataAccess
             ret.BaseSavingThrows["Fort"] = character.BaseFortSave;
             ret.BaseSavingThrows["Reflex"] = character.BaseReflexSave;
             ret.BaseSavingThrows["Will"] = character.BaseWillSave;
-
-            foreach (var Klass in character.Classes)
+            if (character.Classes.Count > 0)
             {
-                ret.ClassLevels.Add(Klass.ClassName, Klass.Levels);
-            }
-            foreach (var skillz in character.Skills)
-            {
-                ret.SkillList.Add(skillz.SkillName, skillz.Levels);
-            }
-            foreach (var feat in character.Feats)
-            {
-                ret.FeatList.Add(feat.FeatName, feat.Copies);
-            }
-            foreach (var item in character.Inventory)
-            {
-                ret.Inventory.Add(item.ItemName, item.Quantity);
-            }
-            foreach (var spellKnown in character.SpellJunction)
-            {
-                Spell tempSpell = new Spell()
+                foreach (var Klass in character.Classes)
                 {
-                    SpellId = spellKnown.SpellId,
-                    Name = spellKnown.Spell.SpellName,
-                    Class = spellKnown.Spell.Class,
-                    SpellLevel = spellKnown.Spell.SpellLevel
-                };
-
-                ret.SpellsKnown.Add(tempSpell);
-                
+                    ret.ClassLevels.Add(Klass.ClassName, Klass.Levels);
+                }
             }
-            foreach (var SSlotsDB in character.SpellSlots)
+            if (character.Skills.Count > 0)
             {
-                int[] intArray = new int[10];
-                intArray[9] = SSlotsDB.Level9Slots ?? 0;
-                intArray[8] = SSlotsDB.Level8Slots ?? 0;
-                intArray[7] = SSlotsDB.Level7Slots ?? 0;
-                intArray[6] = SSlotsDB.Level6Slots ?? 0;
-                intArray[5] = SSlotsDB.Level5Slots ?? 0;
-                intArray[4] = SSlotsDB.Level4Slots ?? 0;
-                intArray[3] = SSlotsDB.Level3Slots ?? 0;
-                intArray[2] = SSlotsDB.Level2Slots ?? 0;
-                intArray[1] = SSlotsDB.Level1Slots ?? 0;
-                intArray[0] = SSlotsDB.Level0Slots ?? 0;
-
-                ret.SpellSlots.Add(SSlotsDB.ClassName, intArray);
+                foreach (var skillz in character.Skills)
+                {
+                    ret.SkillList.Add(skillz.SkillName, skillz.Levels);
+                }
             }
 
+            if (character.Feats.Count > 0)
+            {
+                foreach (var feat in character.Feats)
+                {
+                    ret.FeatList.Add(feat.FeatName, feat.Copies);
+                }
+            }
+
+            if (character.Inventory.Count > 0)
+            {
+                foreach (var item in character.Inventory)
+                {
+                    ret.Inventory.Add(item.ItemName, item.Quantity);
+                }
+            }
+
+            if (character.SpellJunction.Count > 0)
+            {
+                foreach (var spellKnown in character.SpellJunction)
+                {
+                    Spell tempSpell = new Spell()
+                    {
+                        SpellId = spellKnown.SpellId,
+                        Name = spellKnown.Spell.SpellName,
+                        Class = spellKnown.Spell.Class,
+                        SpellLevel = spellKnown.Spell.SpellLevel
+                    };
+
+                    ret.SpellsKnown.Add(tempSpell);
+
+                }
+            }
+
+            if (character.SpellSlots.Count > 0)
+            {
+                foreach (var SSlotsDB in character.SpellSlots)
+                {
+                    int[] intArray = new int[10];
+                    intArray[9] = SSlotsDB.Level9Slots ?? 0;
+                    intArray[8] = SSlotsDB.Level8Slots ?? 0;
+                    intArray[7] = SSlotsDB.Level7Slots ?? 0;
+                    intArray[6] = SSlotsDB.Level6Slots ?? 0;
+                    intArray[5] = SSlotsDB.Level5Slots ?? 0;
+                    intArray[4] = SSlotsDB.Level4Slots ?? 0;
+                    intArray[3] = SSlotsDB.Level3Slots ?? 0;
+                    intArray[2] = SSlotsDB.Level2Slots ?? 0;
+                    intArray[1] = SSlotsDB.Level1Slots ?? 0;
+                    intArray[0] = SSlotsDB.Level0Slots ?? 0;
+
+                    ret.SpellSlots.Add(SSlotsDB.ClassName, intArray);
+                }
+            }
             ret.CalculateBonusesAndSaves();
 
             return ret;
