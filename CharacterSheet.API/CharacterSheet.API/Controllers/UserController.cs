@@ -6,95 +6,51 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ClassLibrary;
+using DataAccess;
 
 namespace CharacterSheet.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class UserController : Controller
+    public class UserController : ControllerBase
     {
 
+        public IRepo Repo { get; set; }
 
-        // GET: User
-        public ActionResult Index()
+        public UserController(IRepo repo)
         {
-            return View();
+            Repo = repo;
         }
 
-        // GET: User/Details/5
-        public ActionResult Details(int id)
+        [HttpGet("{id}", Name = "Get")]
+        [Produces("application/json")]
+        public ActionResult<IEnumerable<Character>> GetCharByCamp(int id)
         {
-            return View();
+            var data = Repo.CharacterListByCamp(id).ToList();
+            return data;
         }
 
-        // GET: User/Create
-        public ActionResult Create()
+        [HttpGet("{id}", Name = "Get")]
+        [Produces("application/json")]
+        public ActionResult<IEnumerable<Character>> GetCharByUser(int id)
         {
-            return View();
+            var data = Repo.CharacterListByUser(id).ToList();
+            return data;
         }
 
-        // POST: User/Create
+        [HttpGet]
+        public ActionResult<IEnumerable<Campaign>> Get()
+        {
+            var data = Repo.CampList().ToList();
+            return data;
+        }
+
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult PostCampaign(Campaign campaign)
         {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            Repo.CreateCampaign(campaign);
         }
 
-        // GET: User/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: User/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: User/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: User/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }
