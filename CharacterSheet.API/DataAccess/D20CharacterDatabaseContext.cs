@@ -68,6 +68,8 @@ namespace DataAccess
 
                 entity.Property(e => e.Bab).HasColumnName("BAB");
 
+                entity.Property(e => e.MaxHP).HasColumnName("MaxHP");
+
                 entity.Property(e => e.Charisma).HasDefaultValueSql("((10))");
 
                 entity.Property(e => e.Dexterity).HasDefaultValueSql("((10))");

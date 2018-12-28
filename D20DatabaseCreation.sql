@@ -58,6 +58,12 @@ create table d20.Characters
 
 );
 
+alter table d20.Characters
+	add MaxHP int default 0;
+
+alter table d20.Characters
+	alter column MaxHP integer not null;
+
 create table d20.SpellJunction
 (
 	CharacterId int not null,

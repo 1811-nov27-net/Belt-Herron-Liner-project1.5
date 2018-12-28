@@ -22,7 +22,7 @@ namespace DataAccess
         public string Race { get; set; }
         public string Sex { get; set; }
         public string Alignment { get; set; }
-        public int MaxHP { get; set; }  //  TODO add to database, make sure Context recognizes this trait
+        public int MaxHP { get; set; }  
         public int Bab { get; set; }
         public int Ac { get; set; }
         public int TouchAc { get; set; }
