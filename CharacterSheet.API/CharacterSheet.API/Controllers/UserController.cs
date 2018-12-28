@@ -46,8 +46,8 @@ namespace CharacterSheet.API.Controllers
             return data;
         }
 
-        [HttpPost]
-       /* public ActionResult PostCampaign(Campaign campaign)
+        /*[HttpPost]
+        public ActionResult PostCampaign(Campaign campaign)
         {
             Repo.CreateCampaign(campaign);
         }*/
