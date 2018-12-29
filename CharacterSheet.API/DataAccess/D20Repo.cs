@@ -41,26 +41,50 @@ namespace DataAccess
 
         public IEnumerable<ClassLibrary.Campaign> CampList()
         {
-            return (IEnumerable<ClassLibrary.Campaign>) _db.Campaign.Include(c => c.Characters).Include(c => c.Gmjunction);
+            List<ClassLibrary.Campaign> ret = new List<ClassLibrary.Campaign>();
+            var temp = _db.Campaign.Include(c => c.Characters).Include(c => c.Gmjunction).ToList();
+            foreach (var item in temp)
+            {
+                ret.Add(item);
+            }
+            return ret;
         }
 
         public IEnumerable<Character> CharacterList()
         {
-            List<Character> ret = (List<Character>) _db.Characters.Include(c => c.Classes).Include(c => c.Feats).Include(c => c.Inventory).Include(c => c.Skills).Include(c => c.SpellJunction).Include(c => c.SpellSlots).GetEnumerator();
-            
+            List<Character> ret = new List<Character>();
+            var temp = _db.Characters.Include(c => c.Classes).Include(c => c.Feats).Include(c => c.Inventory).Include(c => c.Skills).Include(c => c.SpellJunction).Include(c => c.SpellSlots).ToList();
+            foreach (var item in temp)
+            {
+                ret.Add(item);
+            }
+
+
             return ret;
         }
 
         public IEnumerable<Character> CharacterListByCamp(int CampID)
         {
-            List<Character> ret = (List<Character>)_db.Characters.Include(c => c.Classes).Include(c => c.Feats).Include(c => c.Inventory).Include(c => c.Skills).Include(c => c.SpellJunction).Include(c => c.SpellSlots).Where(c => c.CampaignId == CampID);
+            List<Character> ret = new List<Character>();
+            var temp = _db.Characters.Include(c => c.Classes).Include(c => c.Feats).Include(c => c.Inventory).Include(c => c.Skills).Include(c => c.SpellJunction).Include(c => c.SpellSlots).Where(c => c.CampaignId == CampID);
+            foreach (var item in temp)
+            {
+                ret.Add(item);
+            }
+
 
             return ret;
         }
 
         public IEnumerable<Character> CharacterListByUser(int UserID)
         {
-            List<Character> ret = (List<Character>)_db.Characters.Include(c => c.Classes).Include(c => c.Feats).Include(c => c.Inventory).Include(c => c.Skills).Include(c => c.SpellJunction).Include(c => c.SpellSlots).Where(c => c.GamerId == UserID);
+            List<Character> ret = new List<Character>();
+            var temp = _db.Characters.Include(c => c.Classes).Include(c => c.Feats).Include(c => c.Inventory).Include(c => c.Skills).Include(c => c.SpellJunction).Include(c => c.SpellSlots).Where(c => c.GamerId == UserID);
+
+            foreach (var item in temp)
+            {
+                ret.Add(item);
+            }
 
             return ret;
         }
@@ -198,7 +222,14 @@ namespace DataAccess
 
         public IEnumerable<User> UserList()
         {
-            return (IEnumerable<User>) _db.Gamer.AsEnumerable();
+            var temp = _db.Gamer.AsEnumerable();
+            List<User> ret = new List<User>();
+            foreach (var item in temp)
+            {
+                ret.Add(item);
+            }
+
+            return ret;
         }
     }
 }
