@@ -46,8 +46,12 @@ namespace DataAccess
 
         public IEnumerable<Character> CharacterList()
         {
-            List<Character> ret = (List<Character>) _db.Characters.Include(c => c.Classes).Include(c => c.Feats).Include(c => c.Inventory).Include(c => c.Skills).Include(c => c.SpellJunction).Include(c => c.SpellSlots).GetEnumerator();
-            
+            var list = _db.Characters.Include(c => c.Classes).Include(c => c.Feats).Include(c => c.Inventory).Include(c => c.Skills).Include(c => c.SpellJunction).Include(c => c.SpellSlots).ToList();
+            List<Character> ret = new List<Character>();
+            foreach (var item in list)
+            {
+                ret.Add(item);
+            }
             return ret;
         }
 
