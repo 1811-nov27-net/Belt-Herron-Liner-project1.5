@@ -44,8 +44,9 @@ namespace CharacterSheet.API.Controllers
 
         // PUT: api/User/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(User outdated, [FromBody] User updated)
         {
+            Repo.UpdateUser(updated);
         }
 
         // DELETE: api/ApiWithActions/5
