@@ -46,7 +46,7 @@ namespace XUnitTestD20
 
             ViewResult viewResult = Assert.IsAssignableFrom<ViewResult>(result);
 
-            var users = Assert.IsAssignableFrom<IEnumerable<User>>(result);
+            var users = Assert.IsAssignableFrom<IEnumerable<User>>(viewResult.Model);
             var userList = users.ToList();
 
             Assert.Equal(data.Count, userList.Count);
