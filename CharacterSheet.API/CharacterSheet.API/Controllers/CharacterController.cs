@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using ClassLibrary;
 using DataAccess;
+using System.Collections;
 
 namespace CharacterSheet.API.Controllers
 {
@@ -23,14 +25,14 @@ namespace CharacterSheet.API.Controllers
 
         // GET: api/Character
         [HttpGet]
-        public IEnumerable<Character> Get()
+        public ActionResult<IEnumerable<Character>> Get()
         {
-            return Repo.CharacterList();
+            return Repo.CharacterList().ToList();
         }
 
         // GET: api/Character/5
         [HttpGet("{id}", Name = "Get")]
-        public Character Get(int id)
+        public ActionResult<Character> Get(int id)
         {
             return Repo.CharDetails(id);
         }
@@ -54,5 +56,8 @@ namespace CharacterSheet.API.Controllers
         {
             Repo.DeleteChar(id);
         }
+
+
+
     }
 }

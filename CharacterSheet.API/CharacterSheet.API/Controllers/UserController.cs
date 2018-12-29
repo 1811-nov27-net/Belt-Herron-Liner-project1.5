@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ClassLibrary;
 using DataAccess;
+using Newtonsoft.Json;
+using System.Net.Http;
 
 namespace CharacterSheet.API.Controllers
 {
@@ -54,5 +56,7 @@ namespace CharacterSheet.API.Controllers
         {
             Repo.DeleteUser(id);
         }
+
+
     }
 }
