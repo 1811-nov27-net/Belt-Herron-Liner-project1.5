@@ -2,99 +2,57 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ClassLibrary;
+using DataAccess;
 
 namespace CharacterSheet.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
-    public class UserController : Controller
+    public class UserController : ControllerBase
     {
 
+        public IRepo Repo { get; set; }
 
-        // GET: User
-        public ActionResult Index()
+        public UserController(IRepo repo)
         {
-            return View();
+            Repo = repo;
         }
 
-        // GET: User/Details/5
-        public ActionResult Details(int id)
+        // GET: api/User
+        [HttpGet]
+        public IEnumerable<User> Get()
         {
-            return View();
+            return Repo.UserList();
         }
 
-        // GET: User/Create
-        public ActionResult Create()
+        // GET: api/User/5
+        [HttpGet("{id}", Name = "Get")]
+        public User Get(int id)
         {
-            return View();
+            return Repo.UserDetails(id);
         }
 
-        // POST: User/Create
+        // POST: api/User
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public void Post([FromBody] User user)
         {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            Repo.CreateUser(user);
         }
 
-        // GET: User/Edit/5
-        public ActionResult Edit(int id)
+        // PUT: api/User/5
+        [HttpPut("{id}")]
+        public void Put(int id, [FromBody] string value)
         {
-            return View();
         }
 
-        // POST: User/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        // DELETE: api/ApiWithActions/5
+        [HttpDelete("{id}")]
+        public void Delete(int id)
         {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: User/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: User/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            Repo.DeleteUser(id);
         }
     }
 }

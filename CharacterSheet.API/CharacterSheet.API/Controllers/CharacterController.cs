@@ -11,38 +11,38 @@ namespace CharacterSheet.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CampaignController : ControllerBase
+    public class CharacterController : ControllerBase
     {
 
         public IRepo Repo { get; set; }
-        
-        public CampaignController(IRepo repo)
+
+        public CharacterController(IRepo repo)
         {
             Repo = repo;
         }
 
-        // GET: api/Campaign
+        // GET: api/Character
         [HttpGet]
-        public IEnumerable<Campaign> Get()
+        public IEnumerable<Character> Get()
         {
-            return Repo.CampList();
+            return Repo.CharacterList();
         }
 
-        // GET: api/Campaign/5
+        // GET: api/Character/5
         [HttpGet("{id}", Name = "Get")]
-        public Campaign Get(int id)
+        public Character Get(int id)
         {
-            return Repo.CampDetails(id);
+            return Repo.CharDetails(id);
         }
 
-        // POST: api/Campaign
+        // POST: api/Character
         [HttpPost]
-        public void Post([FromBody] Campaign campaign)
+        public void Post([FromBody] Character character)
         {
-            Repo.CreateCampaign(campaign);
+            Repo.CreateCharacter(character);
         }
 
-        // PUT: api/Campaign/5
+        // PUT: api/Character/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
@@ -52,7 +52,7 @@ namespace CharacterSheet.API.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            Repo.DeleteCamp(id);
+            Repo.DeleteChar(id);
         }
     }
 }
