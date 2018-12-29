@@ -430,5 +430,37 @@ namespace XUnitTestD20
                 Assert.True(actual);
             }
         }
+        [Fact]
+        public async void CharacterListWorks()
+        {
+            var options = new DbContextOptionsBuilder<Data.D20CharacterDatabaseContext>()
+                .UseInMemoryDatabase("character_list_test").Options;
+            using (var db = new Data.D20CharacterDatabaseContext(options))
+            {
+                Data.IRepo sut = new Data.D20Repo(db);
+                Lib.Character testChar = new Lib.Character();
+                testChar.CharID = 0;
+                testChar.Name = "Test Character";
+                testChar.CampID = 1;
+                testChar.UserID = 1;
+                sut.CreateCharacter(testChar);
+                Lib.Character testChar2 = new Lib.Character();
+                testChar2.CharID = 0;
+                testChar2.Name = "Test Character2";
+                testChar2.CampID = 1;
+                testChar2.UserID = 1;
+                sut.CreateCharacter(testChar2);
+                Data.Characters test = await db.Characters.FirstOrDefaultAsync(c => c.CharacterName == testChar.Name);
+                Data.Characters test2 = await db.Characters.FirstOrDefaultAsync(c => c.CharacterName == testChar2.Name);
+                bool actual = (test != null && test.CampaignId == 1 && test2 != null && test2.CampaignId == 1);
+
+                Assert.True(actual);
+
+                IList<Lib.Character> list = (IList<Lib.Character>)sut.CharacterList();
+                actual = (list.Count == 2 && list[0].Name == test.CharacterName && list[1].Name == test2.CharacterName);
+
+                Assert.True(actual);
+            }
+        }
     }
 }
