@@ -310,5 +310,61 @@ namespace XUnitTestD20
                 Assert.True(actual);
             }
         }
+        [Theory]
+        [InlineData(1, "Test Character")]
+        [InlineData(3, "")]
+        [InlineData(4, null)]
+        public async void CharDetailsWorks(int charId, string name)
+        {
+            var options = new DbContextOptionsBuilder<Data.D20CharacterDatabaseContext>()
+                .UseInMemoryDatabase("character_details_test").Options;
+            using (var db = new Data.D20CharacterDatabaseContext(options))
+            {
+                Data.IRepo sut = new Data.D20Repo(db);
+                Lib.Character testChar = new Lib.Character();
+                testChar.CharID = charId;
+                testChar.Name = name;
+                testChar.CampID = 1;
+                testChar.UserID = 1;
+                sut.CreateCharacter(testChar);
+                Data.Characters test = await db.Characters.FirstOrDefaultAsync(c => c.CharacterName == name);
+                bool actual = (test != null && test.CampaignId == 1);
+
+                Assert.True(actual);
+
+                testChar = sut.CharDetails(test.CharacterId);
+                actual = testChar.Name == name;
+
+                Assert.True(actual);
+            }
+        }
+        [Theory]
+        [InlineData(0, "Test User")]
+        [InlineData(0, "")]
+        [InlineData(0, null)]
+        public async void UserDetailsWorks(int id, string name)
+        {
+            var options = new DbContextOptionsBuilder<Data.D20CharacterDatabaseContext>()
+                .UseInMemoryDatabase("create_user_test").Options;
+            using (var db = new Data.D20CharacterDatabaseContext(options))
+            {
+                Data.IRepo sut = new Data.D20Repo(db);
+                Lib.User user = new Lib.User();
+                user.UserID = id;
+                user.Username = name;
+                user.Characters = new List<Lib.Character>();
+                user.MyCampaigns = new List<Lib.Campaign>();
+                sut.CreateUser(user);
+
+                Data.Gamer testUser = await db.Gamer.FirstOrDefaultAsync(u => u.UserName == name);
+                bool actual = (testUser != null && testUser.UserName == name);
+                Assert.True(actual);
+
+                user = sut.UserDetails(testUser.GamerId);
+                actual = user.Username == name;
+
+                Assert.True(actual);
+            }
+        }
     }
 }

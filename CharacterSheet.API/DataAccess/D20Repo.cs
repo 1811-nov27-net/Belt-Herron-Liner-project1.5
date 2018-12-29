@@ -146,7 +146,7 @@ namespace DataAccess
 
         public async void UpdateCharacter(Character character)
         {
-            DataAccess.Characters tempChar = character;
+            Characters tempChar = character;
             var trackedCharacter = await _db.Characters.FindAsync(tempChar.CharacterId);
             trackedCharacter.Ac = tempChar.Ac;
             trackedCharacter.Alignment = tempChar.Alignment;
