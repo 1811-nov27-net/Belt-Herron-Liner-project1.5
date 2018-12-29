@@ -25,14 +25,14 @@ namespace CharacterSheet.API.Controllers
 
         // GET: api/User
         [HttpGet]
-        public IEnumerable<User> Get()
+        public ActionResult<IEnumerable<User>> Get()
         {
-            return Repo.UserList();
+            return Repo.UserList().ToList();
         }
 
         // GET: api/User/5
         [HttpGet("{id}", Name = "Get")]
-        public User Get(int id)
+        public ActionResult<User> Get(int id)
         {
             return Repo.UserDetails(id);
         }
