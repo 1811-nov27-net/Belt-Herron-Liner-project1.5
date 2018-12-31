@@ -27,14 +27,28 @@ namespace CharacterSheet.API.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<User>> Get()
         {
-            return Repo.UserList().ToList();
+            try
+            {
+                return Repo.UserList().ToList();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
         }
 
         // GET: api/User/5
         [HttpGet("{id}", Name = "Get")]
         public ActionResult<User> Get(int id)
         {
-            return Repo.UserDetails(id);
+            try
+            {
+                return Repo.UserDetails(id);
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
         }
 
         // POST: api/User
@@ -54,9 +68,17 @@ namespace CharacterSheet.API.Controllers
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult Delete(int id)
         {
-            Repo.DeleteUser(id);
+            try
+            {
+                Repo.DeleteUser(id);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
         }
 
 

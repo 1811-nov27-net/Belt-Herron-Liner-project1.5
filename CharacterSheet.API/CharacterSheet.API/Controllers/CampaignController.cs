@@ -23,16 +23,30 @@ namespace CharacterSheet.API.Controllers
 
         // GET: api/Campaign
         [HttpGet]
-        public IEnumerable<Campaign> Get()
+        public ActionResult<IEnumerable<Campaign>> Get()
         {
-            return Repo.CampList();
+            try
+            {
+                return Repo.CampList().ToList();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
         }
 
         // GET: api/Campaign/5
         [HttpGet("{id}", Name = "Get")]
-        public Campaign Get(int id)
+        public ActionResult<Campaign> Get(int id)
         {
-            return Repo.CampDetails(id);
+            try
+            {
+                return Repo.CampDetails(id);
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
         }
 
         // POST: api/Campaign
@@ -50,9 +64,18 @@ namespace CharacterSheet.API.Controllers
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult Delete(int id)
         {
-            Repo.DeleteCamp(id);
+            try
+            {
+                Repo.DeleteCamp(id);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
+
         }
     }
 }

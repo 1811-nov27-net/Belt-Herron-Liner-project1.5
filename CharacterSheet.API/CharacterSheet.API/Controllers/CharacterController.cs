@@ -77,9 +77,17 @@ namespace CharacterSheet.API.Controllers
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult Delete(int id)
         {
-            Repo.DeleteChar(id);
+            try
+            {
+                Repo.DeleteChar(id);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
         }
 
 
