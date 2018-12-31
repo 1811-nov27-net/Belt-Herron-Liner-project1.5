@@ -52,7 +52,18 @@ namespace DataAccess
 
         public IEnumerable<ClassLibrary.Campaign> CampList(string GMUsername)
         {
-            throw new NotImplementedException();
+            List<ClassLibrary.Campaign> ret = new List<ClassLibrary.Campaign>();
+            var temp = _db.Campaign.Include(c => c.Characters).Include(c => c.Gmjunction).Where(c => c.Gmjunction.Any(gmj => gmj.Gm.UserName == GMUsername)).ToList();
+            if (temp.Count == 0)
+                return null;
+            foreach (var item in temp)
+            {
+                ret.Add(item);
+            }
+
+            return ret;
+
+
         }
 
         public IEnumerable<ClassLibrary.Character> CharacterList()
@@ -99,9 +110,9 @@ namespace DataAccess
             return _db.Characters.Include(c => c.Classes).Include(c => c.Feats).Include(c => c.Inventory).Include(c => c.Skills).Include(c => c.SpellJunction).Include(c => c.SpellSlots).First(c => c.CharacterId == CharID);
         }
 
-        public Character CharDetails(string username)
+        public Character CharDetails(string charName)
         {
-            throw new NotImplementedException();
+            return _db.Characters.Include(c => c.Classes).Include(c => c.Feats).Include(c => c.Inventory).Include(c => c.Skills).Include(c => c.SpellJunction).Include(c => c.SpellSlots).First(c => c.CharacterName == charName);
         }
 
         public int CreateCampaign(ClassLibrary.Campaign campaign)

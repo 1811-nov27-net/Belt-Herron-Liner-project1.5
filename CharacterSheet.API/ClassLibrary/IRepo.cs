@@ -14,7 +14,7 @@ namespace ClassLibrary
 
         //for reading individual entries
         Character CharDetails(int CharID);                            //view character details
-        Character CharDetails(string username);
+        Character CharDetails(string charName);
         Campaign CampDetails(int CampID);                             //view campaign details
         User UserDetails(int UserID);                                 //view user details
 
