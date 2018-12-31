@@ -132,6 +132,27 @@ namespace CharacterSheet.API.Controllers
             return user;
         }
 
+        // GET: api/User/username
+        [HttpGet("{username}", Name = "Get")]
+        public ActionResult<User> Get(string username)
+        {
+            User user;
+            try
+            {
+                user = Repo.UserDetails(username);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return user;
+        }
+
         // POST: api/User
         [HttpPost]
         public void Post([FromBody] User user)

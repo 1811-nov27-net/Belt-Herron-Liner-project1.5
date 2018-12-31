@@ -60,6 +60,26 @@ namespace CharacterSheet.API.Controllers
 
             return campaign;
         }
+        //GET: api/Campaign/username
+        [HttpGet("{username}", Name = "Get")]
+        public ActionResult<IEnumerable<ClassLibrary.Campaign>> Get(string username)
+        {
+            IEnumerable<Campaign> campaignList;
+            try
+            {
+                campaignList = Repo.CampList(username);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+            if (campaignList == null)
+            {
+                return NotFound();
+            }
+
+            return campaignList.ToList();
+        }
 
         // POST: api/Campaign
         [HttpPost]
