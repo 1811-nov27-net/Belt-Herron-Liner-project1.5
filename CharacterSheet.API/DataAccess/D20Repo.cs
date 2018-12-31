@@ -94,26 +94,32 @@ namespace DataAccess
             return _db.Characters.Include(c => c.Classes).Include(c => c.Feats).Include(c => c.Inventory).Include(c => c.Skills).Include(c => c.SpellJunction).Include(c => c.SpellSlots).First(c => c.CharacterId == CharID);
         }
 
-        public void CreateCampaign(ClassLibrary.Campaign campaign)
+        public int CreateCampaign(ClassLibrary.Campaign campaign)
         {
-            campaign.CampID = 0;
+            int newId = _db.Campaign.Select(c => c.CampaignId).Max() + 1;
+            campaign.CampID = newId;
             _db.Campaign.Add(campaign);
             _db.SaveChangesAsync();
+            return newId;
         }
 
-        public async void CreateCharacter(Character character)
+        public int CreateCharacter(Character character)
         {
-            character.CharID = 0;
+            int newId = _db.Characters.Select(c => c.CharacterId).Max() + 1;
+            character.CharID = newId;
             _db.Characters.Add(character);
-            await _db.SaveChangesAsync();
+            _db.SaveChangesAsync();
+            return newId;
         }
 
-        public async void CreateUser(User user)
+        public int CreateUser(User user)
         {
             //user.UserID = await _db.Gamer.MaxAsync(g => g.GamerId) + 1;
-            user.UserID = 0;
+            int newId = _db.Gamer.Select(c => c.GamerId).Max() + 1;
+            user.UserID = newId;
             _db.Gamer.Add(user);
-            await _db.SaveChangesAsync();
+            _db.SaveChangesAsync();
+            return newId;
         }
 
         public void DeleteCamp(int CampID)

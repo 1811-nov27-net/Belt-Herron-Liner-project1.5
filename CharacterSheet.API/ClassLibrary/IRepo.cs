@@ -17,9 +17,9 @@ namespace DataAccess
 
 
         //for creating new instances in the database
-        void CreateCharacter(Character character);                             //create a new character
-        void CreateCampaign(Campaign campaign);                              //create a new campaign
-        void CreateUser(User user);                                  //create a new user
+        int CreateCharacter(Character character);                             //create a new character
+        int CreateCampaign(Campaign campaign);                              //create a new campaign
+        int CreateUser(User user);                                  //create a new user
 
         //for reading individual entries
         Character CharDetails(int CharID);                            //view character details
