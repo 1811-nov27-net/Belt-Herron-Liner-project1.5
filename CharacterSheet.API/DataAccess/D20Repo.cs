@@ -247,6 +247,11 @@ namespace DataAccess
             return _db.Gamer.Find(UserID);
         }
 
+        public User UserDetails(string username)
+        {
+            return _db.Gamer.Where(g => g.UserName == username).FirstOrDefault();
+        }
+
         public IEnumerable<ClassLibrary.User> UserList()
         {
             var temp = _db.Gamer.AsEnumerable();

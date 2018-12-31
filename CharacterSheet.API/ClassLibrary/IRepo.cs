@@ -17,6 +17,7 @@ namespace ClassLibrary
         Character CharDetails(string charName);
         Campaign CampDetails(int CampID);                             //view campaign details
         User UserDetails(int UserID);                                 //view user details
+        User UserDetails(string username);
 
         //for updating entries
         void UpdateCharacter(Character character);                             //update a character
