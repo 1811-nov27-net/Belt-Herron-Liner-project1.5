@@ -23,6 +23,15 @@ namespace XUnitTestD20
             {
                 Data.IRepo sut = new Data.D20Repo(db);
                 Lib.Campaign camp = new Lib.Campaign();
+                if (await db.Campaign.FirstOrDefaultAsync(c => c.CampaignId == 1) == null)
+                {
+                    camp.CampID = 0;
+                    camp.Name = "No Campaign";
+                    camp.Characters = new List<Lib.Character>();
+                    camp.GMs = new List<Lib.User>();
+                    db.Campaign.Add(camp);
+                    db.SaveChanges();
+                }
                 camp.CampID = id;
                 camp.Name = name;
                 camp.Characters = new List<Lib.Character>();
@@ -57,13 +66,22 @@ namespace XUnitTestD20
             {
                 Data.IRepo sut = new Data.D20Repo(db);
                 Lib.Character testChar = new Lib.Character();
+                if (await db.Characters.FirstOrDefaultAsync(c => c.CharacterId == 1) == null)
+                {
+                    testChar.CharID = 0;
+                    testChar.Name = "No Character";
+                    testChar.CampID = 1;
+                    testChar.UserID = 1;
+                    db.Characters.Add(testChar);
+                    db.SaveChanges();
+                }
                 testChar.CharID = charId;
                 testChar.Name = name;
                 testChar.CampID = 1;
                 testChar.UserID = 1;
-                sut.CreateCharacter(testChar);
+                testChar.CharID = sut.CreateCharacter(testChar);
                 Data.Characters test = await db.Characters.FirstOrDefaultAsync(c => c.CharacterName == name);
-                bool actual = (test != null && test.CampaignId == 1);
+                bool actual = (test != null && test.CharacterId == testChar.CharID);
 
                 Assert.True(actual);
             }
@@ -81,6 +99,15 @@ namespace XUnitTestD20
             {
                 Data.IRepo sut = new Data.D20Repo(db);
                 Lib.User user = new Lib.User();
+                if(await db.Gamer.FirstOrDefaultAsync(g => g.GamerId == 1) == null)
+                {
+                    user.UserID = 0;
+                    user.Username = "NPC";
+                    user.Characters = new List<Lib.Character>();
+                    user.MyCampaigns = new List<Lib.Campaign>();
+                    db.Gamer.Add(user);
+                    db.SaveChanges();
+                }
                 user.UserID = id;
                 user.Username = name;
                 user.Characters = new List<Lib.Character>();
@@ -113,6 +140,15 @@ namespace XUnitTestD20
             {
                 Data.IRepo sut = new Data.D20Repo(db);
                 Lib.Campaign camp = new Lib.Campaign();
+                if (await db.Campaign.FirstOrDefaultAsync(c => c.CampaignId == 1) == null)
+                {
+                    camp.CampID = 0;
+                    camp.Name = "No Campaign";
+                    camp.Characters = new List<Lib.Character>();
+                    camp.GMs = new List<Lib.User>();
+                    db.Campaign.Add(camp);
+                    db.SaveChanges();
+                }
                 camp.CampID = id;
                 camp.Name = name;
                 camp.Characters = new List<Lib.Character>();
@@ -143,6 +179,15 @@ namespace XUnitTestD20
             {
                 Data.IRepo sut = new Data.D20Repo(db);
                 Lib.Character testChar = new Lib.Character();
+                if (await db.Characters.FirstOrDefaultAsync(c => c.CharacterId == 1) == null)
+                {
+                    testChar.CharID = 0;
+                    testChar.Name = "No Character";
+                    testChar.CampID = 1;
+                    testChar.UserID = 1;
+                    db.Characters.Add(testChar);
+                    db.SaveChanges();
+                }
                 testChar.CharID = charId;
                 testChar.Name = name;
                 testChar.CampID = 1;
@@ -173,6 +218,15 @@ namespace XUnitTestD20
             {
                 Data.IRepo sut = new Data.D20Repo(db);
                 Lib.User user = new Lib.User();
+                if (await db.Gamer.FirstOrDefaultAsync(g => g.GamerId == 1) == null)
+                {
+                    user.UserID = 0;
+                    user.Username = "NPC";
+                    user.Characters = new List<Lib.Character>();
+                    user.MyCampaigns = new List<Lib.Campaign>();
+                    db.Gamer.Add(user);
+                    db.SaveChanges();
+                }
                 user.UserID = id;
                 user.Username = name;
                 user.Characters = new List<Lib.Character>();
@@ -202,6 +256,15 @@ namespace XUnitTestD20
             {
                 Data.IRepo sut = new Data.D20Repo(db);
                 Lib.Campaign camp = new Lib.Campaign();
+                if (await db.Campaign.FirstOrDefaultAsync(c => c.CampaignId == 1) == null)
+                {
+                    camp.CampID = 0;
+                    camp.Name = "No Campaign";
+                    camp.Characters = new List<Lib.Character>();
+                    camp.GMs = new List<Lib.User>();
+                    db.Campaign.Add(camp);
+                    db.SaveChanges();
+                }
                 camp.CampID = id;
                 camp.Name = name;
                 camp.Characters = new List<Lib.Character>();
@@ -234,6 +297,15 @@ namespace XUnitTestD20
             {
                 Data.IRepo sut = new Data.D20Repo(db);
                 Lib.Character testChar = new Lib.Character();
+                if (await db.Characters.FirstOrDefaultAsync(c => c.CharacterId == 1) == null)
+                {
+                    testChar.CharID = 0;
+                    testChar.Name = "No Character";
+                    testChar.CampID = 1;
+                    testChar.UserID = 1;
+                    db.Characters.Add(testChar);
+                    db.SaveChanges();
+                }
                 testChar.CharID = charId;
                 testChar.Name = name;
                 testChar.CampID = 1;
@@ -265,6 +337,15 @@ namespace XUnitTestD20
             {
                 Data.IRepo sut = new Data.D20Repo(db);
                 Lib.User user = new Lib.User();
+                if (await db.Gamer.FirstOrDefaultAsync(g => g.GamerId == 1) == null)
+                {
+                    user.UserID = 0;
+                    user.Username = "NPC";
+                    user.Characters = new List<Lib.Character>();
+                    user.MyCampaigns = new List<Lib.Campaign>();
+                    db.Gamer.Add(user);
+                    db.SaveChanges();
+                }
                 user.UserID = id;
                 user.Username = name;
                 user.Characters = new List<Lib.Character>();
@@ -294,6 +375,15 @@ namespace XUnitTestD20
             {
                 Data.IRepo sut = new Data.D20Repo(db);
                 Lib.Campaign camp = new Lib.Campaign();
+                if (await db.Campaign.FirstOrDefaultAsync(c => c.CampaignId == 1) == null)
+                {
+                    camp.CampID = 0;
+                    camp.Name = "No Campaign";
+                    camp.Characters = new List<Lib.Character>();
+                    camp.GMs = new List<Lib.User>();
+                    db.Campaign.Add(camp);
+                    db.SaveChanges();
+                }
                 camp.CampID = id;
                 camp.Name = name;
                 camp.Characters = new List<Lib.Character>();
@@ -322,6 +412,15 @@ namespace XUnitTestD20
             {
                 Data.IRepo sut = new Data.D20Repo(db);
                 Lib.Character testChar = new Lib.Character();
+                if (await db.Characters.FirstOrDefaultAsync(c => c.CharacterId == 1) == null)
+                {
+                    testChar.CharID = 0;
+                    testChar.Name = "No Character";
+                    testChar.CampID = 1;
+                    testChar.UserID = 1;
+                    db.Characters.Add(testChar);
+                    db.SaveChanges();
+                }
                 testChar.CharID = charId;
                 testChar.Name = name;
                 testChar.CampID = 1;
@@ -350,6 +449,15 @@ namespace XUnitTestD20
             {
                 Data.IRepo sut = new Data.D20Repo(db);
                 Lib.User user = new Lib.User();
+                if (await db.Gamer.FirstOrDefaultAsync(g => g.GamerId == 1) == null)
+                {
+                    user.UserID = 0;
+                    user.Username = "NPC";
+                    user.Characters = new List<Lib.Character>();
+                    user.MyCampaigns = new List<Lib.Campaign>();
+                    db.Gamer.Add(user);
+                    db.SaveChanges();
+                }
                 user.UserID = id;
                 user.Username = name;
                 user.Characters = new List<Lib.Character>();
@@ -375,12 +483,30 @@ namespace XUnitTestD20
             {
                 Data.IRepo sut = new Data.D20Repo(db);
                 Lib.User user = new Lib.User();
+                if (await db.Gamer.FirstOrDefaultAsync(g => g.GamerId == 1) == null)
+                {
+                    user.UserID = 0;
+                    user.Username = "NPC";
+                    user.Characters = new List<Lib.Character>();
+                    user.MyCampaigns = new List<Lib.Campaign>();
+                    db.Gamer.Add(user);
+                    db.SaveChanges();
+                }
                 user.UserID = 0;
                 user.Username = "Test User";
                 user.Characters = new List<Lib.Character>();
                 user.MyCampaigns = new List<Lib.Campaign>();
                 sut.CreateUser(user);
                 Lib.Campaign camp = new Lib.Campaign();
+                if (await db.Campaign.FirstOrDefaultAsync(c => c.CampaignId == 1) == null)
+                {
+                    camp.CampID = 0;
+                    camp.Name = "No Campaign";
+                    camp.Characters = new List<Lib.Character>();
+                    camp.GMs = new List<Lib.User>();
+                    db.Campaign.Add(camp);
+                    db.SaveChanges();
+                }
                 camp.CampID = 0;
                 camp.Name = "Test Campaign";
                 camp.Characters = new List<Lib.Character>();
@@ -406,6 +532,15 @@ namespace XUnitTestD20
             {
                 Data.IRepo sut = new Data.D20Repo(db);
                 Lib.Campaign camp = new Lib.Campaign();
+                if (await db.Campaign.FirstOrDefaultAsync(c => c.CampaignId == 1) == null)
+                {
+                    camp.CampID = 0;
+                    camp.Name = "No Campaign";
+                    camp.Characters = new List<Lib.Character>();
+                    camp.GMs = new List<Lib.User>();
+                    db.Campaign.Add(camp);
+                    db.SaveChanges();
+                }
                 camp.CampID = 0;
                 camp.Name = "Test Campaign";
                 camp.Characters = new List<Lib.Character>();
@@ -425,7 +560,7 @@ namespace XUnitTestD20
 
                 IList<Lib.Campaign> campList = (List<Lib.Campaign>)sut.CampList();
 
-                actual = (campList.Count == 2 && campList[0].Name == camp.Name && campList[1].Name == camp2.Name);
+                actual = (campList.Count == 3 && campList[1].Name == camp.Name && campList[2].Name == camp2.Name);
 
                 Assert.True(actual);
             }
@@ -439,6 +574,15 @@ namespace XUnitTestD20
             {
                 Data.IRepo sut = new Data.D20Repo(db);
                 Lib.Character testChar = new Lib.Character();
+                if (await db.Characters.FirstOrDefaultAsync(c => c.CharacterId == 1) == null)
+                {
+                    testChar.CharID = 0;
+                    testChar.Name = "No Character";
+                    testChar.CampID = 1;
+                    testChar.UserID = 1;
+                    db.Characters.Add(testChar);
+                    db.SaveChanges();
+                }
                 testChar.CharID = 0;
                 testChar.Name = "Test Character";
                 testChar.CampID = 1;
@@ -457,7 +601,7 @@ namespace XUnitTestD20
                 Assert.True(actual);
 
                 IList<Lib.Character> list = (IList<Lib.Character>)sut.CharacterList();
-                actual = (list.Count == 2 && list[0].Name == test.CharacterName && list[1].Name == test2.CharacterName);
+                actual = (list.Count == 3 && list[1].Name == test.CharacterName && list[2].Name == test2.CharacterName);
 
                 Assert.True(actual);
             }
@@ -471,6 +615,15 @@ namespace XUnitTestD20
             {
                 Data.IRepo sut = new Data.D20Repo(db);
                 Lib.User user = new Lib.User();
+                if (await db.Gamer.FirstOrDefaultAsync(g => g.GamerId == 1) == null)
+                {
+                    user.UserID = 0;
+                    user.Username = "NPC";
+                    user.Characters = new List<Lib.Character>();
+                    user.MyCampaigns = new List<Lib.Campaign>();
+                    db.Gamer.Add(user);
+                    db.SaveChanges();
+                }
                 user.UserID = 0;
                 user.Username = "Test User";
                 user.Characters = new List<Lib.Character>();
@@ -490,7 +643,7 @@ namespace XUnitTestD20
                 Assert.True(actual);
 
                 IList<Lib.User> list = (IList<Lib.User>)sut.UserList();
-                actual = (list.Count == 2 && list[0].Username == user.Username && list[1].Username == user2.Username);
+                actual = (list.Count == 3 && list[1].Username == user.Username && list[2].Username == user2.Username);
 
                 Assert.True(actual);
             }
@@ -504,6 +657,15 @@ namespace XUnitTestD20
             {
                 Data.IRepo sut = new Data.D20Repo(db);
                 Lib.Character testChar = new Lib.Character();
+                if (await db.Characters.FirstOrDefaultAsync(c => c.CharacterId == 1) == null)
+                {
+                    testChar.CharID = 0;
+                    testChar.Name = "No Character";
+                    testChar.CampID = 1;
+                    testChar.UserID = 1;
+                    db.Characters.Add(testChar);
+                    db.SaveChanges();
+                }
                 testChar.CharID = 0;
                 testChar.Name = "Test Character";
                 testChar.CampID = 1;
@@ -536,6 +698,15 @@ namespace XUnitTestD20
             {
                 Data.IRepo sut = new Data.D20Repo(db);
                 Lib.Character testChar = new Lib.Character();
+                if (await db.Characters.FirstOrDefaultAsync(c => c.CharacterId == 1) == null)
+                {
+                    testChar.CharID = 0;
+                    testChar.Name = "No Character";
+                    testChar.CampID = 1;
+                    testChar.UserID = 1;
+                    db.Characters.Add(testChar);
+                    db.SaveChanges();
+                }
                 testChar.CharID = 0;
                 testChar.Name = "Test Character";
                 testChar.CampID = 1;
@@ -568,6 +739,15 @@ namespace XUnitTestD20
             {
                 Data.IRepo sut = new Data.D20Repo(db);
                 Lib.Campaign camp = new Lib.Campaign();
+                if (await db.Campaign.FirstOrDefaultAsync(c => c.CampaignId == 1) == null)
+                {
+                    camp.CampID = 0;
+                    camp.Name = "No Campaign";
+                    camp.Characters = new List<Lib.Character>();
+                    camp.GMs = new List<Lib.User>();
+                    db.Campaign.Add(camp);
+                    db.SaveChanges();
+                }
                 camp.CampID = 0;
                 camp.Name = "Test Campaign";
                 camp.Characters = new List<Lib.Character>();
@@ -576,6 +756,15 @@ namespace XUnitTestD20
                 Data.Campaign testCamp = await db.Campaign.FirstOrDefaultAsync(c => c.CampaignName == camp.Name);
 
                 Lib.Character testChar = new Lib.Character();
+                if (await db.Characters.FirstOrDefaultAsync(c => c.CharacterId == 1) == null)
+                {
+                    testChar.CharID = 0;
+                    testChar.Name = "No Character";
+                    testChar.CampID = 1;
+                    testChar.UserID = 1;
+                    db.Characters.Add(testChar);
+                    db.SaveChanges();
+                }
                 testChar.CharID = 0;
                 testChar.Name = "Test Character";
                 testChar.CampID = 0;
@@ -602,12 +791,15 @@ namespace XUnitTestD20
             {
                 Data.IRepo sut = new Data.D20Repo(db);
                 Lib.Campaign camp = new Lib.Campaign();
-                camp.CampID = 0;
-                camp.Name = "No Campaign";
-                camp.Characters = new List<Lib.Character>();
-                camp.GMs = new List<Lib.User>();
-                sut.CreateCampaign(camp);
-                Data.Campaign testCamp = await db.Campaign.FirstOrDefaultAsync(c => c.CampaignName == camp.Name);
+                if (await db.Campaign.FirstOrDefaultAsync(c => c.CampaignId == 1) == null)
+                {
+                    camp.CampID = 0;
+                    camp.Name = "No Campaign";
+                    camp.Characters = new List<Lib.Character>();
+                    camp.GMs = new List<Lib.User>();
+                    db.Campaign.Add(camp);
+                    db.SaveChanges();
+                }
 
                 Lib.Campaign camp2 = new Lib.Campaign();
                 camp2.CampID = 0;
@@ -618,6 +810,15 @@ namespace XUnitTestD20
                 Data.Campaign testCamp2 = await db.Campaign.FirstOrDefaultAsync(c => c.CampaignName == camp2.Name);
 
                 Lib.Character testChar = new Lib.Character();
+                if (await db.Characters.FirstOrDefaultAsync(c => c.CharacterId == 1) == null)
+                {
+                    testChar.CharID = 0;
+                    testChar.Name = "No Character";
+                    testChar.CampID = 1;
+                    testChar.UserID = 1;
+                    db.Characters.Add(testChar);
+                    db.SaveChanges();
+                }
                 testChar.CharID = 0;
                 testChar.Name = "Test Character";
                 testChar.CampID = 0;
@@ -625,7 +826,7 @@ namespace XUnitTestD20
                 sut.CreateCharacter(testChar);
                 Data.Characters test = await db.Characters.FirstOrDefaultAsync(c => c.CharacterName == testChar.Name);
 
-                bool actual = (testCamp != null && testCamp.CampaignName == camp.Name && testCamp2 != null && testCamp2.CampaignName == camp2.Name && test != null && test.CampaignId != testCamp.CampaignId);
+                bool actual = (testCamp2 != null && testCamp2.CampaignName == camp2.Name && test != null && test.CampaignId != testCamp2.CampaignId);
                 Assert.True(actual);
 
                 sut.JoinCamp(testCamp2.CampaignId, test.CharacterId);
@@ -634,7 +835,7 @@ namespace XUnitTestD20
 
                 Assert.True(actual);
 
-                sut.RemoveCharFromCamp(testCamp.CampaignId, test.CharacterId);
+                sut.RemoveCharFromCamp(testCamp2.CampaignId, test.CharacterId);
                 test = await db.Characters.FirstOrDefaultAsync(c => c.CharacterName == testChar.Name);
                 actual = test.CampaignId != testCamp2.CampaignId;
 
