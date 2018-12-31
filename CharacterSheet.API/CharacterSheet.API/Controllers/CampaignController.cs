@@ -39,14 +39,21 @@ namespace CharacterSheet.API.Controllers
         [HttpGet("{id}", Name = "Get")]
         public ActionResult<Campaign> Get(int id)
         {
+            Campaign campaign;
             try
             {
-                return Repo.CampDetails(id);
+                campaign = Repo.CampDetails(id);
             }
             catch (Exception ex)
             {
+                return StatusCode(500, ex);
+            }
+            if (campaign == null)
+            {
                 return NotFound();
             }
+
+            return campaign;
         }
 
         // POST: api/Campaign

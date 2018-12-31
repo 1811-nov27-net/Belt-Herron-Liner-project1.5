@@ -41,14 +41,21 @@ namespace CharacterSheet.API.Controllers
         [HttpGet("{id}", Name = "Get")]
         public ActionResult<User> Get(int id)
         {
+            User user;
             try
             {
-                return Repo.UserDetails(id);
+                user = Repo.UserDetails(id);
             }
             catch (Exception ex)
             {
+                return StatusCode(500, ex);
+            }
+            if (user == null)
+            {
                 return NotFound();
             }
+
+            return user;
         }
 
         // POST: api/User
