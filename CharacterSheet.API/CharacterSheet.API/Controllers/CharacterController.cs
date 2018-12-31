@@ -64,22 +64,78 @@ namespace CharacterSheet.API.Controllers
 
         // POST: api/Character
         [HttpPost]
-        public void Post([FromBody] Character character)
+        public ActionResult Post([FromBody] Character character)
         {
-            Repo.CreateCharacter(character);
+            int newID;
+            try
+            {
+                newID = Repo.CreateCharacter(character);
+
+
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, ex);
+            }
+
+            return CreatedAtRoute("Get", new { id = newID }, character);
         }
 
         // PUT: api/Character/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public ActionResult Put(int id, [FromBody] Character character)
         {
+            Character existing;
+            try
+            {
+                existing = Repo.CharDetails(id);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, ex);
+            }
+            if (existing == null)
+            {
+                return NotFound();
+            }
+            if (id != character.CharID)
+            {
+                return BadRequest("cannot change ID");
+            }
+            try
+            {
+                Repo.UpdateCharacter(character);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, ex);
+            }
+            return NoContent(); // success
+
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult Delete(int id)
         {
-            Repo.DeleteChar(id);
+            Character existing;
+            try
+            {
+                existing = Repo.CharDetails(id);
+                if(existing == null)
+                {
+                    return NotFound();
+                }
+                Repo.DeleteChar(id);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+            return NoContent();
         }
 
 
