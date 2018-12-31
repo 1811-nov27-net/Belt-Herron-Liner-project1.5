@@ -27,14 +27,39 @@ namespace CharacterSheet.API.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Character>> Get()
         {
+            try
+            {
             return Repo.CharacterList().ToList();
+
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, ex);
+            }
         }
 
         // GET: api/Character/5
         [HttpGet("{id}", Name = "Get")]
         public ActionResult<Character> Get(int id)
         {
-            return Repo.CharDetails(id);
+            Character character;
+            try
+            {
+                character = Repo.CharDetails(id);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, ex);
+            }
+            if (character == null)
+            {
+                return NotFound();
+            }
+
+
+            return character;
         }
 
         // POST: api/Character
