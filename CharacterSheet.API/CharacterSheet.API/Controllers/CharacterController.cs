@@ -138,7 +138,33 @@ namespace CharacterSheet.API.Controllers
             return NoContent();
         }
 
+        //get list of characters by user
+        [HttpGet]
+        public ActionResult<IEnumerable<Character>> GetCharByUser(int userID)
+        {
+            try
+            {
+                return Repo.CharacterListByUser(userID).ToList();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+        }
 
+        //get list of characters by campaign
+        [HttpGet]
+        public ActionResult<IEnumerable<Character>> GetCharByCamp(int userID)
+        {
+            try
+            {
+                return Repo.CharacterListByCamp(userID).ToList();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+        }
 
     }
 }
