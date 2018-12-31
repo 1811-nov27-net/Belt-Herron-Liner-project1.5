@@ -462,5 +462,184 @@ namespace XUnitTestD20
                 Assert.True(actual);
             }
         }
+        [Fact]
+        public async void UserListWorks()
+        {
+            var options = new DbContextOptionsBuilder<Data.D20CharacterDatabaseContext>()
+                .UseInMemoryDatabase("user_list_test").Options;
+            using (var db = new Data.D20CharacterDatabaseContext(options))
+            {
+                Data.IRepo sut = new Data.D20Repo(db);
+                Lib.User user = new Lib.User();
+                user.UserID = 0;
+                user.Username = "Test User";
+                user.Characters = new List<Lib.Character>();
+                user.MyCampaigns = new List<Lib.Campaign>();
+                sut.CreateUser(user);
+                Lib.User user2 = new Lib.User();
+                user2.UserID = 0;
+                user2.Username = "Test User2";
+                user2.Characters = new List<Lib.Character>();
+                user2.MyCampaigns = new List<Lib.Campaign>();
+                sut.CreateUser(user2);
+
+                Data.Gamer testUser = await db.Gamer.FirstOrDefaultAsync(u => u.UserName == user.Username);
+                Data.Gamer testUser2 = await db.Gamer.FirstOrDefaultAsync(u => u.UserName == user2.Username);
+
+                bool actual = (testUser != null && testUser.UserName == user.Username && testUser2 != null && testUser2.UserName == user2.Username);
+                Assert.True(actual);
+
+                IList<Lib.User> list = (IList<Lib.User>)sut.UserList();
+                actual = (list.Count == 2 && list[0].Username == user.Username && list[1].Username == user2.Username);
+
+                Assert.True(actual);
+            }
+        }
+        [Fact]
+        public async void CharacterListByCampWorks()
+        {
+            var options = new DbContextOptionsBuilder<Data.D20CharacterDatabaseContext>()
+                .UseInMemoryDatabase("character_list_by_camp_test").Options;
+            using (var db = new Data.D20CharacterDatabaseContext(options))
+            {
+                Data.IRepo sut = new Data.D20Repo(db);
+                Lib.Character testChar = new Lib.Character();
+                testChar.CharID = 0;
+                testChar.Name = "Test Character";
+                testChar.CampID = 1;
+                testChar.UserID = 1;
+                sut.CreateCharacter(testChar);
+                Lib.Character testChar2 = new Lib.Character();
+                testChar2.CharID = 0;
+                testChar2.Name = "Test Character2";
+                testChar2.CampID = 2;
+                testChar2.UserID = 1;
+                sut.CreateCharacter(testChar2);
+                Data.Characters test = await db.Characters.FirstOrDefaultAsync(c => c.CharacterName == testChar.Name);
+                Data.Characters test2 = await db.Characters.FirstOrDefaultAsync(c => c.CharacterName == testChar2.Name);
+                bool actual = (test != null && test.CampaignId == 1 && test2 != null && test2.CampaignId == 2);
+
+                Assert.True(actual);
+
+                IList<Lib.Character> list = (IList<Lib.Character>)sut.CharacterListByCamp(2);
+                actual = (list.Count == 1 && list[0].Name == test2.CharacterName);
+
+                Assert.True(actual);
+            }
+        }
+        [Fact]
+        public async void CharacterListByUserWorks()
+        {
+            var options = new DbContextOptionsBuilder<Data.D20CharacterDatabaseContext>()
+                .UseInMemoryDatabase("character_list_by_user_test").Options;
+            using (var db = new Data.D20CharacterDatabaseContext(options))
+            {
+                Data.IRepo sut = new Data.D20Repo(db);
+                Lib.Character testChar = new Lib.Character();
+                testChar.CharID = 0;
+                testChar.Name = "Test Character";
+                testChar.CampID = 1;
+                testChar.UserID = 1;
+                sut.CreateCharacter(testChar);
+                Lib.Character testChar2 = new Lib.Character();
+                testChar2.CharID = 0;
+                testChar2.Name = "Test Character2";
+                testChar2.CampID = 1;
+                testChar2.UserID = 2;
+                sut.CreateCharacter(testChar2);
+                Data.Characters test = await db.Characters.FirstOrDefaultAsync(c => c.CharacterName == testChar.Name);
+                Data.Characters test2 = await db.Characters.FirstOrDefaultAsync(c => c.CharacterName == testChar2.Name);
+                bool actual = (test != null && test.GamerId == 1 && test2 != null && test2.GamerId == 2);
+
+                Assert.True(actual);
+
+                IList<Lib.Character> list = (IList<Lib.Character>)sut.CharacterListByUser(2);
+                actual = (list.Count == 1 && list[0].Name == test2.CharacterName);
+
+                Assert.True(actual);
+            }
+        }
+        [Fact]
+        public async void JoinCampWorks()
+        {
+            var options = new DbContextOptionsBuilder<Data.D20CharacterDatabaseContext>()
+                .UseInMemoryDatabase("join_campaign_test").Options;
+            using (var db = new Data.D20CharacterDatabaseContext(options))
+            {
+                Data.IRepo sut = new Data.D20Repo(db);
+                Lib.Campaign camp = new Lib.Campaign();
+                camp.CampID = 0;
+                camp.Name = "Test Campaign";
+                camp.Characters = new List<Lib.Character>();
+                camp.GMs = new List<Lib.User>();
+                sut.CreateCampaign(camp);
+                Data.Campaign testCamp = await db.Campaign.FirstOrDefaultAsync(c => c.CampaignName == camp.Name);
+
+                Lib.Character testChar = new Lib.Character();
+                testChar.CharID = 0;
+                testChar.Name = "Test Character";
+                testChar.CampID = 0;
+                testChar.UserID = 1;
+                sut.CreateCharacter(testChar);
+                Data.Characters test = await db.Characters.FirstOrDefaultAsync(c => c.CharacterName == testChar.Name);
+
+                bool actual = (testCamp != null && testCamp.CampaignName == camp.Name && test != null && test.CampaignId != testCamp.CampaignId);
+                Assert.True(actual);
+
+                sut.JoinCamp(testCamp.CampaignId, test.CharacterId);
+                test = await db.Characters.FirstOrDefaultAsync(c => c.CharacterName == testChar.Name);
+                actual = (test.CampaignId == testCamp.CampaignId);
+
+                Assert.True(actual);
+            }
+        }
+        [Fact]
+        public async void RemoveCharFromCampWorks()
+        {
+            var options = new DbContextOptionsBuilder<Data.D20CharacterDatabaseContext>()
+                .UseInMemoryDatabase("remove_char_from_campaign_test").Options;
+            using (var db = new Data.D20CharacterDatabaseContext(options))
+            {
+                Data.IRepo sut = new Data.D20Repo(db);
+                Lib.Campaign camp = new Lib.Campaign();
+                camp.CampID = 0;
+                camp.Name = "No Campaign";
+                camp.Characters = new List<Lib.Character>();
+                camp.GMs = new List<Lib.User>();
+                sut.CreateCampaign(camp);
+                Data.Campaign testCamp = await db.Campaign.FirstOrDefaultAsync(c => c.CampaignName == camp.Name);
+
+                Lib.Campaign camp2 = new Lib.Campaign();
+                camp2.CampID = 0;
+                camp2.Name = "Test Campaign";
+                camp2.Characters = new List<Lib.Character>();
+                camp2.GMs = new List<Lib.User>();
+                sut.CreateCampaign(camp2);
+                Data.Campaign testCamp2 = await db.Campaign.FirstOrDefaultAsync(c => c.CampaignName == camp2.Name);
+
+                Lib.Character testChar = new Lib.Character();
+                testChar.CharID = 0;
+                testChar.Name = "Test Character";
+                testChar.CampID = 0;
+                testChar.UserID = 1;
+                sut.CreateCharacter(testChar);
+                Data.Characters test = await db.Characters.FirstOrDefaultAsync(c => c.CharacterName == testChar.Name);
+
+                bool actual = (testCamp != null && testCamp.CampaignName == camp.Name && testCamp2 != null && testCamp2.CampaignName == camp2.Name && test != null && test.CampaignId != testCamp.CampaignId);
+                Assert.True(actual);
+
+                sut.JoinCamp(testCamp2.CampaignId, test.CharacterId);
+                test = await db.Characters.FirstOrDefaultAsync(c => c.CharacterName == testChar.Name);
+                actual = (test.CampaignId == testCamp2.CampaignId);
+
+                Assert.True(actual);
+
+                sut.RemoveCharFromCamp(testCamp.CampaignId, test.CharacterId);
+                test = await db.Characters.FirstOrDefaultAsync(c => c.CharacterName == testChar.Name);
+                actual = test.CampaignId != testCamp2.CampaignId;
+
+                Assert.True(actual);
+            }
+        }
     }
 }
