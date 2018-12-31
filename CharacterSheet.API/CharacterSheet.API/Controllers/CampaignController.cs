@@ -65,8 +65,43 @@ namespace CharacterSheet.API.Controllers
 
         // PUT: api/Campaign/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public ActionResult Put(int id, [FromBody] Campaign campaign)
         {
+            Campaign existing;
+
+            //pull the campaign entry to be updated
+            try
+            {
+                existing = Repo.CampDetails(id);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+
+            //if the entry does not exist
+            if (existing == null)
+            {
+                return NotFound();
+            }
+
+            //if an attempt is made to change the campaign ID
+            if (id != campaign.CampID)
+            {
+                return BadRequest("cannot change campaign ID");
+            }
+
+            //update the entry
+            try
+            {
+                Repo.UpdateCamp(campaign);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+
+            return NoContent();                     //update successful
         }
 
         // DELETE: api/ApiWithActions/5
