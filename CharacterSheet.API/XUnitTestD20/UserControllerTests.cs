@@ -8,6 +8,7 @@ using Moq;
 using ClassLibrary;
 using DataAccess;
 using CharacterSheet.API.Controllers;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace XUnitTestD20
 {
@@ -41,12 +42,12 @@ namespace XUnitTestD20
 
             var controller = new UserController(mockRepo.Object);
 
-            IEnumerable<User> result = controller.Get();
+            ActionResult<IEnumerable<User>> result = controller.Get();
 
             //ViewResult viewResult = Assert.IsAssignableFrom<ViewResult>(result);
 
-            var users = Assert.IsAssignableFrom<IEnumerable<User>>(result);
-            var userList = users.ToList();
+            var users = Assert.IsAssignableFrom<ActionResult<IEnumerable<User>>>(result);
+            var userList = users.Value.ToList();
 
             Assert.Equal(data.Count, userList.Count);
             for (int i = 0; i < data.Count; i++)
