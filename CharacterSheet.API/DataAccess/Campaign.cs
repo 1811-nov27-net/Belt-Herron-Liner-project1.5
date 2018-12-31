@@ -27,22 +27,27 @@ namespace DataAccess
                 CampaignName = campaign.Name
             };
 
-            foreach (var kar in campaign.Characters)
+            if (campaign.Characters.Count > 0)
             {
-                ret.Characters.Add(kar);
-            }
-
-            foreach (var GM in campaign.GMs)
-            {
-                ret.Gmjunction.Add(new Gmjunction()
+                foreach (var kar in campaign.Characters)
                 {
-                    Gmid = GM.UserID,
-                    CampaignId = campaign.CampID,
-                    Campaign = ret,
-                    Gm = GM
-                });
+                    ret.Characters.Add(kar);
+                }
             }
 
+            if (campaign.GMs.Count > 0)
+            {
+                foreach (var GM in campaign.GMs)
+                {
+                    ret.Gmjunction.Add(new Gmjunction()
+                    {
+                        Gmid = GM.UserID,
+                        CampaignId = campaign.CampID,
+                        Campaign = ret,
+                        Gm = GM
+                    });
+                }
+            }
             return ret;
 
         }
@@ -55,16 +60,22 @@ namespace DataAccess
                 Name = campaign.CampaignName
             };
 
-            foreach (var kar in campaign.Characters)
+
+            if (campaign.Characters.Count > 0)
             {
-                ret.Characters.Add(kar);
+                foreach (var kar in campaign.Characters)
+                {
+                    ret.Characters.Add(kar);
+                }
             }
 
-            foreach (var GM in campaign.Gmjunction)
+            if (campaign.Gmjunction.Count > 0)
             {
-                ret.GMs.Add(GM.Gm);
+                foreach (var GM in campaign.Gmjunction)
+                {
+                    ret.GMs.Add(GM.Gm);
+                }
             }
-
             return ret;
 
         }

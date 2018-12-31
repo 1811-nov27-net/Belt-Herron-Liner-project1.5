@@ -62,11 +62,17 @@ namespace DataAccess
                     .HasColumnName("AC")
                     .HasDefaultValueSql("((10))");
 
+                entity.Property(e => e.CharacterName)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
                 entity.Property(e => e.Alignment)
                     .IsRequired()
                     .HasMaxLength(100);
 
                 entity.Property(e => e.Bab).HasColumnName("BAB");
+
+                entity.Property(e => e.MaxHP).HasColumnName("MaxHP");
 
                 entity.Property(e => e.Charisma).HasDefaultValueSql("((10))");
 

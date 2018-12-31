@@ -28,7 +28,7 @@ namespace CharacterSheet.API.Controllers
 
         // GET: api/Campaign
         [HttpGet]
-        public ActionResult<IEnumerable<Campaign>> Get()
+        public ActionResult<IEnumerable<ClassLibrary.Campaign>> Get()
         {
             try
             {

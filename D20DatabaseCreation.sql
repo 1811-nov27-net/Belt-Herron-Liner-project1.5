@@ -58,6 +58,15 @@ create table d20.Characters
 
 );
 
+alter table d20.Characters
+	add MaxHP int default 0;
+
+alter table d20.Characters
+	alter column MaxHP integer not null;
+
+alter table d20.Characters
+	add CharacterName nvarchar(100) not null;
+
 create table d20.SpellJunction
 (
 	CharacterId int not null,
@@ -135,3 +144,18 @@ alter table d20.Inventory
 	add constraint PK_Inventory primary key (ItemName, CharacterId);
 alter table d20.SpellSlots
 	add constraint PK_SpellSlots primary key (CharacterId, ClassName);
+
+
+insert into d20.Gamer (UserName) values
+	('No User');
+select * from d20.Gamer
+
+insert into d20.Campaign (CampaignName) values
+	('No Campaign');
+select * from d20.Campaign
+
+select * from d20.Characters
+
+insert into d20.Characters (GamerId, CampaignId, CharacterName, Race, Sex, Alignment) values
+	(1, 1, 'Not a Character', 'Not a Character', 'Not a Character', 'Not a Character');
+
