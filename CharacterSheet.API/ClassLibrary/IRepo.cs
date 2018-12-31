@@ -14,6 +14,7 @@ namespace ClassLibrary
 
         //for reading individual entries
         Character CharDetails(int CharID);                            //view character details
+        Character CharDetails(string username);
         Campaign CampDetails(int CampID);                             //view campaign details
         User UserDetails(int UserID);                                 //view user details
 
@@ -30,6 +31,7 @@ namespace ClassLibrary
         //for retrieving basic lists
         IEnumerable<Character> CharacterList();             //grab the character list
         IEnumerable<Campaign> CampList();                   //grab the campaign list
+        IEnumerable<Campaign> CampList(string GMUsername);
         IEnumerable<User> UserList();                       //grab the user list
 
         //for retrieving specified lists

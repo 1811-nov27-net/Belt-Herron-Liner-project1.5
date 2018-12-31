@@ -50,6 +50,11 @@ namespace DataAccess
             return ret;
         }
 
+        public IEnumerable<ClassLibrary.Campaign> CampList(string GMUsername)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<ClassLibrary.Character> CharacterList()
         {
             List<Character> ret = new List<Character>();
@@ -92,6 +97,11 @@ namespace DataAccess
         public ClassLibrary.Character CharDetails(int CharID)
         {
             return _db.Characters.Include(c => c.Classes).Include(c => c.Feats).Include(c => c.Inventory).Include(c => c.Skills).Include(c => c.SpellJunction).Include(c => c.SpellSlots).First(c => c.CharacterId == CharID);
+        }
+
+        public Character CharDetails(string username)
+        {
+            throw new NotImplementedException();
         }
 
         public int CreateCampaign(ClassLibrary.Campaign campaign)
