@@ -8,14 +8,16 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
+using DataAccess;
+using Newtonsoft.Json;
+using System.Net.Http;
 using CharacterSheet.API.Models;
 
 namespace CharacterSheet.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
-    public class UserController : Controller
+    public class UserController : ControllerBase
     {
         private SignInManager<IdentityUser> _SignInManager;
 
@@ -89,85 +91,76 @@ namespace CharacterSheet.API.Controllers
             return User.Identity.Name;
         }
 
-        // GET: User
-        public ActionResult Index()
+        public UserController(IRepo repo)
         {
-            return View();
+            Repo = repo;
         }
 
-        // GET: User/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: User/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: User/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        // GET: api/User
+        [HttpGet]
+        public ActionResult<IEnumerable<User>> Get()
         {
             try
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction(nameof(Index));
+                return Repo.UserList().ToList();
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return StatusCode(500, ex);
             }
         }
 
-        // GET: User/Edit/5
-        public ActionResult Edit(int id)
+        // GET: api/User/5
+        [HttpGet("{id}", Name = "Get")]
+        public ActionResult<User> Get(int id)
         {
-            return View();
-        }
-
-        // POST: User/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
+            User user;
             try
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
+                user = Repo.UserDetails(id);
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return StatusCode(500, ex);
             }
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return user;
         }
 
-        // GET: User/Delete/5
+        // POST: api/User
+        [HttpPost]
+        public void Post([FromBody] User user)
+        {
+            Repo.CreateUser(user);
+        }
+
+        // PUT: api/User/5
+        [HttpPut("{id}")]
+        public ActionResult Put(User outdated, [FromBody] User updated)
+        {
+            Repo.UpdateUser(updated);
+            return NoContent();
+        }
+
+        // DELETE: api/ApiWithActions/5
+        [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            return View();
-        }
-
-        // POST: User/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
             try
             {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
+                Repo.DeleteUser(id);
+                return NoContent();
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return NotFound();
             }
         }
+
+
     }
 }
