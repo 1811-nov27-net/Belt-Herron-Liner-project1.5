@@ -119,5 +119,37 @@ namespace CharacterSheet.API.Controllers
             }
 
         }
+
+        [HttpDelete("{charID}")]
+        public ActionResult RemoveCharFromCamp(int campID, int charID)
+        {
+            Campaign existingCamp;
+            Character existingChar;
+            try
+            {
+                existingCamp = Repo.CampDetails(campID);
+                existingChar = Repo.CharDetails(charID);
+                Repo.RemoveCharFromCamp(campID, charID);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+
+            
+            if (existingCamp == null)
+            {
+                return NotFound();
+            }
+
+            if (existingChar == null)
+            {
+                return NotFound();
+            }
+
+
+
+            return NoContent();
+        }
     }
 }
