@@ -15,12 +15,10 @@ namespace CharacterSheet.MVC.Controllers
 {
     public class HomeController : AServiceController
     {
-        
         public HomeController(HttpClient client) : base(client)
         {
-
         }
-        
+
         public IActionResult Index()
         {
             return View();
@@ -60,6 +58,20 @@ namespace CharacterSheet.MVC.Controllers
 
         public IActionResult PlayerOrGM()
         {
+            if(User.IsInRole("GM"))
+            {
+                return RedirectToAction(nameof(GMLoggedIn));
+            }
+            return RedirectToAction(nameof(PlayerLoggedIn));
+        }
+
+        public IActionResult GMLoggedIn()
+        {
+            return View();
+        }
+
+        public IActionResult PlayerLoggedIn()
+        {
             return View();
         }
 
@@ -74,7 +86,24 @@ namespace CharacterSheet.MVC.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        
+        public HttpRequestMessage CreateServiceRequest(HttpMethod method, string uri, object body)
+        {
+            var apiRequest = new HttpRequestMessage(method, new Uri(ServiceUri, uri));
+
+            if(body != null)
+            {
+                var jsonString = JsonConvert.SerializeObject(body);
+                apiRequest.Content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+            }
+
+            var cookieValue = Request.Cookies[CookieName];
+
+            if(cookieValue != null)
+            {
+                apiRequest.Headers.Add("Cookie", new CookieHeaderValue(CookieName, cookieValue).ToString());
+            }
+            return apiRequest;
+        }
 
         private bool PassCookiesToClient(HttpResponseMessage apiResponse)
         {

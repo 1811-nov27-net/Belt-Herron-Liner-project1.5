@@ -68,22 +68,25 @@ namespace DataAccess
             return _db.Characters.Include(c => c.Classes).Include(c => c.Feats).Include(c => c.Inventory).Include(c => c.Skills).Include(c => c.SpellJunction).Include(c => c.SpellSlots).First(c => c.CharacterId == CharID);
         }
 
-        public void CreateCampaign(ClassLibrary.Campaign campaign)
+        public int CreateCampaign(ClassLibrary.Campaign campaign)
         {
             _db.Campaign.Add(campaign);
             _db.SaveChangesAsync();
+            return 0;
         }
 
-        public void CreateCharacter(ClassLibrary.Character character)
+        public int CreateCharacter(ClassLibrary.Character character)
         {
             _db.Characters.Add(character);
             _db.SaveChangesAsync();
+            return 0;
         }
 
-        public void CreateUser(ClassLibrary.User user)
+        public int CreateUser(ClassLibrary.User user)
         {
             _db.Gamer.Add(user);
             _db.SaveChangesAsync();
+            return 0;
         }
 
         public void DeleteCamp(int CampID)

@@ -19,7 +19,7 @@ namespace CharacterSheet.API.Controllers
     public class CampaignController : ControllerBase
     {
 
-        public Data.IRepo Repo { get; set; }
+        public IRepo Repo { get; set; }
         
         public CampaignController(IRepo repo)
         {

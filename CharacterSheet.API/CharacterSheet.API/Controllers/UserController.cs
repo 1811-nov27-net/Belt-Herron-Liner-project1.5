@@ -20,6 +20,7 @@ namespace CharacterSheet.API.Controllers
     public class UserController : ControllerBase
     {
         private SignInManager<IdentityUser> _SignInManager;
+        IRepo Repo;
 
         public UserController (SignInManager<IdentityUser> signInManager, IdentityDbContext db)
         {
