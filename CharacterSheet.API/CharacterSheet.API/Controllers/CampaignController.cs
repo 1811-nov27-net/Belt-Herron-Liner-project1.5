@@ -167,11 +167,6 @@ namespace CharacterSheet.API.Controllers
                 return NotFound();
             }
 
-            if (existingChar == null)
-            {
-                return NotFound();
-            }
-
             return NoContent();
         }
 
@@ -193,11 +188,6 @@ namespace CharacterSheet.API.Controllers
 
 
             if (existingCamp == null)
-            {
-                return NotFound();
-            }
-
-            if (existingChar == null)
             {
                 return NotFound();
             }
