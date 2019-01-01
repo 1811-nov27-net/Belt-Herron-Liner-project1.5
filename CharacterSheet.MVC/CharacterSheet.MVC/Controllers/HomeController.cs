@@ -23,7 +23,7 @@ namespace CharacterSheet.MVC.Controllers
         {
             return View();
         }
-
+        [HttpPost]
         public async Task<IActionResult> Login(LoginUser user)
         {
             try
@@ -60,7 +60,7 @@ namespace CharacterSheet.MVC.Controllers
         {
             return View();
         }
-
+        [HttpPost]
         public async Task<ActionResult> Register(LoginUser user)
         {
             try
@@ -88,6 +88,17 @@ namespace CharacterSheet.MVC.Controllers
 
                 return RedirectToAction("Error");
             }
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            HttpRequestMessage message = CreateServiceRequest(HttpMethod.Post, "api/User/Logout");
+            HttpResponseMessage response = await Client.SendAsync(message);
+            if(response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Error");
         }
 
         public IActionResult PlayerOrGM()
