@@ -9,6 +9,7 @@ namespace ClassLibrary
     {
         void AddGM(int CampID, int UserID);
         void RemGM(int CampID, int UserID);
+        IEnumerable<User> GetGmByCampaign(int CampID);
 
         //for creating new instances in the database
         int CreateCharacter(Character character);                             //create a new character

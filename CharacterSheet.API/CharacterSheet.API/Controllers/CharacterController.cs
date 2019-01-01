@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ClassLibrary;
-using DataAccess;
+using Data = DataAccess;
 using System.Collections;
 
 namespace CharacterSheet.API.Controllers
@@ -141,6 +141,18 @@ namespace CharacterSheet.API.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Character>> GetCharByUser(int userID)
         {
+            User existingUser = Repo.UserDetails(userID);
+
+            if (existingUser == null)
+            {
+                return NotFound();
+            }
+
+            if (existingUser == null)
+            {
+                return NotFound();
+            }
+
             try
             {
                 return Repo.CharacterListByUser(userID).ToList();
@@ -155,6 +167,8 @@ namespace CharacterSheet.API.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Character>> GetCharByCamp(int campID)
         {
+            Campaign existingCamp = Repo.CampDetails(campID);
+
             try
             {
                 return Repo.CharacterListByCamp(campID).ToList();
