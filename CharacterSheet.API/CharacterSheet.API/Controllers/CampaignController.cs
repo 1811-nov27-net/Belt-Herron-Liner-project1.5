@@ -147,7 +147,35 @@ namespace CharacterSheet.API.Controllers
                 return NotFound();
             }
 
+            return NoContent();
+        }
 
+        [HttpPost]
+        public ActionResult JoinCampaign(int campID, int charID)
+        {
+            Campaign existingCamp;
+            Character existingChar;
+            try
+            {
+                existingCamp = Repo.CampDetails(campID);
+                existingChar = Repo.CharDetails(charID);
+                Repo.JoinCamp(campID, charID);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+
+
+            if (existingCamp == null)
+            {
+                return NotFound();
+            }
+
+            if (existingChar == null)
+            {
+                return NotFound();
+            }
 
             return NoContent();
         }
