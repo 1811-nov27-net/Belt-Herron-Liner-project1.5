@@ -194,5 +194,61 @@ namespace CharacterSheet.API.Controllers
 
             return NoContent();
         }
+
+        [HttpPut("campID")]
+        public ActionResult AddGM(int campID, [FromBody] User user)
+        {
+            Campaign existingCamp;
+
+            try
+            {
+                existingCamp = Repo.CampDetails(campID);
+                Repo.AddGM(campID, user.UserID);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+
+            if (existingCamp == null)
+            {
+                return NotFound();
+            }
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
+
+        public ActionResult RemGM(int campID, [FromBody] User user)
+        {
+            Campaign existingcamp;
+
+            try
+            {
+                existingcamp = Repo.CampDetails(campID);
+                Repo.RemGM(campID, user.UserID);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);                
+            }
+
+            if (existingcamp == null)
+            {
+                return NotFound();
+            }
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+
+        }
     }
 }
