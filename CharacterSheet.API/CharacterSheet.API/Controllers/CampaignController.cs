@@ -139,7 +139,7 @@ namespace CharacterSheet.API.Controllers
                 Repo.DeleteCamp(id);
                 return NoContent();
             }
-            catch (Exception ex)
+            catch
             {
                 return NotFound();
             }
