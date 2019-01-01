@@ -183,7 +183,7 @@ namespace CharacterSheet.API.Controllers
             }
 
             //if an attempt is made to change the user ID
-            if (id != user.userID)
+            if (id != user.UserID)
             {
                 return BadRequest("cannot change user ID");
             }
