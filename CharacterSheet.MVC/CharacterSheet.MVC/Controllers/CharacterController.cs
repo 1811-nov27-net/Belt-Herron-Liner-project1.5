@@ -131,17 +131,23 @@ namespace CharacterSheet.MVC.Controllers
         // POST: Character/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(int id, Character character)
         {
             try
             {
-                // TODO: Add delete logic here
+                HttpRequestMessage message = CreateServiceRequest(HttpMethod.Delete, $"api/Character/{character.CharID}");
+                HttpResponseMessage response = await Client.SendAsync(message);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Error", "Home");
+                }
 
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return RedirectToAction("Error", "Home");
             }
         }
     }
