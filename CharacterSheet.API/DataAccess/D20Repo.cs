@@ -270,5 +270,17 @@ namespace DataAccess
 
             return ret;
         }
+
+        public IEnumerable<User> GetGmByCampaign(int CampID)
+        {
+            var temp = _db.Gamer.Include(g => g.Gmjunction).Where(g => g.Gmjunction.Any(gm => gm.CampaignId == CampID)).ToList();
+            List<User> ret = new List<User>();
+            foreach (var item in temp)
+            {
+                ret.Add(item);
+            }
+
+            return ret;
+        }
     }
 }

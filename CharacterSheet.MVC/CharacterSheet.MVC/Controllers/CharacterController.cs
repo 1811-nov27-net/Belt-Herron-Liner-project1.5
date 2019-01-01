@@ -92,25 +92,33 @@ namespace CharacterSheet.MVC.Controllers
         }
 
         // GET: Character/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            return View();
+            var character = JsonConvert.DeserializeObject<Character>(await Client.GetStringAsync($"https://localhost:44309/api/Character/{id}"));
+            TempData["char"] = character;
+            return View(character);
         }
 
         // POST: Character/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(int id, Character character)
         {
             try
             {
-                // TODO: Add update logic here
+                var url = $"https://localhost:44309/api/Character/{id}";
+                var response = await Client.PutAsJsonAsync(url, character);
 
-                return RedirectToAction(nameof(Index));
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+
+                return View(character);
             }
             catch
             {
-                return View();
+                return View(character);
             }
         }
 
@@ -123,17 +131,23 @@ namespace CharacterSheet.MVC.Controllers
         // POST: Character/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(int id, Character character)
         {
             try
             {
-                // TODO: Add delete logic here
+                HttpRequestMessage message = CreateServiceRequest(HttpMethod.Delete, $"api/Character/{character.CharID}");
+                HttpResponseMessage response = await Client.SendAsync(message);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Error", "Home");
+                }
 
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return RedirectToAction("Error", "Home");
             }
         }
     }
