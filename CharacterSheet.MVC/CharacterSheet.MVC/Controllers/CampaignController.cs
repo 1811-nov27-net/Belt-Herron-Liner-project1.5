@@ -126,33 +126,33 @@ namespace CharacterSheet.MVC.Controllers
 
         [HttpPut]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> AddChar(int charId)
+        public async Task<ActionResult> AddChar(Character character)
         {
             try
             {
                 Campaign campaign = (Campaign)TempData["camp"];
-                HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/Character/{charId}");
+                HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/Character/{character.CharID}");
                 HttpResponseMessage response = await Client.SendAsync(message);
 
                 if(!response.IsSuccessStatusCode)
                 {
-                    return View(charId);
+                    return View(character);
                 }
                 var responseBody = await response.Content.ReadAsStringAsync();
-                Character character = JsonConvert.DeserializeObject<Character>(responseBody);
+                character = JsonConvert.DeserializeObject<Character>(responseBody);
 
                 message = CreateServiceRequest(HttpMethod.Put, $"api/Campaign/JoinCamp/{campaign.CampID}", character);
                 response = await Client.SendAsync(message);
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    return View(charId);
+                    return View(character);
                 }
                 return RedirectToAction(nameof(Edit));
             }
             catch
             {
-                return View(charId);
+                return View(character);
             }
         }
 
