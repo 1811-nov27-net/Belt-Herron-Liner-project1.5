@@ -250,5 +250,24 @@ namespace CharacterSheet.API.Controllers
             return NoContent();
 
         }
+
+        public ActionResult<IEnumerable<User>> GmList(int campID)
+        {
+            Campaign existingCamp = Repo.CampDetails(campID);
+
+            if (existingCamp == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                return Repo.GetGmByCampaign(campID).ToList();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+        }
     }
 }
