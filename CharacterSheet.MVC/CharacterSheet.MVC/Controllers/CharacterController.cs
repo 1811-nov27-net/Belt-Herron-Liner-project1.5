@@ -46,9 +46,20 @@ namespace CharacterSheet.MVC.Controllers
         }
 
         // GET: Character/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int id)
         {
-            return View();
+            HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/Character/{id}");
+            HttpResponseMessage response = await Client.SendAsync(message);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+
+            var responseBody = await response.Content.ReadAsStringAsync();
+            Character character = JsonConvert.DeserializeObject<Character>(responseBody);
+
+            return View(character);
         }
 
         // GET: Character/Create
