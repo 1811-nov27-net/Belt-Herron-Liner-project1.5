@@ -162,10 +162,43 @@ namespace CharacterSheet.API.Controllers
 
         // PUT: api/User/5
         [HttpPut("{id}")]
-        public ActionResult Put(User outdated, [FromBody] User updated)
+        public ActionResult Put(int id, [FromBody] User user)
         {
-            Repo.UpdateUser(updated);
-            return NoContent();
+            User existing;
+
+            //pull the user entry to be updated
+            try
+            {
+                existing = Repo.UserDetails(id);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+
+            //if the entry does not exist
+            if (existing == null)
+            {
+                return NotFound();
+            }
+
+            //if an attempt is made to change the user ID
+            if (id != user.userID)
+            {
+                return BadRequest("cannot change user ID");
+            }
+
+            //update the entry
+            try
+            {
+                Repo.UpdateUser(user);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+
+            return NoContent();                         //update successful
         }
 
         // DELETE: api/ApiWithActions/5

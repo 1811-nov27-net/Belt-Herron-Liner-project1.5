@@ -90,8 +90,43 @@ namespace CharacterSheet.API.Controllers
 
         // PUT: api/Campaign/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public ActionResult Put(int id, [FromBody] Campaign campaign)
         {
+            Campaign existing;
+
+            //pull the campaign entry to be updated
+            try
+            {
+                existing = Repo.CampDetails(id);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+
+            //if the entry does not exist
+            if (existing == null)
+            {
+                return NotFound();
+            }
+
+            //if an attempt is made to change the campaign ID
+            if (id != campaign.CampID)
+            {
+                return BadRequest("cannot change campaign ID");
+            }
+
+            //update the entry
+            try
+            {
+                Repo.UpdateCamp(campaign);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+
+            return NoContent();                     //update successful
         }
 
         // DELETE: api/ApiWithActions/5
@@ -108,6 +143,66 @@ namespace CharacterSheet.API.Controllers
                 return NotFound();
             }
 
+        }
+
+        [HttpDelete("{charID}")]
+        public ActionResult RemoveCharFromCamp(int campID, int charID)
+        {
+            Campaign existingCamp;
+            Character existingChar;
+            try
+            {
+                existingCamp = Repo.CampDetails(campID);
+                existingChar = Repo.CharDetails(charID);
+                Repo.RemoveCharFromCamp(campID, charID);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+
+            
+            if (existingCamp == null)
+            {
+                return NotFound();
+            }
+
+            if (existingChar == null)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
+
+        [HttpPost]
+        public ActionResult JoinCampaign(int campID, int charID)
+        {
+            Campaign existingCamp;
+            Character existingChar;
+            try
+            {
+                existingCamp = Repo.CampDetails(campID);
+                existingChar = Repo.CharDetails(charID);
+                Repo.JoinCamp(campID, charID);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+
+
+            if (existingCamp == null)
+            {
+                return NotFound();
+            }
+
+            if (existingChar == null)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
         }
     }
 }
