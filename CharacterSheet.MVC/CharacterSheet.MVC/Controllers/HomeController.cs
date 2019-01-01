@@ -52,7 +52,41 @@ namespace CharacterSheet.MVC.Controllers
             }
             catch 
             {
-                throw;
+                return RedirectToAction("Error");
+            }
+        }
+
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        public async Task<ActionResult> Register(LoginUser user)
+        {
+            try
+            {
+                if(!ModelState.IsValid)
+                {
+                    return View();
+                }
+                HttpRequestMessage message = CreateServiceRequest(HttpMethod.Post, "api/User/Register", user);
+                HttpResponseMessage response = await Client.SendAsync(message);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Error");
+                }
+                var success = PassCookiesToClient(response);
+                if (!success)
+                {
+                    return View("Error");
+                }
+                return RedirectToAction("PlayerOrGM");
+            }
+            catch (Exception)
+            {
+
+                return RedirectToAction("Error");
             }
         }
 
