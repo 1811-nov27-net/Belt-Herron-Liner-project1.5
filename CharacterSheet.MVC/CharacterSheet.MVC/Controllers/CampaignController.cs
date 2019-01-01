@@ -83,8 +83,24 @@ namespace CharacterSheet.MVC.Controllers
                 {
                     return View(campaign);
                 }
-                
-                return RedirectToAction(nameof(Index));
+                var responseBody = await response.Content.ReadAsStringAsync();
+                int campID = JsonConvert.DeserializeObject<int>(responseBody);
+                message = CreateServiceRequest(HttpMethod.Get, $"api/User/{User.Identity.Name}");
+                response = await Client.SendAsync(message);
+                if(!response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Error");
+                }
+                responseBody = await response.Content.ReadAsStringAsync();
+                User user = JsonConvert.DeserializeObject<User>(responseBody);
+
+                message = CreateServiceRequest(HttpMethod.Put, $"api/Campaign/AddGM/{campID}", user);
+                response = await Client.SendAsync(message);
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                return RedirectToAction("Error");
             }
             catch
             {

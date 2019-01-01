@@ -83,9 +83,10 @@ namespace CharacterSheet.API.Controllers
 
         // POST: api/Campaign
         [HttpPost]
-        public void Post([FromBody] Campaign campaign)
+        public ActionResult Post([FromBody] Campaign campaign)
         {
-            Repo.CreateCampaign(campaign);
+            int id = Repo.CreateCampaign(campaign);
+            return StatusCode(201, id);
         }
 
         // PUT: api/Campaign/5
