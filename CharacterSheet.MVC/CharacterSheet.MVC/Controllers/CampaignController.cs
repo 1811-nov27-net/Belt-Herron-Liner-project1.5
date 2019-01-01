@@ -183,11 +183,15 @@ namespace CharacterSheet.MVC.Controllers
         {
             try
             {
-                Campaign campaign = (Campaign)TempData["camp"];
-                HttpRequestMessage message = CreateServiceRequest(HttpMethod.Put, $"api/Campaign/RemoveCharFromCamp/{campaign.CampID}", character);
-                HttpResponseMessage response = await Client.SendAsync(message);
-                if (response.IsSuccessStatusCode)
-                    return RedirectToAction(nameof(Edit), campaign.CampID);
+                if (ModelState.IsValid)
+                {
+                    Campaign campaign = (Campaign)TempData["camp"];
+                    HttpRequestMessage message = CreateServiceRequest(HttpMethod.Put, $"api/Campaign/RemoveCharFromCamp/{campaign.CampID}", character);
+                    HttpResponseMessage response = await Client.SendAsync(message);
+                    if (response.IsSuccessStatusCode)
+                        return RedirectToAction(nameof(Edit), campaign.CampID);
+                    return View(character);
+                }
                 return View(character);
             }
             catch
@@ -207,21 +211,25 @@ namespace CharacterSheet.MVC.Controllers
         {
             try
             {
-                Campaign campaign = (Campaign)TempData["camp"];
-                HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/User/{user.Username}");
-                HttpResponseMessage response = await Client.SendAsync(message);
-                if (!response.IsSuccessStatusCode)
+                if (ModelState.IsValid)
                 {
-                    return RedirectToAction("Error", "Home");
-                }
-                var responseBody = await response.Content.ReadAsStringAsync();
-                user = JsonConvert.DeserializeObject<User>(responseBody);
+                    Campaign campaign = (Campaign)TempData["camp"];
+                    HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/User/{user.Username}");
+                    HttpResponseMessage response = await Client.SendAsync(message);
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction("Error", "Home");
+                    }
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    user = JsonConvert.DeserializeObject<User>(responseBody);
 
-                message = CreateServiceRequest(HttpMethod.Put, $"api/Campaign/AddGM/{campaign.CampID}", user);
-                response = await Client.SendAsync(message);
-                if(response.IsSuccessStatusCode)
-                {
-                    return RedirectToAction("Edit", campaign.CampID);
+                    message = CreateServiceRequest(HttpMethod.Put, $"api/Campaign/AddGM/{campaign.CampID}", user);
+                    response = await Client.SendAsync(message);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction("Edit", campaign.CampID);
+                    }
+                    return RedirectToAction("Error", "Home");
                 }
                 return RedirectToAction("Error", "Home");
             }
@@ -230,6 +238,54 @@ namespace CharacterSheet.MVC.Controllers
                 return RedirectToAction("Error", "Home");
             }
         }
+
+        public async Task<IActionResult> RemoveGM()
+        {
+            Campaign campaign = (Campaign)TempData.Peek("camp");
+            HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/Campaign/GMList/{campaign.CampID}");
+            HttpResponseMessage response = await Client.SendAsync(message);
+            if(!response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+            var responseBody = await response.Content.ReadAsStringAsync();
+            IEnumerable<User> GMs = JsonConvert.DeserializeObject<IEnumerable<User>>(responseBody);
+            return View(GMs);
+        }
+
+        [HttpPut]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> RemoveGM(int id)
+        {
+            try
+            {
+                if(ModelState.IsValid)
+                {
+                    Campaign campaign = (Campaign)TempData["camp"];
+                    HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/User/{id}");
+                    HttpResponseMessage response = await Client.SendAsync(message);
+                    if(!response.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction("Error", "Home");
+                    }
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    User user = JsonConvert.DeserializeObject<User>(responseBody);
+
+                    message = CreateServiceRequest(HttpMethod.Put, $"api/Campaign/RemGM/{campaign.CampID}", user);
+                    response = await Client.SendAsync(message);
+                    if(response.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction("Edit", campaign.CampID);
+                    }
+                }
+                return RedirectToAction("Error", "Home");
+            }
+            catch 
+            {
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
         // GET: Campaign/Delete/5
         public async Task<ActionResult> Delete(int id)
         {

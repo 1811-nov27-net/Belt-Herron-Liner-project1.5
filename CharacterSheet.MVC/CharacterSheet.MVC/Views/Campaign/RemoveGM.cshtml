@@ -1,0 +1,33 @@
+﻿@model IEnumerable<CharacterSheet.MVC.Models.User>
+
+@{
+    ViewData["Title"] = "RemoveGM";
+}
+
+<h1>RemoveGM</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Username)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Username)
+            </td>
+            <td>
+                @Html.ActionLink("Remove", "RemoveGM", new { id=item.UserID })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

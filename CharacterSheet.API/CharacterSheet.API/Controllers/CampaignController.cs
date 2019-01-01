@@ -223,7 +223,7 @@ namespace CharacterSheet.API.Controllers
 
             return NoContent();
         }
-
+        [HttpPut("campID")]
         public ActionResult RemGM(int campID, [FromBody] User user)
         {
             Campaign existingcamp;
@@ -251,7 +251,7 @@ namespace CharacterSheet.API.Controllers
             return NoContent();
 
         }
-
+        [HttpGet]
         public ActionResult<IEnumerable<User>> GmList(int campID)
         {
             Campaign existingCamp = Repo.CampDetails(campID);
