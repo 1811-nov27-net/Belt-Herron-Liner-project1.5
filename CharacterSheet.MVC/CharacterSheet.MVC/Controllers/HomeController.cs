@@ -24,7 +24,7 @@ namespace CharacterSheet.MVC.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Login(User user)
+        public async Task<IActionResult> Login(LoginUser user)
         {
             try
             {
@@ -60,14 +60,9 @@ namespace CharacterSheet.MVC.Controllers
         {
             if(User.IsInRole("GM"))
             {
-                return RedirectToAction(nameof(GMLoggedIn));
+                return RedirectToAction("Index","Campaign");
             }
-            return RedirectToAction(nameof(PlayerLoggedIn));
-        }
-
-        public IActionResult GMLoggedIn()
-        {
-            return View();
+            return RedirectToAction("Index", "Character");
         }
 
         public IActionResult PlayerLoggedIn()
@@ -86,24 +81,24 @@ namespace CharacterSheet.MVC.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public HttpRequestMessage CreateServiceRequest(HttpMethod method, string uri, object body)
-        {
-            var apiRequest = new HttpRequestMessage(method, new Uri(ServiceUri, uri));
+        //public HttpRequestMessage CreateServiceRequest(HttpMethod method, string uri, object body)
+        //{
+        //    var apiRequest = new HttpRequestMessage(method, new Uri(ServiceUri, uri));
 
-            if(body != null)
-            {
-                var jsonString = JsonConvert.SerializeObject(body);
-                apiRequest.Content = new StringContent(jsonString, Encoding.UTF8, "application/json");
-            }
+        //    if(body != null)
+        //    {
+        //        var jsonString = JsonConvert.SerializeObject(body);
+        //        apiRequest.Content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+        //    }
 
-            var cookieValue = Request.Cookies[CookieName];
+        //    var cookieValue = Request.Cookies[CookieName];
 
-            if(cookieValue != null)
-            {
-                apiRequest.Headers.Add("Cookie", new CookieHeaderValue(CookieName, cookieValue).ToString());
-            }
-            return apiRequest;
-        }
+        //    if(cookieValue != null)
+        //    {
+        //        apiRequest.Headers.Add("Cookie", new CookieHeaderValue(CookieName, cookieValue).ToString());
+        //    }
+        //    return apiRequest;
+        //}
 
         private bool PassCookiesToClient(HttpResponseMessage apiResponse)
         {

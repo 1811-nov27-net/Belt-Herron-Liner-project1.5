@@ -9,6 +9,7 @@ namespace CharacterSheet.MVC.Models
         public int SpellId { get; set; }
         public string Name { get; set; }
         public int SpellLevel { get; set; }
-        public string Class { get; set; }      
+        public string Class { get; set; }
+
     }
 }
