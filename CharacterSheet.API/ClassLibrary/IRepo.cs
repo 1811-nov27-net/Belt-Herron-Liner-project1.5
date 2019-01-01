@@ -7,6 +7,9 @@ namespace ClassLibrary
 {
     public interface IRepo
     {
+        void AddGM(int CampID, int UserID);
+        void RemGM(int CampID, int UserID);
+
         //for creating new instances in the database
         int CreateCharacter(Character character);                             //create a new character
         int CreateCampaign(Campaign campaign);                              //create a new campaign

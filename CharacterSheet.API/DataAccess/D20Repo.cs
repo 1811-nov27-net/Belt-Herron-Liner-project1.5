@@ -33,6 +33,13 @@ namespace DataAccess
             _db.SaveChangesAsync();
         }
 
+
+        public void RemGM(int CampID, int UserID)
+        {
+            _db.Gmjunction.Remove(_db.Gmjunction.Where(gmj => gmj.CampaignId == CampID && gmj.Gmid == UserID).FirstOrDefault());
+            _db.SaveChangesAsync();
+        }
+
         public ClassLibrary.Campaign CampDetails(int CampID)
         {
 
