@@ -4,18 +4,11 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Campaign Details</h1>
 
 <div>
-    <h4>Campaign</h4>
     <hr />
     <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CampID)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CampID)
-        </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
@@ -29,7 +22,7 @@
         {
         <dd class="col-sm-10">
             @item.Name 
-            @Html.ActionLink("Details", "Details", new { id = item.CharID }) |
+            @Html.ActionLink("Details", "Details", "Character", new { id = item.CharID }) |
         </dd>
         }
     </dl>

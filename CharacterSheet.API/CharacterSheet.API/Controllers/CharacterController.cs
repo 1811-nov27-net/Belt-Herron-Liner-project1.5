@@ -153,11 +153,11 @@ namespace CharacterSheet.API.Controllers
 
         //get list of characters by campaign
         [HttpGet]
-        public ActionResult<IEnumerable<Character>> GetCharByCamp(int userID)
+        public ActionResult<IEnumerable<Character>> GetCharByCamp(int campID)
         {
             try
             {
-                return Repo.CharacterListByCamp(userID).ToList();
+                return Repo.CharacterListByCamp(campID).ToList();
             }
             catch (Exception ex)
             {

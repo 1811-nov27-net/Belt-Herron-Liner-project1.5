@@ -61,7 +61,7 @@ namespace CharacterSheet.API.Controllers
             return campaign;
         }
         //GET: api/Campaign/username
-        [HttpGet("{username}", Name = "Get")]
+        [HttpGet("{username}")]
         public ActionResult<IEnumerable<ClassLibrary.Campaign>> Get(string username)
         {
             IEnumerable<Campaign> campaignList;
@@ -145,16 +145,16 @@ namespace CharacterSheet.API.Controllers
 
         }
 
-        [HttpDelete("{charID}")]
-        public ActionResult RemoveCharFromCamp(int campID, int charID)
+        [HttpPut("{campID}")]
+        public ActionResult RemoveCharFromCamp(int campID, [FromBody] Character character)
         {
             Campaign existingCamp;
-            Character existingChar;
+            //Character existingChar;
             try
             {
                 existingCamp = Repo.CampDetails(campID);
-                existingChar = Repo.CharDetails(charID);
-                Repo.RemoveCharFromCamp(campID, charID);
+                //existingChar = Repo.CharDetails(charID);
+                Repo.RemoveCharFromCamp(campID, character.CharID);
             }
             catch (Exception ex)
             {
@@ -175,16 +175,16 @@ namespace CharacterSheet.API.Controllers
             return NoContent();
         }
 
-        [HttpPost]
-        public ActionResult JoinCampaign(int campID, int charID)
+        [HttpPut("campID")]
+        public ActionResult JoinCampaign(int campID, [FromBody] Character character)
         {
             Campaign existingCamp;
-            Character existingChar;
+            //Character existingChar;
             try
             {
                 existingCamp = Repo.CampDetails(campID);
-                existingChar = Repo.CharDetails(charID);
-                Repo.JoinCamp(campID, charID);
+                //existingChar = Repo.CharDetails(charID);
+                Repo.JoinCamp(campID, character.CharID);
             }
             catch (Exception ex)
             {

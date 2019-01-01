@@ -72,63 +72,145 @@ namespace CharacterSheet.MVC.Controllers
         // POST: Campaign/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> Create(Campaign campaign)
         {
             try
             {
-                // TODO: Add insert logic here
+                HttpRequestMessage message = CreateServiceRequest(HttpMethod.Post, "api/Campaign", campaign);
+                HttpResponseMessage response = await Client.SendAsync(message);
 
+                if(!response.IsSuccessStatusCode)
+                {
+                    return View(campaign);
+                }
+                
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return View(campaign);
             }
         }
 
         // GET: Campaign/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            return View();
+            var campaign = JsonConvert.DeserializeObject<Campaign>(await Client.GetStringAsync($"https://localhost:44309/api/Campaign/{id}"));
+            TempData["camp"] = campaign;
+            return View(campaign);
         }
 
         // POST: Campaign/Edit/5
-        [HttpPost]
+        [HttpPut]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(int id, Campaign campaign)
         {
             try
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
+                var url = $"https://localhost:44309/api/Campaign/{id}";
+                var response = await Client.PutAsJsonAsync(url, campaign);
+                if(response.IsSuccessStatusCode)
+                    return RedirectToAction(nameof(Index));
+                return View(campaign);
             }
             catch
             {
-                return View();
+                return View(campaign);
             }
         }
 
-        // GET: Campaign/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult AddChar()
         {
             return View();
+        }
+
+        [HttpPut]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> AddChar(int charId)
+        {
+            try
+            {
+                Campaign campaign = (Campaign)TempData["camp"];
+                HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/Character/{charId}");
+                HttpResponseMessage response = await Client.SendAsync(message);
+
+                if(!response.IsSuccessStatusCode)
+                {
+                    return View(charId);
+                }
+                var responseBody = await response.Content.ReadAsStringAsync();
+                Character character = JsonConvert.DeserializeObject<Character>(responseBody);
+
+                message = CreateServiceRequest(HttpMethod.Put, $"api/Campaign/JoinCamp/{campaign.CampID}", character);
+                response = await Client.SendAsync(message);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return View(charId);
+                }
+                return RedirectToAction(nameof(Edit));
+            }
+            catch
+            {
+                return View(charId);
+            }
+        }
+
+        public async Task<ActionResult> RemoveChar(int id)
+        {
+            return View(JsonConvert.DeserializeObject<Character>(await Client.GetStringAsync($"https://localhost:44309/api/Character/{id}")));
+        }
+
+        [HttpPut]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> RemoveChar(int id, Character character)
+        {
+            try
+            {
+                Campaign campaign = (Campaign)TempData["camp"];
+                HttpRequestMessage message = CreateServiceRequest(HttpMethod.Put, $"api/Campaign/RemoveCharFromCamp/{campaign.CampID}", character);
+                HttpResponseMessage response = await Client.SendAsync(message);
+                if (response.IsSuccessStatusCode)
+                    return RedirectToAction(nameof(Edit));
+                return View(character);
+            }
+            catch
+            {
+                return View(character);
+            }
+        }
+        // GET: Campaign/Delete/5
+        public async Task<ActionResult> Delete(int id)
+        {
+            HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/Campaign/{id}");
+            HttpResponseMessage response = await Client.SendAsync(message);
+            if(!response.IsSuccessStatusCode)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            var responseBody = await response.Content.ReadAsStringAsync();
+            Campaign campaign = JsonConvert.DeserializeObject<Campaign>(responseBody);
+            return View(campaign);
         }
 
         // POST: Campaign/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(int id, Campaign campaign)
         {
             try
             {
-                // TODO: Add delete logic here
-
+                HttpRequestMessage message = CreateServiceRequest(HttpMethod.Delete, $"api/Campaign/{campaign.CampID}");
+                HttpResponseMessage response = await Client.SendAsync(message);
+                if(!response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Error", "Home");
+                }
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return RedirectToAction("Error", "Home");
             }
         }
     }
