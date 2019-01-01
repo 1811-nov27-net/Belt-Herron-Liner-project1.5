@@ -71,17 +71,23 @@ namespace CharacterSheet.MVC.Controllers
         // POST: Character/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> Create(Character character)
         {
             try
             {
-                // TODO: Add insert logic here
+                HttpRequestMessage message = CreateServiceRequest(HttpMethod.Post, "api/Character", character);
+                HttpResponseMessage response = await Client.SendAsync(message);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return View(character);
+                }
 
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return View(character);
             }
         }
 
