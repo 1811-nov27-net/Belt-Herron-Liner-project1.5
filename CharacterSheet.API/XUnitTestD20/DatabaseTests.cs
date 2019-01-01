@@ -21,7 +21,7 @@ namespace XUnitTestD20
                 .UseInMemoryDatabase("create_campaign_test").Options;
             using (var db = new Data.D20CharacterDatabaseContext(options))
             {
-                Data.IRepo sut = new Data.D20Repo(db);
+                Lib.IRepo sut = new Data.D20Repo(db);
                 Lib.Campaign camp = new Lib.Campaign();
                 if (await db.Campaign.FirstOrDefaultAsync(c => c.CampaignId == 1) == null)
                 {
@@ -64,7 +64,7 @@ namespace XUnitTestD20
                 .UseInMemoryDatabase("create_character_test").Options;
             using (var db = new Data.D20CharacterDatabaseContext(options))
             {
-                Data.IRepo sut = new Data.D20Repo(db);
+                Lib.IRepo sut = new Data.D20Repo(db);
                 Lib.Character testChar = new Lib.Character();
                 if (await db.Characters.FirstOrDefaultAsync(c => c.CharacterId == 1) == null)
                 {
@@ -97,7 +97,7 @@ namespace XUnitTestD20
                 .UseInMemoryDatabase("create_user_test").Options;
             using (var db = new Data.D20CharacterDatabaseContext(options))
             {
-                Data.IRepo sut = new Data.D20Repo(db);
+                Lib.IRepo sut = new Data.D20Repo(db);
                 Lib.User user = new Lib.User();
                 if(await db.Gamer.FirstOrDefaultAsync(g => g.GamerId == 1) == null)
                 {
@@ -138,7 +138,7 @@ namespace XUnitTestD20
                 .UseInMemoryDatabase("delete_campaign_test").Options;
             using (var db = new Data.D20CharacterDatabaseContext(options))
             {
-                Data.IRepo sut = new Data.D20Repo(db);
+                Lib.IRepo sut = new Data.D20Repo(db);
                 Lib.Campaign camp = new Lib.Campaign();
                 if (await db.Campaign.FirstOrDefaultAsync(c => c.CampaignId == 1) == null)
                 {
@@ -177,7 +177,7 @@ namespace XUnitTestD20
                 .UseInMemoryDatabase("delete_character_test").Options;
             using (var db = new Data.D20CharacterDatabaseContext(options))
             {
-                Data.IRepo sut = new Data.D20Repo(db);
+                Lib.IRepo sut = new Data.D20Repo(db);
                 Lib.Character testChar = new Lib.Character();
                 if (await db.Characters.FirstOrDefaultAsync(c => c.CharacterId == 1) == null)
                 {
@@ -216,7 +216,7 @@ namespace XUnitTestD20
                 .UseInMemoryDatabase("delete_user_test").Options;
             using (var db = new Data.D20CharacterDatabaseContext(options))
             {
-                Data.IRepo sut = new Data.D20Repo(db);
+                Lib.IRepo sut = new Data.D20Repo(db);
                 Lib.User user = new Lib.User();
                 if (await db.Gamer.FirstOrDefaultAsync(g => g.GamerId == 1) == null)
                 {
@@ -254,7 +254,7 @@ namespace XUnitTestD20
                 .UseInMemoryDatabase("update_campaign_test").Options;
             using (var db = new Data.D20CharacterDatabaseContext(options))
             {
-                Data.IRepo sut = new Data.D20Repo(db);
+                Lib.IRepo sut = new Data.D20Repo(db);
                 Lib.Campaign camp = new Lib.Campaign();
                 if (await db.Campaign.FirstOrDefaultAsync(c => c.CampaignId == 1) == null)
                 {
@@ -295,7 +295,7 @@ namespace XUnitTestD20
                 .UseInMemoryDatabase("update_character_test").Options;
             using (var db = new Data.D20CharacterDatabaseContext(options))
             {
-                Data.IRepo sut = new Data.D20Repo(db);
+                Lib.IRepo sut = new Data.D20Repo(db);
                 Lib.Character testChar = new Lib.Character();
                 if (await db.Characters.FirstOrDefaultAsync(c => c.CharacterId == 1) == null)
                 {
@@ -335,7 +335,7 @@ namespace XUnitTestD20
                 .UseInMemoryDatabase("update_user_test").Options;
             using (var db = new Data.D20CharacterDatabaseContext(options))
             {
-                Data.IRepo sut = new Data.D20Repo(db);
+                Lib.IRepo sut = new Data.D20Repo(db);
                 Lib.User user = new Lib.User();
                 if (await db.Gamer.FirstOrDefaultAsync(g => g.GamerId == 1) == null)
                 {
@@ -373,7 +373,7 @@ namespace XUnitTestD20
                 .UseInMemoryDatabase("campaign_details_test").Options;
             using (var db = new Data.D20CharacterDatabaseContext(options))
             {
-                Data.IRepo sut = new Data.D20Repo(db);
+                Lib.IRepo sut = new Data.D20Repo(db);
                 Lib.Campaign camp = new Lib.Campaign();
                 if (await db.Campaign.FirstOrDefaultAsync(c => c.CampaignId == 1) == null)
                 {
@@ -410,7 +410,7 @@ namespace XUnitTestD20
                 .UseInMemoryDatabase("character_details_test").Options;
             using (var db = new Data.D20CharacterDatabaseContext(options))
             {
-                Data.IRepo sut = new Data.D20Repo(db);
+                Lib.IRepo sut = new Data.D20Repo(db);
                 Lib.Character testChar = new Lib.Character();
                 if (await db.Characters.FirstOrDefaultAsync(c => c.CharacterId == 1) == null)
                 {
@@ -447,7 +447,7 @@ namespace XUnitTestD20
                 .UseInMemoryDatabase("create_user_test").Options;
             using (var db = new Data.D20CharacterDatabaseContext(options))
             {
-                Data.IRepo sut = new Data.D20Repo(db);
+                Lib.IRepo sut = new Data.D20Repo(db);
                 Lib.User user = new Lib.User();
                 if (await db.Gamer.FirstOrDefaultAsync(g => g.GamerId == 1) == null)
                 {
@@ -481,7 +481,7 @@ namespace XUnitTestD20
                 .UseInMemoryDatabase("add_gm_test").Options;
             using (var db = new Data.D20CharacterDatabaseContext(options))
             {
-                Data.IRepo sut = new Data.D20Repo(db);
+                Lib.IRepo sut = new Data.D20Repo(db);
                 Lib.User user = new Lib.User();
                 if (await db.Gamer.FirstOrDefaultAsync(g => g.GamerId == 1) == null)
                 {
@@ -530,7 +530,7 @@ namespace XUnitTestD20
                 .UseInMemoryDatabase("campaign_list_test").Options;
             using (var db = new Data.D20CharacterDatabaseContext(options))
             {
-                Data.IRepo sut = new Data.D20Repo(db);
+                Lib.IRepo sut = new Data.D20Repo(db);
                 Lib.Campaign camp = new Lib.Campaign();
                 if (await db.Campaign.FirstOrDefaultAsync(c => c.CampaignId == 1) == null)
                 {
@@ -572,7 +572,7 @@ namespace XUnitTestD20
                 .UseInMemoryDatabase("character_list_test").Options;
             using (var db = new Data.D20CharacterDatabaseContext(options))
             {
-                Data.IRepo sut = new Data.D20Repo(db);
+                Lib.IRepo sut = new Data.D20Repo(db);
                 Lib.Character testChar = new Lib.Character();
                 if (await db.Characters.FirstOrDefaultAsync(c => c.CharacterId == 1) == null)
                 {
@@ -613,7 +613,7 @@ namespace XUnitTestD20
                 .UseInMemoryDatabase("user_list_test").Options;
             using (var db = new Data.D20CharacterDatabaseContext(options))
             {
-                Data.IRepo sut = new Data.D20Repo(db);
+                Lib.IRepo sut = new Data.D20Repo(db);
                 Lib.User user = new Lib.User();
                 if (await db.Gamer.FirstOrDefaultAsync(g => g.GamerId == 1) == null)
                 {
@@ -655,7 +655,7 @@ namespace XUnitTestD20
                 .UseInMemoryDatabase("character_list_by_camp_test").Options;
             using (var db = new Data.D20CharacterDatabaseContext(options))
             {
-                Data.IRepo sut = new Data.D20Repo(db);
+                Lib.IRepo sut = new Data.D20Repo(db);
                 Lib.Character testChar = new Lib.Character();
                 if (await db.Characters.FirstOrDefaultAsync(c => c.CharacterId == 1) == null)
                 {
@@ -696,7 +696,7 @@ namespace XUnitTestD20
                 .UseInMemoryDatabase("character_list_by_user_test").Options;
             using (var db = new Data.D20CharacterDatabaseContext(options))
             {
-                Data.IRepo sut = new Data.D20Repo(db);
+                Lib.IRepo sut = new Data.D20Repo(db);
                 Lib.Character testChar = new Lib.Character();
                 if (await db.Characters.FirstOrDefaultAsync(c => c.CharacterId == 1) == null)
                 {
@@ -737,7 +737,7 @@ namespace XUnitTestD20
                 .UseInMemoryDatabase("join_campaign_test").Options;
             using (var db = new Data.D20CharacterDatabaseContext(options))
             {
-                Data.IRepo sut = new Data.D20Repo(db);
+                Lib.IRepo sut = new Data.D20Repo(db);
                 Lib.Campaign camp = new Lib.Campaign();
                 if (await db.Campaign.FirstOrDefaultAsync(c => c.CampaignId == 1) == null)
                 {
@@ -789,7 +789,7 @@ namespace XUnitTestD20
                 .UseInMemoryDatabase("remove_char_from_campaign_test").Options;
             using (var db = new Data.D20CharacterDatabaseContext(options))
             {
-                Data.IRepo sut = new Data.D20Repo(db);
+                Lib.IRepo sut = new Data.D20Repo(db);
                 Lib.Campaign camp = new Lib.Campaign();
                 if (await db.Campaign.FirstOrDefaultAsync(c => c.CampaignId == 1) == null)
                 {

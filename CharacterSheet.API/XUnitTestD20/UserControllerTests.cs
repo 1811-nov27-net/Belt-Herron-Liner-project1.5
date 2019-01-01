@@ -22,8 +22,8 @@ namespace XUnitTestD20
             {
                 new User
                 {
-                    userID = 1,
-                    username = "matt"
+                    UserID = 1,
+                    Username = "matt"
                 }
 
 
@@ -52,7 +52,7 @@ namespace XUnitTestD20
             Assert.Equal(data.Count, userList.Count);
             for (int i = 0; i < data.Count; i++)
             {
-                Assert.Equal(data[i].userID, userList[i].userID);
+                Assert.Equal(data[i].UserID, userList[i].UserID);
             }
 
 
