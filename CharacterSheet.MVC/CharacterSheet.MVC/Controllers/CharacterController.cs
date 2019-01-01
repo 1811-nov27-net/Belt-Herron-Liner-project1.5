@@ -1,18 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
+using CharacterSheet.MVC.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+
 
 namespace CharacterSheet.MVC.Controllers
 {
-    public class CharacterController : Controller
+    public class CharacterController : AServiceController
     {
-        // GET: Character
-        public ActionResult Index()
+
+        public CharacterController(HttpClient client) : base(client)
         {
-            return View();
+
+        }
+
+        // GET: Character
+        public async Task<ActionResult> Index()
+        {
+            var username = User.Identity.Name;
+            HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/User/{username}");
+            HttpResponseMessage response = await Client.SendAsync(message);
+            if (!response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+
+            var responseBody = await response.Content.ReadAsStringAsync();
+            User user = JsonConvert.DeserializeObject<User>(responseBody);
+
+            message = CreateServiceRequest(HttpMethod.Get, $"api/Character/{user.Username}");
+            response = await Client.SendAsync(message);
+            if (!response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+
+            responseBody = await response.Content.ReadAsStringAsync();
+            IEnumerable<Character> characters = JsonConvert.DeserializeObject<IEnumerable<Character>>(responseBody);
+            return View(characters);
         }
 
         // GET: Character/Details/5
