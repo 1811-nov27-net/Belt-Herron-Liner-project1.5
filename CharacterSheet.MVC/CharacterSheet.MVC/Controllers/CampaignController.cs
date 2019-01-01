@@ -79,7 +79,7 @@ namespace CharacterSheet.MVC.Controllers
                 HttpRequestMessage message = CreateServiceRequest(HttpMethod.Post, "api/Campaign", campaign);
                 HttpResponseMessage response = await Client.SendAsync(message);
 
-                if(!response.IsSuccessStatusCode)
+                if (!response.IsSuccessStatusCode)
                 {
                     return View(campaign);
                 }
@@ -87,7 +87,7 @@ namespace CharacterSheet.MVC.Controllers
                 int campID = JsonConvert.DeserializeObject<int>(responseBody);
                 message = CreateServiceRequest(HttpMethod.Get, $"api/User/{User.Identity.Name}");
                 response = await Client.SendAsync(message);
-                if(!response.IsSuccessStatusCode)
+                if (!response.IsSuccessStatusCode)
                 {
                     return RedirectToAction("Error");
                 }
@@ -125,7 +125,7 @@ namespace CharacterSheet.MVC.Controllers
             {
                 var url = $"https://localhost:44309/api/Campaign/{id}";
                 var response = await Client.PutAsJsonAsync(url, campaign);
-                if(response.IsSuccessStatusCode)
+                if (response.IsSuccessStatusCode)
                     return RedirectToAction(nameof(Index));
                 return View(campaign);
             }
@@ -150,7 +150,7 @@ namespace CharacterSheet.MVC.Controllers
                 HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/Character/{character.CharID}");
                 HttpResponseMessage response = await Client.SendAsync(message);
 
-                if(!response.IsSuccessStatusCode)
+                if (!response.IsSuccessStatusCode)
                 {
                     return View(character);
                 }
@@ -164,7 +164,7 @@ namespace CharacterSheet.MVC.Controllers
                 {
                     return View(character);
                 }
-                return RedirectToAction(nameof(Edit));
+                return RedirectToAction(nameof(Edit), campaign.CampID);
             }
             catch
             {
@@ -187,12 +187,47 @@ namespace CharacterSheet.MVC.Controllers
                 HttpRequestMessage message = CreateServiceRequest(HttpMethod.Put, $"api/Campaign/RemoveCharFromCamp/{campaign.CampID}", character);
                 HttpResponseMessage response = await Client.SendAsync(message);
                 if (response.IsSuccessStatusCode)
-                    return RedirectToAction(nameof(Edit));
+                    return RedirectToAction(nameof(Edit), campaign.CampID);
                 return View(character);
             }
             catch
             {
                 return View(character);
+            }
+        }
+
+        public IActionResult AddGM()
+        {
+            return View();
+        }
+
+        [HttpPut]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> AddGM(User user)
+        {
+            try
+            {
+                Campaign campaign = (Campaign)TempData["camp"];
+                HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/User/{user.Username}");
+                HttpResponseMessage response = await Client.SendAsync(message);
+                if (!response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Error", "Home");
+                }
+                var responseBody = await response.Content.ReadAsStringAsync();
+                user = JsonConvert.DeserializeObject<User>(responseBody);
+
+                message = CreateServiceRequest(HttpMethod.Put, $"api/Campaign/AddGM/{campaign.CampID}", user);
+                response = await Client.SendAsync(message);
+                if(response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Edit", campaign.CampID);
+                }
+                return RedirectToAction("Error", "Home");
+            }
+            catch
+            {
+                return RedirectToAction("Error", "Home");
             }
         }
         // GET: Campaign/Delete/5

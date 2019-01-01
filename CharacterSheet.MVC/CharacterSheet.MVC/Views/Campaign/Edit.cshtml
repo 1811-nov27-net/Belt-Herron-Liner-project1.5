@@ -28,7 +28,8 @@
                     @Html.ActionLink("Remove", "RemoveChar", new { id = item.CharID })
                 </div>
             }
-            <a asp-action="AddChar">Add Character</a>
+            <a asp-action="AddChar" class="btn btn-primary">Add Character</a>
+            <a asp-action="AddGM" class="btn btn-primary">Add GM</a>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
