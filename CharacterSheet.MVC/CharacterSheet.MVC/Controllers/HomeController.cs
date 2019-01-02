@@ -83,10 +83,10 @@ namespace CharacterSheet.MVC.Controllers
                 //}
                 return RedirectToAction("PlayerOrGM");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                return RedirectToAction("Error");
+                return RedirectToAction("Error", ex);
             }
         }
 
