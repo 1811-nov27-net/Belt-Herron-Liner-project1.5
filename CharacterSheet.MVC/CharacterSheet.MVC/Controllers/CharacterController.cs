@@ -75,6 +75,7 @@ namespace CharacterSheet.MVC.Controllers
         {
             try
             {
+                
                 HttpRequestMessage message = CreateServiceRequest(HttpMethod.Post, "api/Character", character);
                 HttpResponseMessage response = await Client.SendAsync(message);
 

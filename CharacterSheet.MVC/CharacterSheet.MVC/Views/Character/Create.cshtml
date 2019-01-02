@@ -18,21 +18,6 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CharID" class="control-label"></label>
-                <input asp-for="CharID" class="form-control" />
-                <span asp-validation-for="CharID" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UserID" class="control-label"></label>
-                <input asp-for="UserID" class="form-control" />
-                <span asp-validation-for="UserID" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CampID" class="control-label"></label>
-                <input asp-for="CampID" class="form-control" />
-                <span asp-validation-for="CampID" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="MaxHitPoints" class="control-label"></label>
                 <input asp-for="MaxHitPoints" class="form-control" />
                 <span asp-validation-for="MaxHitPoints" class="text-danger"></span>
@@ -60,6 +45,9 @@
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
+            <input hidden name="CharID" value="0" id="CharID" />
+            <input hidden name="CampID" value="0" id="CampID" />
+            <input hidden name="UserID" value="0" id="UserID" />
         </form>
     </div>
 </div>

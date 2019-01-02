@@ -68,6 +68,7 @@ namespace CharacterSheet.API.Controllers
             int newID;
             try
             {
+                character.UserID = Repo.UserDetails(User.Identity.Name).UserID;
                 newID = Repo.CreateCharacter(character);
 
 
