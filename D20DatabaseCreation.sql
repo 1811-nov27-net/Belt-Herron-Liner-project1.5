@@ -58,6 +58,15 @@ create table d20.Characters
 
 );
 
+alter table d20.Characters
+	add MaxHP int default 0;
+
+alter table d20.Characters
+	alter column MaxHP integer not null;
+
+alter table d20.Characters
+	add CharacterName nvarchar(100) not null;
+
 create table d20.SpellJunction
 (
 	CharacterId int not null,
@@ -116,3 +125,37 @@ create table d20.SpellSlots
 	Level9Slots int default 0
 
 );
+
+alter table d20.SpellSlots
+	add constraint FK_Slots_Character foreign key (CharacterId) references d20.Characters (CharacterId)
+
+
+alter table d20.GMJunction
+	add constraint PK_GM primary key (CampaignId, GMId);
+alter table d20.SpellJunction
+	add constraint PK_SJ primary key (CharacterId, SpellId);
+alter table d20.Skills
+	add constraint PK_Skills primary key (SkillName, CharacterId);
+alter table d20.Feats
+	add constraint PK_Feats primary key (FeatName, CharacterId);
+alter table d20.Classes
+	add constraint PK_Classes primary key (ClassName, CharacterId);
+alter table d20.Inventory
+	add constraint PK_Inventory primary key (ItemName, CharacterId);
+alter table d20.SpellSlots
+	add constraint PK_SpellSlots primary key (CharacterId, ClassName);
+
+
+insert into d20.Gamer (UserName) values
+	('No User');
+select * from d20.Gamer
+
+insert into d20.Campaign (CampaignName) values
+	('No Campaign');
+select * from d20.Campaign
+
+select * from d20.Characters
+
+insert into d20.Characters (GamerId, CampaignId, CharacterName, Race, Sex, Alignment) values
+	(1, 1, 'Not a Character', 'Not a Character', 'Not a Character', 'Not a Character');
+
