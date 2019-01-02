@@ -21,18 +21,9 @@ namespace CharacterSheet.MVC.Controllers
 
         // GET: Character
         public async Task<ActionResult> Index()
-        {
-            //HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/User/LoggedInUser");
-            //HttpResponseMessage response = await Client.SendAsync(message);
-            //if (!response.IsSuccessStatusCode)
-            //{
-            //    return RedirectToAction("Error", "Home");
-            //}
-
-            //var responseBody = await response.Content.ReadAsStringAsync();
-            //var username = JsonConvert.DeserializeObject<string>(responseBody);
+        { 
             var username = ViewBag.LoggedInUser;
-            HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/User/{username}");
+            HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/User/ByName/{username}");
             HttpResponseMessage response = await Client.SendAsync(message);
             if (!response.IsSuccessStatusCode)
             {
@@ -42,7 +33,7 @@ namespace CharacterSheet.MVC.Controllers
             var responseBody = await response.Content.ReadAsStringAsync();
             User user = JsonConvert.DeserializeObject<User>(responseBody);
 
-            message = CreateServiceRequest(HttpMethod.Get, $"api/Character/{user.Username}");
+            message = CreateServiceRequest(HttpMethod.Get, $"api/Character/ByUser/{user.UserID}");
             response = await Client.SendAsync(message);
             if (!response.IsSuccessStatusCode)
             {

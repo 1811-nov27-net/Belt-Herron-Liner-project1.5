@@ -256,7 +256,7 @@ namespace DataAccess
 
         public User UserDetails(string username)
         {
-            return _db.Gamer.Where(g => g.UserName == username).FirstOrDefault();
+            return _db.Gamer.FirstOrDefault(g => g.UserName == username);
         }
 
         public IEnumerable<ClassLibrary.User> UserList()

@@ -117,7 +117,8 @@ namespace CharacterSheet.API.Controllers
         }
 
         // GET: api/User/5
-        [HttpGet("{id}")]
+        [HttpGet]
+        [Route("ByID/{id}")]
         public ActionResult<User> Get(int id)
         {
             User user;
@@ -131,14 +132,15 @@ namespace CharacterSheet.API.Controllers
             }
             if (user == null)
             {
-                return NotFound();
+                return StatusCode(418);
             }
 
             return user;
         }
 
         // GET: api/User/username
-        [HttpGet("{username}")]
+        [HttpGet]
+        [Route("ByName/{username}")]
         public ActionResult<User> Get(string username)
         {
             User user;

@@ -139,6 +139,7 @@ namespace CharacterSheet.API.Controllers
 
         //get list of characters by user
         [HttpGet]
+        [Route("ByUser/{userID}")]
         public ActionResult<IEnumerable<Character>> GetCharByUser(int userID)
         {
             User existingUser = Repo.UserDetails(userID);
