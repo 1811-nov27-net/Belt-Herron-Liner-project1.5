@@ -9,11 +9,18 @@ using ClassLibrary;
 using DataAccess;
 using CharacterSheet.API.Controllers;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
+
 
 namespace XUnitTestD20
 {
     public class UserControllerTests
     {
+        private Mock<SignInManager<IdentityUser>> _mockSignInManager;
+        private Mock<IdentityDbContext> _db;
+
         [Fact]
         public void UserIndexTest()
         {
@@ -40,7 +47,7 @@ namespace XUnitTestD20
             mockRepo
                 .Setup(repo => repo.CreateUser(It.IsAny<User>()));
 
-            var controller = new UserController(mockRepo.Object);
+            var controller = new UserController(_mockSignInManager.Object, _db.Object, mockRepo.Object);
 
             ActionResult<IEnumerable<User>> result = controller.Get();
 
