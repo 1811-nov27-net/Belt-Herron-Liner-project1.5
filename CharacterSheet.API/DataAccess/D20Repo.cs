@@ -237,7 +237,7 @@ namespace DataAccess
             trackedCharacter.TouchAc = tempChar.TouchAc;
             trackedCharacter.Wisdom = tempChar.Wisdom;
             _db.Characters.Update(trackedCharacter);
-            await _db.SaveChangesAsync();
+            _db.SaveChanges();
         }
 
         public async void UpdateUser(User user)
