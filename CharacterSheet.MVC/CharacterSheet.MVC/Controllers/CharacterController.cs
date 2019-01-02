@@ -87,6 +87,8 @@ namespace CharacterSheet.MVC.Controllers
                 var responseBody = await response.Content.ReadAsStringAsync();
                 User user = JsonConvert.DeserializeObject<User>(responseBody);
                 character.UserID = user.UserID;
+                character.CampID = 1;
+                character.CalculateBonusesAndSaves();
                 message = CreateServiceRequest(HttpMethod.Post, "api/Character", character);
                 response = await Client.SendAsync(message);
 
