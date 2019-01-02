@@ -12,7 +12,14 @@ namespace CharacterSheet.MVC.Models
             EffectiveSavingThrows = new Dictionary<string, int>();
             BaseSavingThrows = new Dictionary<string, int>();
             ClassLevels = new Dictionary<string, int>();
-            Attributes = new Dictionary<string, int>();
+            Attributes = new Dictionary<string, int> {
+                {"Strength", 0 },
+                {"Dexterity", 0 },
+                {"Stamina", 0 },
+                {"Intelligence", 0 },
+                {"Charisma", 0 },
+                {"Wisdom", 0 }
+            };
             AttributeBonuses = new Dictionary<string, int>();
             SkillList = new Dictionary<string, int>();
             FeatList = new Dictionary<string, int>();

@@ -65,7 +65,8 @@ namespace CharacterSheet.MVC.Controllers
         // GET: Character/Create
         public ActionResult Create()
         {
-            return View();
+            Character character = new Character();
+            return View(character);
         }
 
         // POST: Character/Create
