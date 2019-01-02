@@ -142,11 +142,11 @@ namespace DataAccess
 
         public int CreateUser(User user)
         {
-            //user.UserID = await _db.Gamer.MaxAsync(g => g.GamerId) + 1;
-            int newId = _db.Gamer.Select(c => c.GamerId).Max() + 1;
-            user.UserID = newId;
+            //int newId = _db.Gamer.Select(c => c.GamerId).Max() + 1;
+            user.UserID = 0;
             _db.Gamer.Add(user);
-            _db.SaveChangesAsync();
+            _db.SaveChanges();
+            int newId = _db.Gamer.First(g => g.UserName == user.Username).GamerId;
             return newId;
         }
 

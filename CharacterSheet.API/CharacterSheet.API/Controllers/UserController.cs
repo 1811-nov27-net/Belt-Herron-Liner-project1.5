@@ -66,12 +66,12 @@ namespace CharacterSheet.API.Controllers
 
                     if (!result.Succeeded)
                     {
-                        return StatusCode(501, result);
+                        return StatusCode(500, result);
                     }
                     result = await userManager.AddToRoleAsync(newUser, "GM");
                     if (!result.Succeeded)
                     {
-                        return StatusCode(502, result);
+                        return StatusCode(500, result);
                     }
                 }
             }
@@ -81,8 +81,8 @@ namespace CharacterSheet.API.Controllers
             d20User.Username = user.UserName;
             d20User.Characters = new List<Character>();
             d20User.MyCampaigns = new List<ClassLibrary.Campaign>();
-            Repo.CreateUser(d20User);
-            return NoContent();
+            int id = Repo.CreateUser(d20User);
+            return StatusCode(201, id);
         }
         [HttpPost]
         [Route("Logout")]
