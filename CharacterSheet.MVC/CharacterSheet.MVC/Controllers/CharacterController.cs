@@ -109,7 +109,6 @@ namespace CharacterSheet.MVC.Controllers
         public async Task<ActionResult> Edit(int id)
         {
             var character = JsonConvert.DeserializeObject<Character>(await Client.GetStringAsync($"https://localhost:44309/api/Character/{id}"));
-            TempData["char"] = character;
             return View(character);
         }
 
@@ -159,7 +158,7 @@ namespace CharacterSheet.MVC.Controllers
         {
             try
             {
-                HttpRequestMessage message = CreateServiceRequest(HttpMethod.Delete, $"api/Character/{character.CharID}");
+                HttpRequestMessage message = CreateServiceRequest(HttpMethod.Delete, $"api/Character/{id}");
                 HttpResponseMessage response = await Client.SendAsync(message);
 
                 if (!response.IsSuccessStatusCode)
