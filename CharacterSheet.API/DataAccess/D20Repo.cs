@@ -138,7 +138,7 @@ namespace DataAccess
             character.CharID = 0;
             _db.Characters.Add(character);
             _db.SaveChangesAsync();
-            int newId = (await _db.Characters.Where(c => c.GamerId == character.UserID && c.CharacterName == character.Name && c.Race == character.Race).FirstAsync()).CharacterId;
+            int newId = (await _db.Characters.FirstAsync(c => c.GamerId == character.UserID && c.CharacterName == character.Name && c.Race == character.Race)).CharacterId;
             return newId;
         }
 
