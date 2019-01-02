@@ -41,7 +41,7 @@ namespace CharacterSheet.API.Controllers
         }
 
         // GET: api/Campaign/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}")]
         public ActionResult<Campaign> Get(int id)
         {
             Campaign campaign;

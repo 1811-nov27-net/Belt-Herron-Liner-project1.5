@@ -13,7 +13,7 @@ namespace CharacterSheet.MVC.Filters
             var controller = context.Controller as AServiceController;
             if(controller != null)
             {
-                HttpRequestMessage request = controller.CreateServiceRequest(HttpMethod.Get, "api/user/loggedinuser");
+                HttpRequestMessage request = controller.CreateServiceRequest(HttpMethod.Get, "api/User/LoggedInUser");
                 HttpResponseMessage response = await controller.Client.SendAsync(request);
 
                 if(!response.IsSuccessStatusCode)

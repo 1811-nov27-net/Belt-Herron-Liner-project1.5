@@ -24,7 +24,7 @@ namespace CharacterSheet.MVC.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Login(LoginUser user)
+        public async Task<IActionResult> Index(LoginUser user)
         {
             try
             {
@@ -72,15 +72,15 @@ namespace CharacterSheet.MVC.Controllers
                 HttpRequestMessage message = CreateServiceRequest(HttpMethod.Post, "api/User/Register", user);
                 HttpResponseMessage response = await Client.SendAsync(message);
 
-                if (!response.IsSuccessStatusCode)
-                {
-                    return RedirectToAction("Error");
-                }
+                //if (!response.IsSuccessStatusCode)
+                //{
+                //    return RedirectToAction("Error");
+                //}
                 var success = PassCookiesToClient(response);
-                if (!success)
-                {
-                    return View("Error");
-                }
+                //if (!success)
+                //{
+                //    return View("Error");
+                //}
                 return RedirectToAction("PlayerOrGM");
             }
             catch (Exception)

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ClassLibrary;
+using DataAccess;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,6 +33,10 @@ namespace CharacterSheet.API
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            services.AddScoped<IRepo, D20Repo>();
+
+            services.AddDbContext<D20CharacterDatabaseContext>(optionsBuilder => optionsBuilder.UseSqlServer(Configuration.GetConnectionString("DBString")));
+
             services.AddDbContext<IdentityDbContext>(options => 
                 options.UseSqlServer(Configuration.GetConnectionString("UserApiAuthorization")));
 
@@ -38,6 +44,7 @@ namespace CharacterSheet.API
                 {
                     options.Password.RequiredLength = 25;
                     options.Password.RequiredUniqueChars = 1;
+                    options.Password.RequireDigit = false;
                 }).AddEntityFrameworkStores<IdentityDbContext>();
 
             services.ConfigureApplicationCookie(options =>

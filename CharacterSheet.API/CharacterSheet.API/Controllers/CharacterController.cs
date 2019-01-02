@@ -39,7 +39,7 @@ namespace CharacterSheet.API.Controllers
         }
 
         // GET: api/Character/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}")]
         public ActionResult<Character> Get(int id)
         {
             Character character;

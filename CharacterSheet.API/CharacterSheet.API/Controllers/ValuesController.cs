@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CharacterSheet.API.Controllers
@@ -10,6 +12,12 @@ namespace CharacterSheet.API.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        private SignInManager<IdentityUser> _SignInManager;
+        public ValuesController(SignInManager<IdentityUser> signInManager, IdentityDbContext db)
+        {
+            db.Database.EnsureCreated();
+            _SignInManager = signInManager;
+        }
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()

@@ -22,7 +22,16 @@ namespace CharacterSheet.MVC.Controllers
         // GET: Character
         public async Task<ActionResult> Index()
         {
-            var username = User.Identity.Name;
+            //HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/User/LoggedInUser");
+            //HttpResponseMessage response = await Client.SendAsync(message);
+            //if (!response.IsSuccessStatusCode)
+            //{
+            //    return RedirectToAction("Error", "Home");
+            //}
+
+            //var responseBody = await response.Content.ReadAsStringAsync();
+            //var username = JsonConvert.DeserializeObject<string>(responseBody);
+            var username = ViewBag.LoggedInUser;
             HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/User/{username}");
             HttpResponseMessage response = await Client.SendAsync(message);
             if (!response.IsSuccessStatusCode)

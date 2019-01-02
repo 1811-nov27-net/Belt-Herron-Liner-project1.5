@@ -22,14 +22,16 @@ namespace CharacterSheet.API.Controllers
         private SignInManager<IdentityUser> _SignInManager;
         IRepo Repo;
 
-        public UserController (SignInManager<IdentityUser> signInManager, IdentityDbContext db)
+        public UserController(SignInManager<IdentityUser> signInManager, IdentityDbContext db, IRepo repo)
         {
             db.Database.EnsureCreated();
             _SignInManager = signInManager;
+            Repo = repo;
         }
 
         [HttpPost]
-        public async Task<ActionResult> Login(UserViewModel user)
+        [Route("Login")]
+        public async Task<ActionResult> Login([FromBody]UserViewModel user)
         {
             var result = await _SignInManager.PasswordSignInAsync(user.UserName, user.Password, isPersistent: false, lockoutOnFailure: false);
             if (!result.Succeeded)
@@ -40,15 +42,16 @@ namespace CharacterSheet.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Register(UserViewModel user, 
-            [FromServices]UserManager<IdentityUser> userManager, 
+        [Route("Register")]
+        public async Task<ActionResult> Register([FromBody]UserViewModel user,
+            [FromServices]UserManager<IdentityUser> userManager,
             [FromServices] RoleManager<IdentityRole> roleManager, bool GM = false)
         {
             var newUser = new IdentityUser(user.UserName);
 
             var result = await userManager.CreateAsync(newUser, user.Password);
 
-            if(!result.Succeeded)
+            if (!result.Succeeded)
             {
                 return BadRequest(result);
             }
@@ -56,27 +59,33 @@ namespace CharacterSheet.API.Controllers
             if (GM)
             {
                 var result2 = await roleManager.RoleExistsAsync("GM");
-                if(!result2)
+                if (!result2)
                 {
                     var GMRole = new IdentityRole("GM");
                     result = await roleManager.CreateAsync(GMRole);
 
-                    if(!result.Succeeded)
+                    if (!result.Succeeded)
                     {
-                        return StatusCode(500, result);
+                        return StatusCode(501, result);
                     }
                     result = await userManager.AddToRoleAsync(newUser, "GM");
-                    if(!result.Succeeded)
+                    if (!result.Succeeded)
                     {
-                        return StatusCode(500, result);
+                        return StatusCode(502, result);
                     }
                 }
             }
             await _SignInManager.SignInAsync(newUser, isPersistent: false);
-
+            User d20User = new User();
+            d20User.UserID = 0;
+            d20User.Username = user.UserName;
+            d20User.Characters = new List<Character>();
+            d20User.MyCampaigns = new List<ClassLibrary.Campaign>();
+            Repo.CreateUser(d20User);
             return NoContent();
         }
-
+        [HttpPost]
+        [Route("Logout")]
         public async Task<NoContentResult> Logout()
         {
             await _SignInManager.SignOutAsync();
@@ -86,15 +95,11 @@ namespace CharacterSheet.API.Controllers
 
         [HttpGet]
         [Authorize]
+        [Route("LoggedInUser")]
         public string LoggedInUser()
         {
             var roles = User.IsInRole("GM");
             return User.Identity.Name;
-        }
-
-        public UserController(IRepo repo)
-        {
-            Repo = repo;
         }
 
         // GET: api/User
@@ -112,7 +117,7 @@ namespace CharacterSheet.API.Controllers
         }
 
         // GET: api/User/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}")]
         public ActionResult<User> Get(int id)
         {
             User user;
@@ -133,7 +138,7 @@ namespace CharacterSheet.API.Controllers
         }
 
         // GET: api/User/username
-        [HttpGet("{username}", Name = "Get")]
+        [HttpGet("{username}")]
         public ActionResult<User> Get(string username)
         {
             User user;
