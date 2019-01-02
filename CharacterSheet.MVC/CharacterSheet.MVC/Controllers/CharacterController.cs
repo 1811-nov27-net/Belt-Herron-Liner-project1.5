@@ -137,9 +137,19 @@ namespace CharacterSheet.MVC.Controllers
         }
 
         // GET: Character/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/Character/{id}");
+            HttpResponseMessage response = await Client.SendAsync(message);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            var responseBody = await response.Content.ReadAsStringAsync();
+            Character character = JsonConvert.DeserializeObject<Character>(responseBody);
+            return View(character);
         }
 
         // POST: Character/Delete/5
