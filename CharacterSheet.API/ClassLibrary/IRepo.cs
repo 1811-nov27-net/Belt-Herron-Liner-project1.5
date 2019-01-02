@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ClassLibrary
 {
@@ -9,19 +10,19 @@ namespace ClassLibrary
     {
         void AddGM(int CampID, int UserID);
         void RemGM(int CampID, int UserID);
-        IEnumerable<User> GetGmByCampaign(int CampID);
+        Task<IEnumerable<User>> GetGmByCampaign(int CampID);
 
         //for creating new instances in the database
-        int CreateCharacter(Character character);                             //create a new character
-        int CreateCampaign(Campaign campaign);                              //create a new campaign
-        int CreateUser(User user);                                  //create a new user
+        Task<int> CreateCharacter(Character character);                             //create a new character
+        Task<int> CreateCampaign(Campaign campaign);                              //create a new campaign
+        Task<int> CreateUser(User user);                                  //create a new user
 
         //for reading individual entries
-        Character CharDetails(int CharID);                            //view character details
-        Character CharDetails(string charName);
-        Campaign CampDetails(int CampID);                             //view campaign details
-        User UserDetails(int UserID);                                 //view user details
-        User UserDetails(string username);
+        Task<Character> CharDetails(int CharID);                            //view character details
+        Task<Character> CharDetails(string charName);
+        Task<Campaign> CampDetails(int CampID);                             //view campaign details
+        Task<User> UserDetails(int UserID);                                 //view user details
+        Task<User> UserDetails(string username);
 
         //for updating entries
         void UpdateCharacter(Character character);                             //update a character
@@ -34,14 +35,14 @@ namespace ClassLibrary
         void DeleteUser(int UserID);                                  //delete a user
 
         //for retrieving basic lists
-        IEnumerable<Character> CharacterList();             //grab the character list
-        IEnumerable<Campaign> CampList();                   //grab the campaign list
-        IEnumerable<Campaign> CampList(string GMUsername);
-        IEnumerable<User> UserList();                       //grab the user list
+        Task<IEnumerable<Character>> CharacterList();             //grab the character list
+        Task<IEnumerable<Campaign>> CampList();                   //grab the campaign list
+        Task<IEnumerable<Campaign>> CampList(string GMUsername);
+        Task<IEnumerable<User>> UserList();                       //grab the user list
 
         //for retrieving specified lists
-        IEnumerable<Character> CharacterListByUser(int UserID);       //list of characters for a certain user
-        IEnumerable<Character> CharacterListByCamp(int CampID);       //list of characters for a certain campaign
+        Task<IEnumerable<Character>> CharacterListByUser(int UserID);       //list of characters for a certain user
+        Task<IEnumerable<Character>> CharacterListByCamp(int CampID);       //list of characters for a certain campaign
 
         //user functions
         void JoinCamp(int CampID, int CharID);                                    //join a campaign

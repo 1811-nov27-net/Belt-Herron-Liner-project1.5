@@ -24,11 +24,11 @@ namespace CharacterSheet.API.Controllers
 
         // GET: api/Character
         [HttpGet]
-        public ActionResult<IEnumerable<Character>> Get()
+        public async Task<ActionResult<IEnumerable<Character>>> Get()
         {
             try
             {
-            return Repo.CharacterList().ToList();
+            return (await Repo.CharacterList()).ToList();
 
             }
             catch (Exception ex)
@@ -40,12 +40,12 @@ namespace CharacterSheet.API.Controllers
 
         // GET: api/Character/5
         [HttpGet("{id}")]
-        public ActionResult<Character> Get(int id)
+        public async Task<ActionResult<Character>> Get(int id)
         {
             Character character;
             try
             {
-                character = Repo.CharDetails(id);
+                character = await Repo.CharDetails(id);
             }
             catch (Exception ex)
             {
@@ -63,13 +63,13 @@ namespace CharacterSheet.API.Controllers
 
         // POST: api/Character
         [HttpPost]
-        public ActionResult Post([FromBody] Character character)
+        public async Task<ActionResult> Post([FromBody] Character character)
         {
             int newID;
             try
             {
-                character.UserID = Repo.UserDetails(User.Identity.Name).UserID;
-                newID = Repo.CreateCharacter(character);
+                character.UserID = (await Repo.UserDetails(User.Identity.Name)).UserID;
+                newID = await Repo.CreateCharacter(character);
 
 
             }
@@ -84,12 +84,12 @@ namespace CharacterSheet.API.Controllers
 
         // PUT: api/Character/5
         [HttpPut("{id}")]
-        public ActionResult Put(int id, [FromBody] Character character)
+        public async Task<ActionResult> Put(int id, [FromBody] Character character)
         {
             Character existing;
             try
             {
-                existing = Repo.CharDetails(id);
+                existing = await Repo.CharDetails(id);
             }
             catch (Exception ex)
             {
@@ -119,12 +119,12 @@ namespace CharacterSheet.API.Controllers
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             Character existing;
             try
             {
-                existing = Repo.CharDetails(id);
+                existing = await Repo.CharDetails(id);
                 if(existing == null)
                 {
                     return NotFound();
@@ -141,23 +141,19 @@ namespace CharacterSheet.API.Controllers
         //get list of characters by user
         [HttpGet]
         [Route("ByUser/{userID}")]
-        public ActionResult<IEnumerable<Character>> GetCharByUser(int userID)
+        public async Task<ActionResult<IEnumerable<Character>>> GetCharByUser(int userID)
         {
-            User existingUser = Repo.UserDetails(userID);
+            User existingUser = await Repo.UserDetails(userID);
 
             if (existingUser == null)
             {
                 return NotFound();
             }
 
-            if (existingUser == null)
-            {
-                return NotFound();
-            }
 
             try
             {
-                return Repo.CharacterListByUser(userID).ToList();
+                return (await Repo.CharacterListByUser(userID)).ToList();
             }
             catch (Exception ex)
             {
@@ -167,13 +163,13 @@ namespace CharacterSheet.API.Controllers
 
         //get list of characters by campaign
         [HttpGet]
-        public ActionResult<IEnumerable<Character>> GetCharByCamp(int campID)
+        public async Task<ActionResult<IEnumerable<Character>>> GetCharByCamp(int campID)
         {
-            Campaign existingCamp = Repo.CampDetails(campID);
+            Campaign existingCamp = await Repo.CampDetails(campID);
 
             try
             {
-                return Repo.CharacterListByCamp(campID).ToList();
+                return (await Repo.CharacterListByCamp(campID)).ToList();
             }
             catch (Exception ex)
             {

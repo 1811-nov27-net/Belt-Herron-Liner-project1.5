@@ -49,7 +49,7 @@ namespace XUnitTestD20
 
             var controller = new UserController(_mockSignInManager.Object, _db.Object, mockRepo.Object);
 
-            ActionResult<IEnumerable<User>> result = controller.Get();
+            ActionResult<IEnumerable<User>> result = controller.GetAsync();
 
             //ViewResult viewResult = Assert.IsAssignableFrom<ViewResult>(result);
 

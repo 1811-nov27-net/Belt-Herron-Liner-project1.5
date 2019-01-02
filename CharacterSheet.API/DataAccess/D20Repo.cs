@@ -40,16 +40,16 @@ namespace DataAccess
             _db.SaveChangesAsync();
         }
 
-        public ClassLibrary.Campaign CampDetails(int CampID)
+        public async Task<ClassLibrary.Campaign> CampDetails(int CampID)
         {
-
-            return _db.Campaign.Find(CampID);
+            ClassLibrary.Campaign ret = await _db.Campaign.FindAsync(CampID);
+            return ret;
         }
 
-        public IEnumerable<ClassLibrary.Campaign> CampList()
+        public async Task<IEnumerable<ClassLibrary.Campaign>> CampList()
         {
             List<ClassLibrary.Campaign> ret = new List<ClassLibrary.Campaign>();
-            var temp = _db.Campaign.Include(c => c.Characters).Include(c => c.Gmjunction).ToList();
+            var temp = await _db.Campaign.Include(c => c.Characters).Include(c => c.Gmjunction).ToListAsync();
             foreach (var item in temp)
             {
                 ret.Add(item);
@@ -57,10 +57,10 @@ namespace DataAccess
             return ret;
         }
 
-        public IEnumerable<ClassLibrary.Campaign> CampList(string GMUsername)
+        public async Task<IEnumerable<ClassLibrary.Campaign>> CampList(string GMUsername)
         {
             List<ClassLibrary.Campaign> ret = new List<ClassLibrary.Campaign>();
-            var temp = _db.Campaign.Include(c => c.Characters).Include(c => c.Gmjunction).Where(c => c.Gmjunction.Any(gmj => gmj.Gm.UserName == GMUsername)).ToList();
+            var temp = await _db.Campaign.Include(c => c.Characters).Include(c => c.Gmjunction).Where(c => c.Gmjunction.Any(gmj => gmj.Gm.UserName == GMUsername)).ToListAsync();
             if (temp.Count == 0)
                 return null;
             foreach (var item in temp)
@@ -73,10 +73,10 @@ namespace DataAccess
 
         }
 
-        public IEnumerable<ClassLibrary.Character> CharacterList()
+        public async Task<IEnumerable<Character>> CharacterList()
         {
             List<Character> ret = new List<Character>();
-            var temp = _db.Characters.Include(c => c.Classes).Include(c => c.Feats).Include(c => c.Inventory).Include(c => c.Skills).Include(c => c.SpellJunction).Include(c => c.SpellSlots).ToList();
+            var temp = await _db.Characters.Include(c => c.Classes).Include(c => c.Feats).Include(c => c.Inventory).Include(c => c.Skills).Include(c => c.SpellJunction).Include(c => c.SpellSlots).ToListAsync();
             foreach (var item in temp)
             {
                 ret.Add(item);
@@ -86,10 +86,10 @@ namespace DataAccess
             return ret;
         }
 
-        public IEnumerable<ClassLibrary.Character> CharacterListByCamp(int CampID)
+        public async Task<IEnumerable<Character>> CharacterListByCamp(int CampID)
         {
             List<Character> ret = new List<Character>();
-            var temp = _db.Characters.Include(c => c.Classes).Include(c => c.Feats).Include(c => c.Inventory).Include(c => c.Skills).Include(c => c.SpellJunction).Include(c => c.SpellSlots).Where(c => c.CampaignId == CampID);
+            var temp = await _db.Characters.Include(c => c.Classes).Include(c => c.Feats).Include(c => c.Inventory).Include(c => c.Skills).Include(c => c.SpellJunction).Include(c => c.SpellSlots).Where(c => c.CampaignId == CampID).ToListAsync();
             foreach (var item in temp)
             {
                 ret.Add(item);
@@ -99,10 +99,10 @@ namespace DataAccess
             return ret;
         }
 
-        public IEnumerable<ClassLibrary.Character> CharacterListByUser(int UserID)
+        public async Task<IEnumerable<Character>> CharacterListByUser(int UserID)
         {
             List<Character> ret = new List<Character>();
-            var temp = _db.Characters.Include(c => c.Classes).Include(c => c.Feats).Include(c => c.Inventory).Include(c => c.Skills).Include(c => c.SpellJunction).Include(c => c.SpellSlots).Where(c => c.GamerId == UserID);
+            var temp = await _db.Characters.Include(c => c.Classes).Include(c => c.Feats).Include(c => c.Inventory).Include(c => c.Skills).Include(c => c.SpellJunction).Include(c => c.SpellSlots).Where(c => c.GamerId == UserID).ToListAsync();
 
             foreach (var item in temp)
             {
@@ -112,47 +112,49 @@ namespace DataAccess
             return ret;
         }
 
-        public ClassLibrary.Character CharDetails(int CharID)
+        public async Task<Character> CharDetails(int CharID)
         {
-            return _db.Characters.Include(c => c.Classes).Include(c => c.Feats).Include(c => c.Inventory).Include(c => c.Skills).Include(c => c.SpellJunction).Include(c => c.SpellSlots).First(c => c.CharacterId == CharID);
+            Character ret = await _db.Characters.Include(c => c.Classes).Include(c => c.Feats).Include(c => c.Inventory).Include(c => c.Skills).Include(c => c.SpellJunction).Include(c => c.SpellSlots).FirstAsync(c => c.CharacterId == CharID);
+            return ret;
         }
 
-        public Character CharDetails(string charName)
+        public async Task<Character> CharDetails(string charName)
         {
-            return _db.Characters.Include(c => c.Classes).Include(c => c.Feats).Include(c => c.Inventory).Include(c => c.Skills).Include(c => c.SpellJunction).Include(c => c.SpellSlots).First(c => c.CharacterName == charName);
+            Character ret = await _db.Characters.Include(c => c.Classes).Include(c => c.Feats).Include(c => c.Inventory).Include(c => c.Skills).Include(c => c.SpellJunction).Include(c => c.SpellSlots).FirstAsync(c => c.CharacterName == charName);
+            return ret;
         }
 
-        public int CreateCampaign(ClassLibrary.Campaign campaign)
+        public async Task<int> CreateCampaign(ClassLibrary.Campaign campaign)
         {
             campaign.CampID = 0;
             _db.Campaign.Add(campaign);
             _db.SaveChangesAsync();
-            int newId = _db.Campaign.Where(c => c.CampaignName == campaign.Name).First().CampaignId;
+            int newId = (await _db.Campaign.Where(c => c.CampaignName == campaign.Name).FirstAsync()).CampaignId;
             return newId;
         }
 
-        public int CreateCharacter(Character character)
+        public async Task<int> CreateCharacter(Character character)
         {
             character.CharID = 0;
             _db.Characters.Add(character);
             _db.SaveChangesAsync();
-            int newId = _db.Characters.Where(c => c.GamerId == character.UserID && c.CharacterName == character.Name && c.Race == character.Race).First().CharacterId;
+            int newId = (await _db.Characters.Where(c => c.GamerId == character.UserID && c.CharacterName == character.Name && c.Race == character.Race).FirstAsync()).CharacterId;
             return newId;
         }
 
-        public int CreateUser(User user)
+        public async Task<int> CreateUser(User user)
         {
             //int newId = _db.Gamer.Select(c => c.GamerId).Max() + 1;
             user.UserID = 0;
             _db.Gamer.Add(user);
             _db.SaveChanges();
-            int newId = _db.Gamer.First(g => g.UserName == user.Username).GamerId;
+            int newId = (await _db.Gamer.FirstAsync(g => g.UserName == user.Username)).GamerId;
             return newId;
         }
 
-        public void DeleteCamp(int CampID)
+        public async void DeleteCamp(int CampID)
         {
-            foreach (var item in _db.Campaign.First(c => c.CampaignId == CampID).Characters)
+            foreach (var item in (await _db.Campaign.FirstAsync(c => c.CampaignId == CampID)).Characters)
             {
                 item.CampaignId = 1;
                 _db.Characters.Update(item);
@@ -162,15 +164,15 @@ namespace DataAccess
 
         }
 
-        public void DeleteChar(int CharID)
+        public async void DeleteChar(int CharID)
         {
-            _db.Characters.Remove(_db.Characters.First(c => c.CharacterId == CharID));
+            _db.Characters.Remove(await _db.Characters.FirstAsync(c => c.CharacterId == CharID));
             _db.SaveChangesAsync();
         }
 
-        public void DeleteUser(int UserID)
+        public async void DeleteUser(int UserID)
         {
-            foreach (var item in _db.Gamer.First(g => g.GamerId == UserID).Characters)
+            foreach (var item in (await _db.Gamer.FirstAsync(g => g.GamerId == UserID)).Characters)
             {
                 item.GamerId = 1;
                 _db.Characters.Update(item);
@@ -179,15 +181,15 @@ namespace DataAccess
             _db.SaveChangesAsync();
         }
 
-        public void JoinCamp(int CampID, int CharID)
+        public async void JoinCamp(int CampID, int CharID)
         {
-            _db.Characters.First(c => c.CharacterId == CharID).CampaignId = CampID;
+            (await _db.Characters.FirstAsync(c => c.CharacterId == CharID)).CampaignId = CampID;
             _db.SaveChangesAsync();
         }
 
-        public void RemoveCharFromCamp(int CampID, int CharID)
+        public async void RemoveCharFromCamp(int CampID, int CharID)
         {
-            _db.Characters.First(c => c.CharacterId == CharID).CampaignId = 1; // 1 = no campagin
+            (await _db.Characters.FirstAsync(c => c.CharacterId == CharID)).CampaignId = 1; // 1 = no campagin
             _db.SaveChangesAsync();
         }
 
@@ -249,19 +251,21 @@ namespace DataAccess
             await _db.SaveChangesAsync();
         }
 
-        public ClassLibrary.User UserDetails(int UserID)
+        public async Task<User> UserDetails(int UserID)
         {
-            return _db.Gamer.Find(UserID);
+            User ret = await _db.Gamer.FindAsync(UserID);
+            return ret;
         }
 
-        public User UserDetails(string username)
+        public async Task<User> UserDetails(string username)
         {
-            return _db.Gamer.FirstOrDefault(g => g.UserName == username);
+            User ret = await _db.Gamer.FirstOrDefaultAsync(g => g.UserName == username);
+            return ret;
         }
 
-        public IEnumerable<ClassLibrary.User> UserList()
+        public async Task<IEnumerable<User>> UserList()
         {
-            var temp = _db.Gamer.AsEnumerable();
+            var temp = await _db.Gamer.ToListAsync();
             List<User> ret = new List<User>();
             foreach (var item in temp)
             {
@@ -271,9 +275,9 @@ namespace DataAccess
             return ret;
         }
 
-        public IEnumerable<User> GetGmByCampaign(int CampID)
+        public async Task<IEnumerable<User>> GetGmByCampaign(int CampID)
         {
-            var temp = _db.Gamer.Include(g => g.Gmjunction).Where(g => g.Gmjunction.Any(gm => gm.CampaignId == CampID)).ToList();
+            var temp = await _db.Gamer.Include(g => g.Gmjunction).Where(g => g.Gmjunction.Any(gm => gm.CampaignId == CampID)).ToListAsync();
             List<User> ret = new List<User>();
             foreach (var item in temp)
             {

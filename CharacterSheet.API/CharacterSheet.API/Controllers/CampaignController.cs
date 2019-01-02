@@ -28,11 +28,11 @@ namespace CharacterSheet.API.Controllers
 
         // GET: api/Campaign
         [HttpGet]
-        public ActionResult<IEnumerable<ClassLibrary.Campaign>> Get()
+        public async Task<ActionResult<IEnumerable<Campaign>>> Get()
         {
             try
             {
-                return Repo.CampList().ToList();
+                return (await Repo.CampList()).ToList();
             }
             catch (Exception ex)
             {
@@ -42,12 +42,12 @@ namespace CharacterSheet.API.Controllers
 
         // GET: api/Campaign/5
         [HttpGet("{id}")]
-        public ActionResult<Campaign> Get(int id)
+        public async Task<ActionResult<Campaign>> Get(int id)
         {
             Campaign campaign;
             try
             {
-                campaign = Repo.CampDetails(id);
+                campaign = await Repo.CampDetails(id);
             }
             catch (Exception ex)
             {
@@ -62,12 +62,12 @@ namespace CharacterSheet.API.Controllers
         }
         //GET: api/Campaign/username
         [HttpGet("{username}")]
-        public ActionResult<IEnumerable<ClassLibrary.Campaign>> Get(string username)
+        public async Task<ActionResult<IEnumerable<Campaign>>> Get(string username)
         {
             IEnumerable<Campaign> campaignList;
             try
             {
-                campaignList = Repo.CampList(username);
+                campaignList = await Repo.CampList(username);
             }
             catch (Exception ex)
             {
@@ -83,22 +83,22 @@ namespace CharacterSheet.API.Controllers
 
         // POST: api/Campaign
         [HttpPost]
-        public ActionResult Post([FromBody] Campaign campaign)
+        public async Task<ActionResult> Post([FromBody] Campaign campaign)
         {
-            int id = Repo.CreateCampaign(campaign);
+            int id = await Repo.CreateCampaign(campaign);
             return StatusCode(201, id);
         }
 
         // PUT: api/Campaign/5
         [HttpPut("{id}")]
-        public ActionResult Put(int id, [FromBody] Campaign campaign)
+        public async Task<ActionResult> Put(int id, [FromBody] Campaign campaign)
         {
             Campaign existing;
 
             //pull the campaign entry to be updated
             try
             {
-                existing = Repo.CampDetails(id);
+                existing = await Repo.CampDetails(id);
             }
             catch (Exception ex)
             {
@@ -147,13 +147,13 @@ namespace CharacterSheet.API.Controllers
         }
 
         [HttpPut("{campID}")]
-        public ActionResult RemoveCharFromCamp(int campID, [FromBody] Character character)
+        public async Task<ActionResult> RemoveCharFromCamp(int campID, [FromBody] Character character)
         {
             Campaign existingCamp;
             //Character existingChar;
             try
             {
-                existingCamp = Repo.CampDetails(campID);
+                existingCamp = await Repo.CampDetails(campID);
                 //existingChar = Repo.CharDetails(charID);
                 Repo.RemoveCharFromCamp(campID, character.CharID);
             }
@@ -172,13 +172,13 @@ namespace CharacterSheet.API.Controllers
         }
 
         [HttpPut("campID")]
-        public ActionResult JoinCampaign(int campID, [FromBody] Character character)
+        public async Task<ActionResult> JoinCampaign(int campID, [FromBody] Character character)
         {
             Campaign existingCamp;
             //Character existingChar;
             try
             {
-                existingCamp = Repo.CampDetails(campID);
+                existingCamp = await Repo.CampDetails(campID);
                 //existingChar = Repo.CharDetails(charID);
                 Repo.JoinCamp(campID, character.CharID);
             }
@@ -197,13 +197,13 @@ namespace CharacterSheet.API.Controllers
         }
 
         [HttpPut("campID")]
-        public ActionResult AddGM(int campID, [FromBody] User user)
+        public async Task<ActionResult> AddGM(int campID, [FromBody] User user)
         {
             Campaign existingCamp;
 
             try
             {
-                existingCamp = Repo.CampDetails(campID);
+                existingCamp = await Repo.CampDetails(campID);
                 Repo.AddGM(campID, user.UserID);
             }
             catch (Exception ex)
@@ -224,13 +224,13 @@ namespace CharacterSheet.API.Controllers
             return NoContent();
         }
         [HttpPut("campID")]
-        public ActionResult RemGM(int campID, [FromBody] User user)
+        public async Task<ActionResult> RemGM(int campID, [FromBody] User user)
         {
             Campaign existingcamp;
 
             try
             {
-                existingcamp = Repo.CampDetails(campID);
+                existingcamp = await Repo.CampDetails(campID);
                 Repo.RemGM(campID, user.UserID);
             }
             catch (Exception ex)
@@ -252,9 +252,9 @@ namespace CharacterSheet.API.Controllers
 
         }
         [HttpGet]
-        public ActionResult<IEnumerable<User>> GmList(int campID)
+        public async Task<ActionResult<IEnumerable<User>>> GmList(int campID)
         {
-            Campaign existingCamp = Repo.CampDetails(campID);
+            Campaign existingCamp = await Repo.CampDetails(campID);
 
             if (existingCamp == null)
             {
@@ -263,7 +263,7 @@ namespace CharacterSheet.API.Controllers
 
             try
             {
-                return Repo.GetGmByCampaign(campID).ToList();
+                return (await Repo.GetGmByCampaign(campID)).ToList();
             }
             catch (Exception ex)
             {

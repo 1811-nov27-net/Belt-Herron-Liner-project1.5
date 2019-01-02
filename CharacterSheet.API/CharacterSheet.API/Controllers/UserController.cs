@@ -81,7 +81,7 @@ namespace CharacterSheet.API.Controllers
             d20User.Username = user.UserName;
             d20User.Characters = new List<Character>();
             d20User.MyCampaigns = new List<ClassLibrary.Campaign>();
-            int id = Repo.CreateUser(d20User);
+            int id = await Repo.CreateUser(d20User);
             return StatusCode(201, id);
         }
         [HttpPost]
@@ -104,11 +104,11 @@ namespace CharacterSheet.API.Controllers
 
         // GET: api/User
         [HttpGet]
-        public ActionResult<IEnumerable<User>> Get()
+        public async Task<ActionResult<IEnumerable<User>>> Get()
         {
             try
             {
-                return Repo.UserList().ToList();
+                return (await Repo.UserList()).ToList();
             }
             catch (Exception ex)
             {
@@ -119,12 +119,12 @@ namespace CharacterSheet.API.Controllers
         // GET: api/User/5
         [HttpGet]
         [Route("ByID/{id}")]
-        public ActionResult<User> Get(int id)
+        public async Task<ActionResult<User>> Get(int id)
         {
             User user;
             try
             {
-                user = Repo.UserDetails(id);
+                user = await Repo.UserDetails(id);
             }
             catch (Exception ex)
             {
@@ -141,12 +141,12 @@ namespace CharacterSheet.API.Controllers
         // GET: api/User/username
         [HttpGet]
         [Route("ByName/{username}")]
-        public ActionResult<User> Get(string username)
+        public async Task<ActionResult<User>> Get(string username)
         {
             User user;
             try
             {
-                user = Repo.UserDetails(username);
+                user = await Repo.UserDetails(username);
             }
             catch (Exception ex)
             {
@@ -169,14 +169,14 @@ namespace CharacterSheet.API.Controllers
 
         // PUT: api/User/5
         [HttpPut("{id}")]
-        public ActionResult Put(int id, [FromBody] User user)
+        public async Task<ActionResult> Put(int id, [FromBody] User user)
         {
             User existing;
 
             //pull the user entry to be updated
             try
             {
-                existing = Repo.UserDetails(id);
+                existing = await Repo.UserDetails(id);
             }
             catch (Exception ex)
             {
