@@ -79,7 +79,7 @@ namespace CharacterSheet.API.Controllers
                 return StatusCode(500, ex);
             }
 
-            return CreatedAtRoute("Get", new { id = newID }, character);
+            return Created($"Character/{newID}", character);
         }
 
         // PUT: api/Character/5

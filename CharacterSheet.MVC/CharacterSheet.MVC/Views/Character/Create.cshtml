@@ -2,6 +2,10 @@
 
 @{
     ViewData["Title"] = "Create";
+    List<string> AttributeNames = new List<string>
+    {
+        "Strength","Dexterity","Stamina","Intelligence","Charisma","Wisdom"
+    };
 }
 
 <h1>Create</h1>
@@ -42,12 +46,12 @@
                 <input asp-for="Alignment" class="form-control" />
                 <span asp-validation-for="Alignment" class="text-danger"></span>
             </div>
-            @foreach (var item in Model.Attributes)
+            @for (int i = 0; i < Model.Attributes.Count; i++)
             {
                 <div class="form-group">
-                    <label asp-for="@item.Key" class="control-label">@item.Key</label>
-                    <input asp-for="@item.Value" class="form-control" />
-                    <span asp-validation-for="@item.Key" class="text-danger"></span>
+                    <label asp-for="@AttributeNames[i]" class="control-label">@AttributeNames[i]</label>
+                    <input type="number" asp-for="@Model.Attributes[AttributeNames[i]]" class="form-control" />
+                    <span asp-validation-for="@Model.Attributes[AttributeNames[i]]" class="text-danger"></span>
                 </div>
             }
             <div class="form-group">

@@ -76,9 +76,21 @@ namespace CharacterSheet.MVC.Controllers
         {
             try
             {
-                
-                HttpRequestMessage message = CreateServiceRequest(HttpMethod.Post, "api/Character", character);
+                var username = ViewBag.LoggedInUser;
+                HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/User/ByName/{username}");
                 HttpResponseMessage response = await Client.SendAsync(message);
+                if (!response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Error", "Home");
+                }
+
+                var responseBody = await response.Content.ReadAsStringAsync();
+                User user = JsonConvert.DeserializeObject<User>(responseBody);
+                character.UserID = user.UserID;
+                character.CampID = 1;
+                character.CalculateBonusesAndSaves();
+                message = CreateServiceRequest(HttpMethod.Post, "api/Character", character);
+                response = await Client.SendAsync(message);
 
                 if (!response.IsSuccessStatusCode)
                 {

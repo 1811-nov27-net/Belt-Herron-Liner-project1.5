@@ -9,8 +9,16 @@ namespace CharacterSheet.MVC.Models
         public Character()
         {
             AC = new int[3];
-            EffectiveSavingThrows = new Dictionary<string, int>();
-            BaseSavingThrows = new Dictionary<string, int>();
+            EffectiveSavingThrows = new Dictionary<string, int> {
+                {"Fort", 0 },
+                {"Reflex", 0 },
+                {"Will", 0 }
+            };
+            BaseSavingThrows = new Dictionary<string, int> {
+                {"Fort", 0 },
+                {"Reflex", 0 },
+                {"Will", 0 }
+            };
             ClassLevels = new Dictionary<string, int>();
             Attributes = new Dictionary<string, int> {
                 {"Strength", 0 },
