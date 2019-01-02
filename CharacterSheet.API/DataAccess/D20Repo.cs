@@ -124,19 +124,19 @@ namespace DataAccess
 
         public int CreateCampaign(ClassLibrary.Campaign campaign)
         {
-            int newId = _db.Campaign.Select(c => c.CampaignId).Max() + 1;
-            campaign.CampID = newId;
+            campaign.CampID = 0;
             _db.Campaign.Add(campaign);
             _db.SaveChangesAsync();
+            int newId = _db.Campaign.Where(c => c.CampaignName == campaign.Name).First().CampaignId;
             return newId;
         }
 
         public int CreateCharacter(Character character)
         {
-            int newId = _db.Characters.Select(c => c.CharacterId).Max() + 1;
-            character.CharID = newId;
+            character.CharID = 0;
             _db.Characters.Add(character);
             _db.SaveChangesAsync();
+            int newId = _db.Characters.Where(c => c.GamerId == character.UserID && c.CharacterName == character.Name && c.Race == character.Race).First().CharacterId;
             return newId;
         }
 
