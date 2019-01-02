@@ -129,7 +129,7 @@ namespace DataAccess
             campaign.CampID = 0;
             _db.Campaign.Add(campaign);
             _db.SaveChanges();
-            int newId = (await _db.Campaign.Where(c => c.CampaignName == campaign.Name).FirstAsync()).CampaignId;
+            int newId = (await _db.Campaign.FirstAsync(c => c.CampaignName == campaign.Name)).CampaignId;
             return newId;
         }
 
