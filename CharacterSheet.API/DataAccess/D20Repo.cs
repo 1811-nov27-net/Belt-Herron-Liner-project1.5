@@ -128,7 +128,7 @@ namespace DataAccess
         {
             campaign.CampID = 0;
             _db.Campaign.Add(campaign);
-            _db.SaveChangesAsync();
+            _db.SaveChanges();
             int newId = (await _db.Campaign.Where(c => c.CampaignName == campaign.Name).FirstAsync()).CampaignId;
             return newId;
         }
@@ -137,7 +137,7 @@ namespace DataAccess
         {
             character.CharID = 0;
             _db.Characters.Add(character);
-            _db.SaveChangesAsync();
+            _db.SaveChanges();
             int newId = (await _db.Characters.FirstAsync(c => c.GamerId == character.UserID && c.CharacterName == character.Name && c.Race == character.Race)).CharacterId;
             return newId;
         }
