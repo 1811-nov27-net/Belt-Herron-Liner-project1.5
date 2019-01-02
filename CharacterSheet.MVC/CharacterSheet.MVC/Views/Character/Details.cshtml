@@ -31,9 +31,8 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.MaxHitPoints)
         </dd>
-        <input hidden id="maxHP" value="@Model.MaxHitPoints" />
         <dd>
-            <input type="number" id="dmg" onchange="updateHitpoints()"/>
+            <input type="number" id="dmg" onchange="updateHitpoints()" />
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Race)
@@ -111,6 +110,8 @@
         }
     </dl>
 </div>
+<input hidden id="maxHP" value="@Model.MaxHitPoints" />
+
 <div>
     <p id="dieresult"></p>
     <button id="rollbutton" onclick="rollDice()">Roll D20</button>
