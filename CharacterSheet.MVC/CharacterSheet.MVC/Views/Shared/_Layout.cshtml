@@ -16,6 +16,10 @@
               integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE="/>
     </environment>
     <link rel="stylesheet" href="~/css/d20.css" />
+    @if((string) ViewData["Title"] == "Character Details")
+    {
+        <link rel="stylesheet" href="~/css/character.css" />
+    }
 </head>
 <body>
     <header id="header">
