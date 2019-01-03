@@ -204,12 +204,15 @@ namespace CharacterSheet.MVC.Controllers
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+
         public async Task<ActionResult> AddSkill(GenericDictionary skill)
         {
             try
             {
                 int charID = (int)TempData["char"];
-                HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/Character/ByID/{charID}");
+                HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/Character/{charID}");
                 HttpResponseMessage response = await Client.SendAsync(message);
 
                 if (!response.IsSuccessStatusCode)
@@ -220,8 +223,8 @@ namespace CharacterSheet.MVC.Controllers
                 Character character = JsonConvert.DeserializeObject<Character>(responseBody);
                 character.SkillList.Add(skill.key, skill.value);
 
-                message = CreateServiceRequest(HttpMethod.Put, $"api/Character/{charID}");
-                response = await Client.SendAsync(message);
+                var url = $"https://localhost:44309/api/Character/{charID}";
+                response = await Client.PutAsJsonAsync(url, character);
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -229,7 +232,7 @@ namespace CharacterSheet.MVC.Controllers
                 }
 
 
-                return RedirectToAction(nameof(Edit));
+                return RedirectToAction("Edit", new {id = charID} );
             }
             catch
             {
@@ -242,12 +245,15 @@ namespace CharacterSheet.MVC.Controllers
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+
         public async Task<ActionResult> AddFeat(GenericDictionary feat)
         {
             try
             {
                 int charID = (int)TempData["char"];
-                HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/Character/ByID/{charID}");
+                HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/Character/{charID}");
                 HttpResponseMessage response = await Client.SendAsync(message);
 
                 if (!response.IsSuccessStatusCode)
@@ -259,15 +265,15 @@ namespace CharacterSheet.MVC.Controllers
                 Character character = JsonConvert.DeserializeObject<Character>(responseBody);
                 character.FeatList.Add(feat.key, feat.value);
 
-                message = CreateServiceRequest(HttpMethod.Put, $"api/Character/{charID}");
-                response = await Client.SendAsync(message);
+                var url = $"https://localhost:44309/api/Character/{charID}";
+                response = await Client.PutAsJsonAsync(url, character);
 
                 if (!response.IsSuccessStatusCode)
                 {
                     return RedirectToAction("Error", "Home");
                 }
 
-                return RedirectToAction(nameof(Edit));
+                return RedirectToAction("Edit", new { id = charID });
             }
 
             catch
@@ -275,6 +281,21 @@ namespace CharacterSheet.MVC.Controllers
                 return RedirectToAction("Error", "Home");
             }
         }
+
+        public IActionResult AddSpell()
+        {
+            return View();
+        }
+
+        /*public async Task<ActionResult> AddSpell(GenericDictionary spell)
+        {
+            try
+            {
+                int charID = (int)TempData["char"];
+                HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/Character/ByID/{charID}");
+                HttpResponseMessage response = 
+            }
+        }*/
         
     }
 }

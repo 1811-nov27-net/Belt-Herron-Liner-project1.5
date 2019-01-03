@@ -38,7 +38,7 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                             </li>
-                            @if ((string) ViewData["Title"] != "Login")
+                            @if ((string) ViewData["Title"] != "Login" && (string) ViewData["Title"] != "Register")
                             {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>

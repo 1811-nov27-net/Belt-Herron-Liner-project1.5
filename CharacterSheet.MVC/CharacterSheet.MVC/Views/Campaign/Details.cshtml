@@ -18,30 +18,85 @@
         <dt class="col-sm-2">
             Characters
         </dt>
-        @foreach (var item in (IEnumerable<Character>)ViewData["Characters"])
-        {
-            <dd class="col-sm-10">
-                @item.Name
-
-                @Html.ActionLink("Details", "Details", "Character", new { id = item.CharID }) |
-            </dd>
-            <dd>
-                @item.AC
-            </dd>
-            <dd>
-                @item.BaseAttackBonus
-            </dd>
-            <dd>
-                @item.EffectiveSavingThrows["Fort"]
-            </dd>
-            <dd>
-                @item.EffectiveSavingThrows["Will"]
-            </dd>
-            <dd>
-                @item.EffectiveSavingThrows["Reflex"]
-            </dd>
-        }
     </dl>
+</div>
+<table>
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Ac
+        </th>
+        <th>
+            BaB
+        </th>
+        <th>
+            Fort Save
+        </th>
+        <th>
+            Will Save
+        </th>
+        <th>
+            Reflex Save
+        </th>
+        <th>
+            Current HP
+        </th>
+        <th>
+            Max HP
+        </th>
+        <th>
+            Damage Taken
+        </th>
+        <th>
+            Details
+        </th>
+    </tr>
+  @foreach (var item in (IEnumerable<Character>)ViewData["Characters"])
+   {
+    <tr>
+        <td class="col-sm-10">
+            @item.Name
+
+        </td>
+        <td>
+            @item.AC[0]
+        </td>
+        <td onclick="rollDice(20,@(item.BaseAttackBonus+item.AttributeBonuses["Strength"]),1,'@item.Name Attack Roll')">
+            @item.BaseAttackBonus
+        </td>
+        <td onclick="rollDice(20,@item.EffectiveSavingThrows["Fort"],1,'Fort Save')">
+            Fort @item.EffectiveSavingThrows["Fort"]
+        </td>
+        <td onclick="rollDice(20,@item.EffectiveSavingThrows["Will"],1,'Will Save')">
+            Will @item.EffectiveSavingThrows["Will"]
+        </td>
+        <td onclick="rollDice(20,@item.EffectiveSavingThrows["Reflex"],1,'Reflex Save')">
+            Ref @item.EffectiveSavingThrows["Reflex"]
+        </td>
+        <td id="@String.Concat(item.Name,"currentHP")">
+            @item.MaxHitPoints
+        </td>
+        <td>
+            @item.MaxHitPoints
+            <input type="hidden" id="@String.Concat(item.Name,"maxHP")" value="@item.MaxHitPoints" />
+        </td>
+        <td>
+            <input type="number" onchange="updateHitpoints('@item.Name')" size="3" id="@String.Concat(item.Name,"dmg")" />
+        </td>
+        <td>
+            @Html.ActionLink("Details", "Details", "Character", new { id = item.CharID }) |
+
+        </td>
+    </tr>
+    }
+    
+</table>
+<div>
+    <p id="dieresult"></p>
+    <button id="rollbutton" onclick="rollDice()">Roll D20</button>
+    
 </div>
 <div>
     @Html.ActionLink("Edit", "Edit", new { id = Model.CampID }) |
