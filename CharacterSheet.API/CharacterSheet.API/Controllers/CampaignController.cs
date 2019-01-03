@@ -16,6 +16,7 @@ namespace CharacterSheet.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CampaignController : ControllerBase
     {
 

@@ -17,6 +17,7 @@ namespace CharacterSheet.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private SignInManager<IdentityUser> _SignInManager;
@@ -31,6 +32,7 @@ namespace CharacterSheet.API.Controllers
 
         [HttpPost]
         [Route("Login")]
+        [AllowAnonymous]
         public async Task<ActionResult> Login([FromBody]UserViewModel user)
         {
             var result = await _SignInManager.PasswordSignInAsync(user.UserName, user.Password, isPersistent: false, lockoutOnFailure: false);
@@ -43,6 +45,7 @@ namespace CharacterSheet.API.Controllers
 
         [HttpPost]
         [Route("Register")]
+        [AllowAnonymous]
         public async Task<ActionResult> Register([FromBody]UserViewModel user,
             [FromServices]UserManager<IdentityUser> userManager,
             [FromServices] RoleManager<IdentityRole> roleManager, bool GM = false)
@@ -104,6 +107,7 @@ namespace CharacterSheet.API.Controllers
 
         // GET: api/User
         [HttpGet]
+
         public async Task<ActionResult<IEnumerable<User>>> Get()
         {
             try
@@ -162,6 +166,7 @@ namespace CharacterSheet.API.Controllers
 
         // POST: api/User
         [HttpPost]
+        [AllowAnonymous]
         public void Post([FromBody] User user)
         {
             Repo.CreateUser(user);
