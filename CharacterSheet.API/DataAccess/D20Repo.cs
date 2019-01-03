@@ -65,7 +65,8 @@ namespace DataAccess
                 return null;
             foreach (var item in temp)
             {
-                ret.Add(item);
+                ClassLibrary.Campaign camp = item;
+                ret.Add(camp);
             }
 
             return ret;

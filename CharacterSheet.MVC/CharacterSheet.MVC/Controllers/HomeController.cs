@@ -72,15 +72,15 @@ namespace CharacterSheet.MVC.Controllers
                 HttpRequestMessage message = CreateServiceRequest(HttpMethod.Post, "api/User/Register", user);
                 HttpResponseMessage response = await Client.SendAsync(message);
 
-                //if (!response.IsSuccessStatusCode)
-                //{
-                //    return RedirectToAction("Error");
-                //}
+                if (!response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Error");
+                }
                 var success = PassCookiesToClient(response);
-                //if (!success)
-                //{
-                //    return View("Error");
-                //}
+                if (!success)
+                {
+                    return View("Error");
+                }
                 return RedirectToAction("PlayerOrGM");
             }
             catch (Exception ex)
@@ -101,18 +101,21 @@ namespace CharacterSheet.MVC.Controllers
             return RedirectToAction("Error");
         }
 
-        public IActionResult PlayerOrGM()
+        public async Task<IActionResult> PlayerOrGM()
         {
-            if(User.IsInRole("GM"))
+            HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, "api/User/IsGM");
+            HttpResponseMessage response = await Client.SendAsync(message);
+            if (!response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+            var responseBody = await response.Content.ReadAsStringAsync();
+            bool IsGM = JsonConvert.DeserializeObject<bool>(responseBody);
+            if (IsGM)
             {
                 return RedirectToAction("Index","Campaign");
             }
             return RedirectToAction("Index", "Character");
-        }
-
-        public IActionResult PlayerLoggedIn()
-        {
-            return View();
         }
 
         public IActionResult Privacy()
@@ -125,25 +128,6 @@ namespace CharacterSheet.MVC.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
-        //public HttpRequestMessage CreateServiceRequest(HttpMethod method, string uri, object body)
-        //{
-        //    var apiRequest = new HttpRequestMessage(method, new Uri(ServiceUri, uri));
-
-        //    if(body != null)
-        //    {
-        //        var jsonString = JsonConvert.SerializeObject(body);
-        //        apiRequest.Content = new StringContent(jsonString, Encoding.UTF8, "application/json");
-        //    }
-
-        //    var cookieValue = Request.Cookies[CookieName];
-
-        //    if(cookieValue != null)
-        //    {
-        //        apiRequest.Headers.Add("Cookie", new CookieHeaderValue(CookieName, cookieValue).ToString());
-        //    }
-        //    return apiRequest;
-        //}
 
         private bool PassCookiesToClient(HttpResponseMessage apiResponse)
         {

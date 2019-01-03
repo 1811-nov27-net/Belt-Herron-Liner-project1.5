@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using CharacterSheet.MVC.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -173,6 +174,29 @@ namespace CharacterSheet.MVC.Controllers
             {
                 return RedirectToAction("Error", "Home");
             }
+        }
+
+        public async Task<IActionResult> MakeGM()
+        {
+            HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, "api/User/IsGM");
+            HttpResponseMessage response = await Client.SendAsync(message);
+            if(!response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+            var responseBody = await response.Content.ReadAsStringAsync();
+            bool IsGM = JsonConvert.DeserializeObject<bool>(responseBody);
+
+            if (!IsGM)
+            {
+                message = CreateServiceRequest(HttpMethod.Get, "api/User/MakeGM");
+                response = await Client.SendAsync(message);
+                if (!response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Error", "Home");
+                }
+            }
+            return RedirectToAction("Create", "Campaign");
         }
 
         public IActionResult AddSkill()

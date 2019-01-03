@@ -18,8 +18,8 @@ namespace CharacterSheet.MVC.Controllers
         // GET: Campaign
         public async Task<ActionResult> Index()
         {
-            var username = User.Identity.Name;
-            HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/User/{username}");
+            var username = ViewBag.LoggedInUser;
+            HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/User/ByName/{username}");
             HttpResponseMessage response = await Client.SendAsync(message);
             if (!response.IsSuccessStatusCode)
             {
@@ -28,7 +28,7 @@ namespace CharacterSheet.MVC.Controllers
             var responseBody = await response.Content.ReadAsStringAsync();
             User user = JsonConvert.DeserializeObject<User>(responseBody);
 
-            message = CreateServiceRequest(HttpMethod.Get, $"api/Campaign/{user.Username}");
+            message = CreateServiceRequest(HttpMethod.Get, $"api/Campaign/ByGM/{user.Username}");
             response = await Client.SendAsync(message);
             if (!response.IsSuccessStatusCode)
             {
@@ -42,7 +42,7 @@ namespace CharacterSheet.MVC.Controllers
         // GET: Campaign/Details/5
         public async Task<ActionResult> Details(int id)
         {
-            HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/Campaign/{id}");
+            HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/Campaign/ByID/{id}");
             HttpResponseMessage response = await Client.SendAsync(message);
             if (!response.IsSuccessStatusCode)
             {
@@ -51,7 +51,7 @@ namespace CharacterSheet.MVC.Controllers
             var responseBody = await response.Content.ReadAsStringAsync();
             Campaign campaign = JsonConvert.DeserializeObject<Campaign>(responseBody);
 
-            message = CreateServiceRequest(HttpMethod.Get, $"api/Character/GetCharsByCamp/{id}");
+            message = CreateServiceRequest(HttpMethod.Get, $"api/Character/ByCamp/{id}");
             response = await Client.SendAsync(message);
             if (!response.IsSuccessStatusCode)
             {
@@ -85,7 +85,7 @@ namespace CharacterSheet.MVC.Controllers
                 }
                 var responseBody = await response.Content.ReadAsStringAsync();
                 int campID = JsonConvert.DeserializeObject<int>(responseBody);
-                message = CreateServiceRequest(HttpMethod.Get, $"api/User/{User.Identity.Name}");
+                message = CreateServiceRequest(HttpMethod.Get, $"api/User/ByName/{ViewBag.LoggedInUser}");
                 response = await Client.SendAsync(message);
                 if (!response.IsSuccessStatusCode)
                 {
