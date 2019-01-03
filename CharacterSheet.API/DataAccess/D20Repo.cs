@@ -153,9 +153,9 @@ namespace DataAccess
             return newId;
         }
 
-        public async void DeleteCamp(int CampID)
+        public void DeleteCamp(int CampID)
         {
-            foreach (var item in (await _db.Campaign.FirstAsync(c => c.CampaignId == CampID)).Characters)
+            foreach (var item in (_db.Campaign.First(c => c.CampaignId == CampID)).Characters)
             {
                 item.CampaignId = 1;
                 _db.Characters.Update(item);
@@ -165,15 +165,15 @@ namespace DataAccess
 
         }
 
-        public async void DeleteChar(int CharID)
+        public void DeleteChar(int CharID)
         {
-            _db.Characters.Remove(await _db.Characters.FirstAsync(c => c.CharacterId == CharID));
+            _db.Characters.Remove(_db.Characters.First(c => c.CharacterId == CharID));
             _db.SaveChangesAsync();
         }
 
-        public async void DeleteUser(int UserID)
+        public void DeleteUser(int UserID)
         {
-            foreach (var item in (await _db.Gamer.FirstAsync(g => g.GamerId == UserID)).Characters)
+            foreach (var item in (_db.Gamer.First(g => g.GamerId == UserID)).Characters)
             {
                 item.GamerId = 1;
                 _db.Characters.Update(item);
@@ -188,9 +188,9 @@ namespace DataAccess
             _db.SaveChangesAsync();
         }
 
-        public async void RemoveCharFromCamp(int CampID, int CharID)
+        public void RemoveCharFromCamp(int CampID, int CharID)
         {
-            (await _db.Characters.FirstAsync(c => c.CharacterId == CharID)).CampaignId = 1; // 1 = no campagin
+            _db.Characters.First(c => c.CharacterId == CharID).CampaignId = 1; // 1 = no campagin
             _db.SaveChangesAsync();
         }
 

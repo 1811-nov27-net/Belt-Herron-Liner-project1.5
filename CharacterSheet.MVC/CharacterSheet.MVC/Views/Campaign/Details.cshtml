@@ -41,6 +41,15 @@
             Reflex Save
         </th>
         <th>
+            Current HP
+        </th>
+        <th>
+            Max HP
+        </th>
+        <th>
+            Damage Taken
+        </th>
+        <th>
             Details
         </th>
     </tr>
@@ -66,6 +75,16 @@
         <td onclick="rollDice(20,@item.EffectiveSavingThrows["Reflex"],1,'Reflex Save')">
             Ref @item.EffectiveSavingThrows["Reflex"]
         </td>
+        <td id="@String.Concat(item.Name,"currentHP")">
+            @item.MaxHitPoints
+        </td>
+        <td>
+            @item.MaxHitPoints
+            <input type="hidden" id="@String.Concat(item.Name,"maxHP")" value="@item.MaxHitPoints" />
+        </td>
+        <td>
+            <input type="number" size="3" id="@String.Concat(item.Name,"dmg")" />
+        </td>
         <td>
             @Html.ActionLink("Details", "Details", "Character", new { id = item.CharID }) |
 
@@ -77,7 +96,7 @@
 <div>
     <p id="dieresult"></p>
     <button id="rollbutton" onclick="rollDice()">Roll D20</button>
-
+    
 </div>
 <div>
     @Html.ActionLink("Edit", "Edit", new { id = Model.CampID }) |

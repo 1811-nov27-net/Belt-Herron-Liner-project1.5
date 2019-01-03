@@ -22,9 +22,9 @@ function rollDice (sides = 20, bonus = 0, numOfDice = 1, message = 'Rolled') {
 
 //Prints dice roll to the page
 
-function updateHitpoints() {
-    var max = document.getElementById('maxHP').value;
-    var dmg = document.getElementById('dmg').value;
-    var disp = document.getElementById('currentHP');
+function updateHitpoints(ref = '') {
+    var max = document.getElementById(ref + 'maxHP').value;
+    var dmg = document.getElementById(ref + 'dmg').value;
+    var disp = document.getElementById(ref + 'currentHP');
     disp.innerHTML = max-dmg;
 }
