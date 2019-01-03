@@ -275,6 +275,21 @@ namespace CharacterSheet.MVC.Controllers
                 return RedirectToAction("Error", "Home");
             }
         }
+
+        public IActionResult AddSpell()
+        {
+            return View();
+        }
+
+        /*public async Task<ActionResult> AddSpell(GenericDictionary spell)
+        {
+            try
+            {
+                int charID = (int)TempData["char"];
+                HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/Character/ByID/{charID}");
+                HttpResponseMessage response = 
+            }
+        }*/
         
     }
 }
