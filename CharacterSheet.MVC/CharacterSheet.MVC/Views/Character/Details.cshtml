@@ -61,7 +61,7 @@
         <th>
             @Html.DisplayNameFor(model => model.BaseAttackBonus)
         </th>
-        <td onclick="rollDice(20,@(Model.BaseAttackBonus+Model.AttributeBonuses["Strength"]),1)">
+        <td onclick="rollDice(20,@(Model.BaseAttackBonus+Model.AttributeBonuses["Strength"]),1,'Attack Roll')">
             + @Html.DisplayFor(model => model.BaseAttackBonus)
         </td>
     </tr>
@@ -72,7 +72,7 @@
         <td>
             @foreach (var item in Model.EffectiveSavingThrows)
             {
-                @: @item.Key +<a onclick="rollDice(20,@item.Value,1)">@item.Value</a>, 
+                @: @item.Key +<a onclick="rollDice(20,@item.Value,1,'@item.Key Save')">@item.Value</a>, 
             }
         </td>
     </tr>

@@ -14,10 +14,10 @@ var dice = {
 
 // rolls dice, prints to page.
 
-function rollDice (sides = 20, bonus = 0, numOfDice = 1, elementId = 'dieresult') {
-    var placeholder = document.getElementById(elementId);
+function rollDice (sides = 20, bonus = 0, numOfDice = 1, message = 'Rolled') {
+    var placeholder = document.getElementById('dieresult');
     var number = dice.roll(sides, bonus, numOfDice);
-    placeholder.innerHTML = `Rolled ${numOfDice}d${sides} + ${bonus}: ${number}`;
+    placeholder.innerHTML = `${message} ${numOfDice}d${sides} + ${bonus}: ${number}`;
 }
 
 //Prints dice roll to the page

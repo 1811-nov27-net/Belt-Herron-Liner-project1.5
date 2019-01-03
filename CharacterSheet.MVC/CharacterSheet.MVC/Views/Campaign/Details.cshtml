@@ -26,22 +26,27 @@
                 @Html.ActionLink("Details", "Details", "Character", new { id = item.CharID }) |
             </dd>
             <dd>
-                @item.AC
+                @item.AC[0]
             </dd>
-            <dd>
+            <dd onclick="rollDice(20,@(item.BaseAttackBonus+item.AttributeBonuses["Strength"]),1,'@item.Name Attack Roll')">
                 @item.BaseAttackBonus
             </dd>
-            <dd>
-                @item.EffectiveSavingThrows["Fort"]
+            <dd  onclick="rollDice(20,@item.EffectiveSavingThrows["Fort"],1,'Fort Save')">
+                Fort @item.EffectiveSavingThrows["Fort"]
             </dd>
-            <dd>
-                @item.EffectiveSavingThrows["Will"]
+            <dd onclick="rollDice(20,@item.EffectiveSavingThrows["Will"],1,'Fort Save')">
+                Will @item.EffectiveSavingThrows["Will"]
             </dd>
-            <dd>
-                @item.EffectiveSavingThrows["Reflex"]
+            <dd onclick="rollDice(20,@item.EffectiveSavingThrows["Reflex"],1,'Fort Save')">
+                Ref @item.EffectiveSavingThrows["Reflex"]
             </dd>
         }
     </dl>
+</div>
+<div>
+    <p id="dieresult"></p>
+    <button id="rollbutton" onclick="rollDice()">Roll D20</button>
+
 </div>
 <div>
     @Html.ActionLink("Edit", "Edit", new { id = Model.CampID }) |
