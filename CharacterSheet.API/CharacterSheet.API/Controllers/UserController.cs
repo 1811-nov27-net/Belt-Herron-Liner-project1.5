@@ -102,6 +102,45 @@ namespace CharacterSheet.API.Controllers
             return User.Identity.Name;
         }
 
+        [HttpGet]
+        [Authorize]
+        [Route("IsGM")]
+        public bool IsGM()
+        {
+            return User.IsInRole("GM");
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("MakeGM")]
+        public async Task<IActionResult> MakeGM([FromServices]UserManager<IdentityUser> userManager,
+            [FromServices] RoleManager<IdentityRole> roleManager)
+        {
+            if(User.IsInRole("GM"))
+            {
+                return Ok();
+            }
+            var result = await roleManager.RoleExistsAsync("GM");
+            IdentityResult result2;
+            if (!result)
+            {
+                var GMRole = new IdentityRole("GM");
+                result2 = await roleManager.CreateAsync(GMRole);
+
+                if (!result2.Succeeded)
+                {
+                    return StatusCode(500, result);
+                }
+            }
+            IdentityUser user = await userManager.FindByNameAsync(User.Identity.Name);
+            result2 = await userManager.AddToRoleAsync(user, "GM");
+            if (!result2.Succeeded)
+            {
+                return StatusCode(500, result);
+            }
+            return Ok();
+        }
+
         // GET: api/User
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> Get()

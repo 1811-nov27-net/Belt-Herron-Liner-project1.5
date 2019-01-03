@@ -41,7 +41,7 @@ namespace CharacterSheet.API.Controllers
         }
 
         // GET: api/Campaign/5
-        [HttpGet("{id}")]
+        [HttpGet("ByID/{id}")]
         public async Task<ActionResult<Campaign>> Get(int id)
         {
             Campaign campaign;
@@ -61,7 +61,7 @@ namespace CharacterSheet.API.Controllers
             return campaign;
         }
         //GET: api/Campaign/username
-        [HttpGet("{username}")]
+        [HttpGet("ByGM/{username}")]
         public async Task<ActionResult<IEnumerable<Campaign>>> Get(string username)
         {
             IEnumerable<Campaign> campaignList;
@@ -75,7 +75,7 @@ namespace CharacterSheet.API.Controllers
             }
             if (campaignList == null)
             {
-                return NotFound();
+                campaignList = new List<Campaign>();
             }
 
             return campaignList.ToList();
@@ -146,7 +146,7 @@ namespace CharacterSheet.API.Controllers
 
         }
 
-        [HttpPut("{campID}")]
+        [HttpPut("RemoveChar/{campID}")]
         public async Task<ActionResult> RemoveCharFromCamp(int campID, [FromBody] Character character)
         {
             Campaign existingCamp;
@@ -171,7 +171,7 @@ namespace CharacterSheet.API.Controllers
             return NoContent();
         }
 
-        [HttpPut("campID")]
+        [HttpPut("AddChar/{campID}")]
         public async Task<ActionResult> JoinCampaign(int campID, [FromBody] Character character)
         {
             Campaign existingCamp;
@@ -196,7 +196,7 @@ namespace CharacterSheet.API.Controllers
             return NoContent();
         }
 
-        [HttpPut("campID")]
+        [HttpPut("AddGM/{campID}")]
         public async Task<ActionResult> AddGM(int campID, [FromBody] User user)
         {
             Campaign existingCamp;
@@ -223,7 +223,7 @@ namespace CharacterSheet.API.Controllers
 
             return NoContent();
         }
-        [HttpPut("campID")]
+        [HttpPut("RemGM/campID")]
         public async Task<ActionResult> RemGM(int campID, [FromBody] User user)
         {
             Campaign existingcamp;
@@ -251,7 +251,7 @@ namespace CharacterSheet.API.Controllers
             return NoContent();
 
         }
-        [HttpGet]
+        [HttpGet("GMList")]
         public async Task<ActionResult<IEnumerable<User>>> GmList(int campID)
         {
             Campaign existingCamp = await Repo.CampDetails(campID);
