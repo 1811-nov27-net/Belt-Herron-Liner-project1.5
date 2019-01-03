@@ -4,112 +4,127 @@
     ViewData["Title"] = "Character Details";
 }
 
-<h1>Details</h1>
+<h1>Details: @Model.Name</h1>
 
-<div>
-    <h4>Character</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
+<table class="statBlock" cellspacing="0">
+    <tr>
+        <th>
             @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class="col-sm-10">
+        </th>
+        <td>
             @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class="col-sm-2">
+        </td>
+    </tr>
+    <tr>
+        <th>
             @Html.DisplayNameFor(model => model.CharID)
-        </dt>
-        <dd class="col-sm-10">
+        </th>
+        <td>
             @Html.DisplayFor(model => model.CharID)
-        </dd>
-        <dt class="col-sm-2">
+        </td>
+    </tr>
+    <tr>
+        <th>
             @Html.DisplayNameFor(model => model.MaxHitPoints)
-        </dt>
-        <dd id="currentHP">
+        </th>
+        <td>
 
-        </dd>
-        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.MaxHitPoints)
-        </dd>
-        <dd>
-            <input type="number" id="dmg" onchange="updateHitpoints()" />
-        </dd>
-        <dt class="col-sm-2">
+
+        </td>
+    </tr>
+    <tr>
+        <th>
             @Html.DisplayNameFor(model => model.Race)
-        </dt>
-        <dd class="col-sm-10">
+        </th>
+        <td>
             @Html.DisplayFor(model => model.Race)
-        </dd>
-        <dt class="col-sm-2">
+        </td>
+    </tr>
+    <tr>
+        <th>
             @Html.DisplayNameFor(model => model.Sex)
-        </dt>
-        <dd class="col-sm-10">
+        </th>
+        <td>
             @Html.DisplayFor(model => model.Sex)
-        </dd>
-        <dt class="col-sm-2" onclick="rollDice(20,@(Model.BaseAttackBonus+Model.AttributeBonuses["Strength"]),1)">
-            @Html.DisplayNameFor(model => model.BaseAttackBonus)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.BaseAttackBonus)
-        </dd>
-        <dt class="col-sm-2">
+        </td>
+    </tr>
+    <tr>
+        <th>
             @Html.DisplayNameFor(model => model.Alignment)
-        </dt>
-        <dd class="col-sm-10">
+        </th>
+        <td>
             @Html.DisplayFor(model => model.Alignment)
-        </dd>
-        <dt>
-            Attributes
-        </dt>
-        @foreach (var item in Model.Attributes)
-        {
-            <dd>
-                @item.Key : @item.Value
-            </dd>
-
-        }
-        <dt>
+        </td>
+    </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.BaseAttackBonus)
+        </th>
+        <td onclick="rollDice(20,@(Model.BaseAttackBonus+Model.AttributeBonuses["Strength"]),1)">
+            + @Html.DisplayFor(model => model.BaseAttackBonus)
+        </td>
+    </tr>
+    <tr>
+        <th>
             Saving Throws
-        </dt>
-        @foreach (var item in Model.EffectiveSavingThrows)
-        {
-            <dd onclick="rollDice(20,@item.Value,1)">
-                @item.Key : @item.Value
-            </dd>
-
-        }
-        <dt>
-            Skills
-        </dt>
-        @foreach (var item in Model.SkillList)
-        {
-            <dd>
-                @item.Key : @item.Value
-            </dd>
-
-        }
-        <dt>
+        </th>
+        <td>
+            @foreach (var item in Model.EffectiveSavingThrows)
+            {
+                @: @item.Key +<a onclick="rollDice(20,@item.Value,1)">@item.Value</a>, 
+            }
+        </td>
+    </tr>
+    <tr>
+        <th>
+            Attributes
+        </th>
+        <td>
+            @foreach (var item in Model.Attributes)
+            {
+                @: @item.Key: @item.Value, 
+            }
+        </td>
+    </tr>
+    <tr>
+        <th>
             Feats
-        </dt>
-        @foreach (var item in Model.FeatList)
-        {
-            <dd>
-                @item.Key : @item.Value
-            </dd>
-
-        }
-        <dt>
+        </th>
+        <td>
+            @foreach (var item in Model.FeatList)
+            {
+                @: @item.Key x @item.Value, 
+            }
+        </td>
+    </tr>
+    <tr>
+        <th>
+            Skills
+        </th>
+        <td>
+            @foreach (var item in Model.SkillList)
+            {
+                @: @item.Key: @item.Value, 
+            }
+        </td>
+    </tr>
+    <tr>
+        <th>
             Spells Known
-        </dt>
-        @foreach (var item in Model.SpellsKnown)
-        {
-            <dd>
-                @item.Name
-            </dd>
+        </th>
+        <td>
+            @foreach (var item in Model.SpellsKnown)
+            {
+                @: @item.Name, 
+            }
+        </td>
+    </tr>
+</table>
 
-        }
-    </dl>
-</div>
+<h3>Hitpoint Tracker</h3>
+<a id="currentHP"> </a> / @Model.MaxHitPoints
+<p>Damage taken: <input type="number" id="dmg" onchange="updateHitpoints()" /></p>
 <input hidden id="maxHP" value="@Model.MaxHitPoints" />
 
 <div>

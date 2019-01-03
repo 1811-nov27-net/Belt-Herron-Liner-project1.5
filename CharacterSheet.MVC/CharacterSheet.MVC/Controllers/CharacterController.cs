@@ -235,8 +235,46 @@ namespace CharacterSheet.MVC.Controllers
             {
                 return RedirectToAction("Error", "Home");
             }
-
-
         }
+
+        public IActionResult AddFeat()
+        {
+            return View();
+        }
+
+        public async Task<ActionResult> AddFeat(GenericDictionary feat)
+        {
+            try
+            {
+                int charID = (int)TempData["char"];
+                HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/Character/ByID/{charID}");
+                HttpResponseMessage response = await Client.SendAsync(message);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Error", "Home");
+                }
+
+                var responseBody = await response.Content.ReadAsStringAsync();
+                Character character = JsonConvert.DeserializeObject<Character>(responseBody);
+                character.FeatList.Add(feat.key, feat.value);
+
+                message = CreateServiceRequest(HttpMethod.Put, $"api/Character/{charID}");
+                response = await Client.SendAsync(message);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Error", "Home");
+                }
+
+                return RedirectToAction(nameof(Edit));
+            }
+
+            catch
+            {
+                return RedirectToAction("Error", "Home");
+            }
+        }
+        
     }
 }
