@@ -249,7 +249,7 @@ namespace DataAccess
             trackedUser.Characters = gamer.Characters;
             trackedUser.Gmjunction = gamer.Gmjunction;
             _db.Gamer.Update(trackedUser);
-            await _db.SaveChangesAsync();
+            _db.SaveChanges();
         }
 
         public async Task<User> UserDetails(int UserID)
