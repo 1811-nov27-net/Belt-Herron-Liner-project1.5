@@ -109,20 +109,21 @@ namespace CharacterSheet.MVC.Controllers
         }
 
         // GET: Campaign/Edit/5
-        public async Task<ActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var campaign = JsonConvert.DeserializeObject<Campaign>(await Client.GetStringAsync($"https://localhost:44309/api/Campaign/{id}"));
-            TempData["camp"] = campaign;
+            var campaign = JsonConvert.DeserializeObject<Campaign>(await Client.GetStringAsync($"https://localhost:44309/api/Campaign/ByID/{id}"));
+            TempData["camp"] = campaign.CampID;
             return View(campaign);
         }
 
         // POST: Campaign/Edit/5
-        [HttpPut]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(int id, Campaign campaign)
         {
             try
             {
+                campaign.CampID = id;
                 var url = $"https://localhost:44309/api/Campaign/{id}";
                 var response = await Client.PutAsJsonAsync(url, campaign);
                 if (response.IsSuccessStatusCode)
@@ -135,29 +136,31 @@ namespace CharacterSheet.MVC.Controllers
             }
         }
 
-        public ActionResult AddChar()
+        public IActionResult AddChar()
         {
+            ViewData["path"] = $"Campaign/Edit/{TempData.Peek("camp")}";
             return View();
         }
 
-        [HttpPut]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> AddChar(Character character)
         {
             try
             {
-                Campaign campaign = (Campaign)TempData["camp"];
+                int id = (int)TempData["camp"];
+                Campaign campaign = JsonConvert.DeserializeObject<Campaign>(await Client.GetStringAsync($"https://localhost:44309/api/Campaign/ByID/{id}"));
                 HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/Character/{character.CharID}");
                 HttpResponseMessage response = await Client.SendAsync(message);
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    return View(character);
+                    return View();
                 }
                 var responseBody = await response.Content.ReadAsStringAsync();
                 character = JsonConvert.DeserializeObject<Character>(responseBody);
 
-                message = CreateServiceRequest(HttpMethod.Put, $"api/Campaign/JoinCamp/{campaign.CampID}", character);
+                message = CreateServiceRequest(HttpMethod.Put, $"api/Campaign/AddChar/{campaign.CampID}", character);
                 response = await Client.SendAsync(message);
 
                 if (!response.IsSuccessStatusCode)
@@ -168,7 +171,7 @@ namespace CharacterSheet.MVC.Controllers
             }
             catch
             {
-                return View(character);
+                return View();
             }
         }
 
@@ -185,8 +188,9 @@ namespace CharacterSheet.MVC.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    Campaign campaign = (Campaign)TempData["camp"];
-                    HttpRequestMessage message = CreateServiceRequest(HttpMethod.Put, $"api/Campaign/RemoveCharFromCamp/{campaign.CampID}", character);
+                    int campID = (int)TempData["camp"];
+                    Campaign campaign = JsonConvert.DeserializeObject<Campaign>(await Client.GetStringAsync($"https://localhost:44309/api/Campaign/ByID/{campID}"));
+                    HttpRequestMessage message = CreateServiceRequest(HttpMethod.Put, $"api/Campaign/RemoveChar/{campaign.CampID}", character);
                     HttpResponseMessage response = await Client.SendAsync(message);
                     if (response.IsSuccessStatusCode)
                         return RedirectToAction(nameof(Edit), campaign.CampID);
@@ -213,8 +217,9 @@ namespace CharacterSheet.MVC.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    Campaign campaign = (Campaign)TempData["camp"];
-                    HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/User/{user.Username}");
+                    int id = (int)TempData["camp"];
+                    Campaign campaign = JsonConvert.DeserializeObject<Campaign>(await Client.GetStringAsync($"https://localhost:44309/api/Campaign/ByID/{id}"));
+                    HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/User/ByName/{user.Username}");
                     HttpResponseMessage response = await Client.SendAsync(message);
                     if (!response.IsSuccessStatusCode)
                     {
@@ -241,7 +246,8 @@ namespace CharacterSheet.MVC.Controllers
 
         public async Task<IActionResult> RemoveGM()
         {
-            Campaign campaign = (Campaign)TempData.Peek("camp");
+            int id = (int)TempData.Peek("camp");
+            Campaign campaign = JsonConvert.DeserializeObject<Campaign>(await Client.GetStringAsync($"https://localhost:44309/api/Campaign/ByID/{id}"));
             HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/Campaign/GMList/{campaign.CampID}");
             HttpResponseMessage response = await Client.SendAsync(message);
             if(!response.IsSuccessStatusCode)
@@ -261,8 +267,9 @@ namespace CharacterSheet.MVC.Controllers
             {
                 if(ModelState.IsValid)
                 {
-                    Campaign campaign = (Campaign)TempData["camp"];
-                    HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/User/{id}");
+                    int campID = (int)TempData["camp"];
+                    Campaign campaign = JsonConvert.DeserializeObject<Campaign>(await Client.GetStringAsync($"https://localhost:44309/api/Campaign/ByID/{campID}"));
+                    HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/User/ByID/{id}");
                     HttpResponseMessage response = await Client.SendAsync(message);
                     if(!response.IsSuccessStatusCode)
                     {
@@ -289,7 +296,7 @@ namespace CharacterSheet.MVC.Controllers
         // GET: Campaign/Delete/5
         public async Task<ActionResult> Delete(int id)
         {
-            HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/Campaign/{id}");
+            HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/Campaign/ByID/{id}");
             HttpResponseMessage response = await Client.SendAsync(message);
             if(!response.IsSuccessStatusCode)
             {
@@ -307,7 +314,7 @@ namespace CharacterSheet.MVC.Controllers
         {
             try
             {
-                HttpRequestMessage message = CreateServiceRequest(HttpMethod.Delete, $"api/Campaign/{campaign.CampID}");
+                HttpRequestMessage message = CreateServiceRequest(HttpMethod.Delete, $"api/Campaign/ByID/{campaign.CampID}");
                 HttpResponseMessage response = await Client.SendAsync(message);
                 if(!response.IsSuccessStatusCode)
                 {

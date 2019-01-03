@@ -179,19 +179,19 @@ namespace DataAccess
                 _db.Characters.Update(item);
             }
             _db.Gamer.Remove(_db.Gamer.First(c => c.GamerId == UserID));
-            _db.SaveChangesAsync();
+            _db.SaveChanges();
         }
 
         public async void JoinCamp(int CampID, int CharID)
         {
             (await _db.Characters.FirstAsync(c => c.CharacterId == CharID)).CampaignId = CampID;
-            _db.SaveChangesAsync();
+            _db.SaveChanges();
         }
 
         public async void RemoveCharFromCamp(int CampID, int CharID)
         {
             (await _db.Characters.FirstAsync(c => c.CharacterId == CharID)).CampaignId = 1; // 1 = no campagin
-            _db.SaveChangesAsync();
+            _db.SaveChanges();
         }
 
         public async void UpdateCamp(ClassLibrary.Campaign campaign)
@@ -202,7 +202,7 @@ namespace DataAccess
             trackedCampaign.Characters = camp.Characters;
             trackedCampaign.Gmjunction = camp.Gmjunction;
             _db.Campaign.Update(trackedCampaign);
-            await _db.SaveChangesAsync();
+            _db.SaveChanges();
         }
 
         public async void UpdateCharacter(Character character)
