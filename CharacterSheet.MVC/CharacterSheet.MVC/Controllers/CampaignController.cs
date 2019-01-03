@@ -231,7 +231,7 @@ namespace CharacterSheet.MVC.Controllers
                     response = await Client.SendAsync(message);
                     if (response.IsSuccessStatusCode)
                     {
-                        return RedirectToAction(Index);
+                        return RedirectToAction("Index");
                     }
                     return RedirectToAction("Error", "Home");
                 }
