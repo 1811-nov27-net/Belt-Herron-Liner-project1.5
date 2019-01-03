@@ -192,7 +192,7 @@ namespace CharacterSheet.MVC.Controllers
                     HttpRequestMessage message = CreateServiceRequest(HttpMethod.Put, $"api/Campaign/RemoveChar/{campaign.CampID}", character);
                     HttpResponseMessage response = await Client.SendAsync(message);
                     if (response.IsSuccessStatusCode)
-                        return RedirectToAction(nameof(Edit), campaign.CampID);
+                        return RedirectToAction("Index");
                     return View(character);
                 }
                 return View(character);
@@ -313,7 +313,7 @@ namespace CharacterSheet.MVC.Controllers
         {
             try
             {
-                HttpRequestMessage message = CreateServiceRequest(HttpMethod.Delete, $"api/Campaign/ByID/{campaign.CampID}");
+                HttpRequestMessage message = CreateServiceRequest(HttpMethod.Delete, $"api/Campaign/{campaign.CampID}");
                 HttpResponseMessage response = await Client.SendAsync(message);
                 if(!response.IsSuccessStatusCode)
                 {
