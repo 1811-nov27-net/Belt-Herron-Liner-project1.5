@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using ClassLibrary;
 using Data = DataAccess;
 using System.Collections;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CharacterSheet.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CharacterController : ControllerBase
     {
 

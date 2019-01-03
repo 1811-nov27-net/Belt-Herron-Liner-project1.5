@@ -1,7 +1,7 @@
 ﻿@model CharacterSheet.MVC.Models.Character
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Character Details";
 }
 
 <h1>Details</h1>
@@ -23,22 +23,16 @@
             @Html.DisplayFor(model => model.CharID)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UserID)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.UserID)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CampID)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CampID)
-        </dd>
-        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.MaxHitPoints)
         </dt>
+        <dd id="currentHP">
+
+        </dd>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.MaxHitPoints)
+        </dd>
+        <dd>
+            <input type="number" id="dmg" onchange="updateHitpoints()" />
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Race)
@@ -64,6 +58,9 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Alignment)
         </dd>
+        <dt>
+            Attributes
+        </dt>
         @foreach (var item in Model.Attributes)
         {
             <dd>
@@ -71,6 +68,19 @@
             </dd>
 
         }
+        <dt>
+            Saving Throws
+        </dt>
+        @foreach (var item in Model.EffectiveSavingThrows)
+        {
+            <dd onclick="rollDice(20,@item.Value,1)">
+                @item.Key : @item.Value
+            </dd>
+
+        }
+        <dt>
+            Skills
+        </dt>
         @foreach (var item in Model.SkillList)
         {
             <dd>
@@ -78,6 +88,9 @@
             </dd>
 
         }
+        <dt>
+            Feats
+        </dt>
         @foreach (var item in Model.FeatList)
         {
             <dd>
@@ -85,6 +98,9 @@
             </dd>
 
         }
+        <dt>
+            Spells Known
+        </dt>
         @foreach (var item in Model.SpellsKnown)
         {
             <dd>
@@ -94,6 +110,8 @@
         }
     </dl>
 </div>
+<input hidden id="maxHP" value="@Model.MaxHitPoints" />
+
 <div>
     <p id="dieresult"></p>
     <button id="rollbutton" onclick="rollDice()">Roll D20</button>
