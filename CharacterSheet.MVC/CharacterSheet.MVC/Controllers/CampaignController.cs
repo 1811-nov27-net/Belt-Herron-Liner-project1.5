@@ -179,7 +179,7 @@ namespace CharacterSheet.MVC.Controllers
             return View(JsonConvert.DeserializeObject<Character>(await Client.GetStringAsync($"https://localhost:44309/api/Character/{id}")));
         }
 
-        [HttpPut]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> RemoveChar(int id, Character character)
         {
@@ -208,7 +208,7 @@ namespace CharacterSheet.MVC.Controllers
             return View();
         }
 
-        [HttpPut]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> AddGM(User user)
         {
@@ -231,7 +231,7 @@ namespace CharacterSheet.MVC.Controllers
                     response = await Client.SendAsync(message);
                     if (response.IsSuccessStatusCode)
                     {
-                        return RedirectToAction("Edit", campaign.CampID);
+                        return RedirectToAction(Index);
                     }
                     return RedirectToAction("Error", "Home");
                 }
@@ -258,7 +258,7 @@ namespace CharacterSheet.MVC.Controllers
             return View(GMs);
         }
 
-        [HttpPut]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> RemoveGM(int id)
         {
@@ -281,7 +281,7 @@ namespace CharacterSheet.MVC.Controllers
                     response = await Client.SendAsync(message);
                     if(response.IsSuccessStatusCode)
                     {
-                        return RedirectToAction("Edit", campaign.CampID);
+                        return RedirectToAction("Index");
                     }
                 }
                 return RedirectToAction("Error", "Home");
