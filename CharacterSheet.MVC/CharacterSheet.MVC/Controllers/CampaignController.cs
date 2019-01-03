@@ -51,7 +51,7 @@ namespace CharacterSheet.MVC.Controllers
             var responseBody = await response.Content.ReadAsStringAsync();
             Campaign campaign = JsonConvert.DeserializeObject<Campaign>(responseBody);
 
-            message = CreateServiceRequest(HttpMethod.Get, $"api/Character/GetCharsByCamp/{id}");
+            message = CreateServiceRequest(HttpMethod.Get, $"api/Character/ByCamp/{id}");
             response = await Client.SendAsync(message);
             if (!response.IsSuccessStatusCode)
             {

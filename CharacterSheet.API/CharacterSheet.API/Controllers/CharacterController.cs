@@ -164,7 +164,7 @@ namespace CharacterSheet.API.Controllers
         }
 
         //get list of characters by campaign
-        [HttpGet]
+        [HttpGet("ByCamp/{campID}")]
         public async Task<ActionResult<IEnumerable<Character>>> GetCharByCamp(int campID)
         {
             Campaign existingCamp = await Repo.CampDetails(campID);

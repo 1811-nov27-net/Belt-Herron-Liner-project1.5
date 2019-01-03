@@ -71,10 +71,10 @@ namespace DataAccess
 
             if (campaign.Gmjunction.Count > 0)
             {
-                foreach (var GM in campaign.Gmjunction)
-                {
-                    ret.GMs.Add(GM.Gm);
-                }
+                //foreach (var GM in campaign.Gmjunction)
+                //{
+                //    ret.GMs.Add(GM.Gm);
+                //}
             }
             return ret;
 
