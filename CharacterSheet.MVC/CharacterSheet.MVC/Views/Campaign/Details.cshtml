@@ -83,7 +83,7 @@
             <input type="hidden" id="@String.Concat(item.Name,"maxHP")" value="@item.MaxHitPoints" />
         </td>
         <td>
-            <input type="number" size="3" id="@String.Concat(item.Name,"dmg")" />
+            <input type="number" onchange="updateHitpoints('@item.Name')" size="3" id="@String.Concat(item.Name,"dmg")" />
         </td>
         <td>
             @Html.ActionLink("Details", "Details", "Character", new { id = item.CharID }) |
