@@ -229,7 +229,7 @@ namespace CharacterSheet.MVC.Controllers
                 }
 
 
-                return RedirectToAction(nameof(Edit));
+                return RedirectToAction("Edit", new {id = charID} );
             }
             catch
             {
@@ -267,7 +267,7 @@ namespace CharacterSheet.MVC.Controllers
                     return RedirectToAction("Error", "Home");
                 }
 
-                return RedirectToAction(nameof(Edit));
+                return RedirectToAction("Edit", new { id = charID });
             }
 
             catch
