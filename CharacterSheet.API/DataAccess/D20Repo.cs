@@ -182,9 +182,9 @@ namespace DataAccess
             _db.SaveChangesAsync();
         }
 
-        public async void JoinCamp(int CampID, int CharID)
+        public void JoinCamp(int CampID, int CharID)
         {
-            (await _db.Characters.FirstAsync(c => c.CharacterId == CharID)).CampaignId = CampID;
+            _db.Characters.First(c => c.CharacterId == CharID).CampaignId = CampID;
             _db.SaveChangesAsync();
         }
 
