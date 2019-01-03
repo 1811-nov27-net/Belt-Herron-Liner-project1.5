@@ -179,19 +179,19 @@ namespace DataAccess
                 _db.Characters.Update(item);
             }
             _db.Gamer.Remove(_db.Gamer.First(c => c.GamerId == UserID));
-            _db.SaveChangesAsync();
+            _db.SaveChanges();
         }
 
         public void JoinCamp(int CampID, int CharID)
         {
             _db.Characters.First(c => c.CharacterId == CharID).CampaignId = CampID;
-            _db.SaveChangesAsync();
+            _db.SaveChanges();
         }
 
         public void RemoveCharFromCamp(int CampID, int CharID)
         {
             _db.Characters.First(c => c.CharacterId == CharID).CampaignId = 1; // 1 = no campagin
-            _db.SaveChangesAsync();
+            _db.SaveChanges();
         }
 
         public async void UpdateCamp(ClassLibrary.Campaign campaign)

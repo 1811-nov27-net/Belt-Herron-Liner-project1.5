@@ -138,7 +138,6 @@ namespace CharacterSheet.MVC.Controllers
 
         public IActionResult AddChar()
         {
-            ViewData["path"] = $"Campaign/Edit/{TempData.Peek("camp")}";
             return View();
         }
 
@@ -167,7 +166,7 @@ namespace CharacterSheet.MVC.Controllers
                 {
                     return View(character);
                 }
-                return RedirectToAction(nameof(Edit), campaign.CampID);
+                return RedirectToAction("Index");
             }
             catch
             {

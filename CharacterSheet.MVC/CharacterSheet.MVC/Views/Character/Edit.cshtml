@@ -2,6 +2,10 @@
 
 @{
     ViewData["Title"] = "Edit";
+    List<string> AttributeNames = new List<string>
+    {
+        "Strength","Dexterity","Stamina","Intelligence","Charisma","Wisdom"
+    };
 }
 
 <h1>Edit</h1>
@@ -16,21 +20,6 @@
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CharID" class="control-label"></label>
-                <input asp-for="CharID" class="form-control" />
-                <span asp-validation-for="CharID" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UserID" class="control-label"></label>
-                <input asp-for="UserID" class="form-control" />
-                <span asp-validation-for="UserID" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CampID" class="control-label"></label>
-                <input asp-for="CampID" class="form-control" />
-                <span asp-validation-for="CampID" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="MaxHitPoints" class="control-label"></label>
@@ -63,6 +52,14 @@
                 <a asp-action="AddSpell" class="btn btn-primary">Add Spell</a>
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
+            @for (int i = 0; i < Model.Attributes.Count; i++)
+            {
+                <div class="form-group">
+                    <label asp-for="@AttributeNames[i]" class="control-label">@AttributeNames[i]</label>
+                    <input type="number" asp-for="@Model.Attributes[AttributeNames[i]]" class="form-control" />
+                    <span asp-validation-for="@Model.Attributes[AttributeNames[i]]" class="text-danger"></span>
+                </div>
+            }
         </form>
     </div>
 

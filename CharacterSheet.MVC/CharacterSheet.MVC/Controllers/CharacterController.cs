@@ -121,6 +121,7 @@ namespace CharacterSheet.MVC.Controllers
         {
             try
             {
+                character.CalculateBonusesAndSaves();
                 var url = $"https://localhost:44309/api/Character/{id}";
                 var response = await Client.PutAsJsonAsync(url, character);
 
