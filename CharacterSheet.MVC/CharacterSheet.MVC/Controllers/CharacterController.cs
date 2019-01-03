@@ -109,6 +109,7 @@ namespace CharacterSheet.MVC.Controllers
         public async Task<ActionResult> Edit(int id)
         {
             var character = JsonConvert.DeserializeObject<Character>(await Client.GetStringAsync($"https://localhost:44309/api/Character/{id}"));
+            TempData["char"] = character.CharID;
             return View(character);
         }
 
@@ -172,6 +173,46 @@ namespace CharacterSheet.MVC.Controllers
             {
                 return RedirectToAction("Error", "Home");
             }
+        }
+
+        public IActionResult AddSkill()
+        {
+            return View();
+        }
+
+        public async Task<ActionResult> AddSkill(GenericDictionary skill)
+        {
+            try
+            {
+                int charID = (int)TempData["char"];
+                HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/Character/ByID/{charID}");
+                HttpResponseMessage response = await Client.SendAsync(message);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Error", "Home");
+                }
+                var responseBody = await response.Content.ReadAsStringAsync();
+                Character character = JsonConvert.DeserializeObject<Character>(responseBody);
+                character.SkillList.Add(skill.key, skill.value);
+
+                message = CreateServiceRequest(HttpMethod.Put, $"api/Character/{charID}");
+                response = await Client.SendAsync(message);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Error", "Home");
+                }
+
+
+                return RedirectToAction(nameof(Edit));
+            }
+            catch
+            {
+                return RedirectToAction("Error", "Home");
+            }
+
+
         }
     }
 }
