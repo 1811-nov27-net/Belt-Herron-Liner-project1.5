@@ -112,6 +112,15 @@ namespace CharacterSheet.MVC.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var campaign = JsonConvert.DeserializeObject<Campaign>(await Client.GetStringAsync($"https://localhost:44309/api/Campaign/ByID/{id}"));
+            HttpRequestMessage message = CreateServiceRequest(HttpMethod.Get, $"api/Character/ByCamp/{id}");
+            HttpResponseMessage response = await Client.SendAsync(message);
+            if (!response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+            var responseBody = await response.Content.ReadAsStringAsync();
+            IEnumerable<Character> characters = JsonConvert.DeserializeObject<IEnumerable<Character>>(responseBody);
+            campaign.Characters = (List<Character>)characters;
             TempData["camp"] = campaign.CampID;
             return View(campaign);
         }
